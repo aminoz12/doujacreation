@@ -12,6 +12,7 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   swcMinify: true,
+  trailingSlash: true,
 }
 
 module.exports = nextConfig
