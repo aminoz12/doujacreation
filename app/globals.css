@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold-imperial: #C7A14A;
+  --gold-champagne: #E8D8A8;
+  --luxury-white: #FFFFFF;
+  --luxury-ivory: #FAF8F4;
+  --luxury-black: #0E0E0E;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Optimize scrolling performance */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+}
+
+body {
+  font-family: var(--font-inter), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Luxury Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), serif;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+/* Gold Grain Texture */
+.gold-texture {
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      rgba(199, 161, 74, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(199, 161, 74, 0.03) 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(199, 161, 74, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(199, 161, 74, 0.03) 3px
+    );
+}
+
+/* Luxury Button Styles */
+@layer components {
+  .btn-luxury {
+    @apply px-8 py-4 font-sans text-sm tracking-wide uppercase transition-all duration-500 ease-out;
+    @apply border border-gold-imperial text-gold-imperial bg-transparent;
+    @apply hover:bg-gold-imperial hover:text-luxury-black;
+    @apply focus:outline-none focus:ring-2 focus:ring-gold-imperial focus:ring-offset-2;
+  }
+
+  .btn-luxury-primary {
+    @apply btn-luxury bg-gold-imperial text-luxury-black;
+    @apply hover:bg-gold-champagne hover:border-gold-champagne;
+  }
+
+  .section-padding {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+
+  .container-luxury {
+    @apply mx-auto max-w-7xl px-6 md:px-8 lg:px-12;
+  }
+
+  .text-luxury-heading {
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl xl:text-7xl;
+    @apply tracking-luxury leading-tight;
+  }
+
+  .text-luxury-body {
+    @apply font-sans text-base md:text-lg leading-relaxed;
+    @apply text-luxury-black/80;
+  }
+
+  .hero-caveat {
+    font-family: var(--font-caveat), cursive;
+    font-optical-sizing: auto;
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--luxury-ivory);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-imperial);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-champagne);
+}
+
+/* Selection Styling */
+::selection {
+  background: var(--gold-champagne);
+  color: var(--luxury-black);
+}
+
+/* Performance optimizations for animated elements */
+[data-framer-component],
+[data-framer-name] {
+  /* Optimize transforms and opacity for better scroll performance */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Smooth Animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Hide Scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+

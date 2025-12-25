@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "collections": "Colecciones",
+    "lookbook": "Lookbook",
+    "maison": "Maison",
+    "contact": "Contacto"
+  },
+  "home": {
+    "hero": {
+      "title": "DoujaCreation",
+      "subtitle": "La elegancia atemporal se encuentra con la artesanía del patrimonio. Descubre los mejores caftanes, jellabas y takchitas marroquíes.",
+      "explore": "Explorar Colecciones",
+      "lookbook": "Ver Lookbook"
+    },
+    "brand": {
+      "title": "Artesanía del Patrimonio,",
+      "titleHighlight": "Elegancia Atemporal",
+      "description": "Cada pieza de nuestra colección es un testimonio de siglos de artesanía marroquí. Desde el intrincado bordado a mano hasta la selección de las mejores sedas y telas, honramos la tradición mientras abrazamos la elegancia contemporánea."
+    },
+    "categories": {
+      "title": "Colecciones Alta Costura"
+    },
+    "signature": {
+      "title": "Colección Signature",
+      "viewAll": "Ver Todo"
+    },
+    "craftsmanship": {
+      "title": "Artesanía Artesanal",
+      "description1": "Nuestros artesanos dedican cientos de horas a cada pieza, empleando técnicas transmitidas de generación en generación. Cada puntada cuenta una historia, cada hilo una conexión con el rico patrimonio cultural de Marruecos.",
+      "description2": "Desde la selección de sedas premium hasta el intrincado bordado a mano con hilos de oro y plata, nos aseguramos de que cada creación sea una obra maestra digna de la clientela más exigente."
+    },
+    "lookbook": {
+      "title": "Lookbook Editorial",
+      "viewFull": "Ver Lookbook Completo"
+    },
+    "testimonials": {
+      "title": "Testimonios",
+      "quote1": "La artesanía es extraordinaria. Cada pieza se siente como una obra de arte, llevando la esencia del patrimonio marroquí.",
+      "quote2": "DoujaCreation ha redefinido el lujo para mí. La atención al detalle y la calidad no tienen igual.",
+      "quote3": "Usar su caftán me hizo sentir como la realeza. La elegancia y sofisticación son verdaderamente notables.",
+      "author1": "Sophie Laurent",
+      "author2": "Amina Al-Rashid",
+      "author3": "Isabella Martinez",
+      "location1": "París, Francia",
+      "location2": "Dubái, Emiratos Árabes Unidos",
+      "location3": "Nueva York, EE. UU."
+    },
+    "newsletter": {
+      "title": "Únete a Nuestra Maison Privada",
+      "description": "Recibe acceso exclusivo a nuevas colecciones, eventos privados y ofertas especiales reservadas para nuestros miembros.",
+      "placeholder": "Ingresa tu correo",
+      "subscribe": "Suscribirse"
+    }
+  },
+  "collections": {
+    "title": "Colecciones",
+    "subtitle": "Descubre nuestra selección curada de ropa tradicional marroquí de lujo",
+    "all": "Todo",
+    "new": "Nuevo",
+    "sale": "Rebaja"
+  },
+  "product": {
+    "quantity": "Cantidad",
+    "addToCart": "Añadir al Carrito",
+    "careInstructions": "Instrucciones de Cuidado",
+    "careText": "Solo limpieza en seco. Almacenar en un lugar fresco y seco. Evitar la luz solar directa. Manejar con cuidado para preservar el bordado intrincado.",
+    "shipping": "Envío y Devoluciones",
+    "shippingText": "Envío gratuito mundial en pedidos superiores a $500. Devoluciones aceptadas dentro de los 14 días posteriores a la entrega. Los artículos deben estar sin usar y en condición original.",
+    "backToCollections": "Volver a Colecciones"
+  },
+  "lookbook": {
+    "title": "Lookbook",
+    "subtitle": "Fotografía editorial que muestra nuestras colecciones en su forma más elegante"
+  },
+  "maison": {
+    "title": "Nuestro Patrimonio",
+    "subtitle": "Un Legado de Excelencia",
+    "description1": "DoujaCreation nació de una profunda apreciación por la artesanía marroquí y una visión para llevar esta elegancia atemporal al mundo. Nuestro viaje comenzó con una simple creencia: que el verdadero lujo reside en los detalles, en las historias tejidas en cada hilo, y en el patrimonio transmitido de generación en generación.",
+    "description2": "Cada pieza de nuestra colección es una celebración del rico tapiz cultural de Marruecos. Desde las antiguas medinas de Fez hasta los vibrantes zocos de Marrakech, extraemos inspiración de siglos de arte y tradición. Nuestros artesanos, maestros de su oficio, dedican innumerables horas a crear piezas que no son meramente prendas, sino obras de arte.",
+    "craftsmanship": "Artesanía",
+    "craftsmanshipText": "Trabajamos exclusivamente con maestros artesanos que han dedicado sus vidas a preservar técnicas tradicionales mientras abrazan la elegancia contemporánea.",
+    "heritage": "Patrimonio",
+    "heritageText": "Cada diseño cuenta una historia, conectando al usuario con la rica historia de Marruecos y los artesanos que dan vida a estas tradiciones."
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "subtitle": "Nos encantaría saber de ti. Contáctanos para consultas, pedidos personalizados o simplemente para conectar.",
+    "getInTouch": "Ponerse en Contacto",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "addressLine1": "123 Avenida del Lujo",
+    "addressLine2": "París, Francia 75001",
+    "name": "Nombre",
+    "message": "Mensaje",
+    "send": "Enviar Mensaje"
+  },
+  "cart": {
+    "title": "Carrito de Compras",
+    "empty": "Tu carrito está vacío",
+    "continue": "Continuar Comprando",
+    "total": "Total",
+    "checkout": "Proceder al Pago"
+  },
+  "footer": {
+    "description": "La elegancia atemporal se encuentra con la artesanía del patrimonio. Descubre los mejores caftanes, jellabas y takchitas marroquíes, cada pieza un testimonio de siglos de tradición y lujo.",
+    "shop": "Tienda",
+    "maison": "Maison",
+    "copyright": "Todos los derechos reservados."
+  },
+  "common": {
+    "loading": "Cargando...",
+    "notFound": "Producto No Encontrado"
+  }
+}
+
+
+

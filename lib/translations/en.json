@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "home": "Home",
+    "collections": "Collections",
+    "lookbook": "Lookbook",
+    "maison": "Maison",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero": {
+      "title": "DoujaCreation",
+      "subtitle": "Timeless elegance meets heritage craftsmanship. Discover the finest Moroccan caftans, jellabas, and takchitas.",
+      "explore": "Explore Collections",
+      "lookbook": "View Lookbook"
+    },
+    "brand": {
+      "title": "Heritage Crafted,",
+      "titleHighlight": "Timeless Elegance",
+      "description": "Each piece in our collection is a testament to centuries of Moroccan craftsmanship. From the intricate hand-embroidery to the selection of the finest silks and fabrics, we honor tradition while embracing contemporary elegance."
+    },
+    "categories": {
+      "title": "Haute Collections"
+    },
+    "signature": {
+      "title": "Signature Collection",
+      "viewAll": "View All"
+    },
+    "craftsmanship": {
+      "title": "Artisan Craftsmanship",
+      "description1": "Our artisans dedicate hundreds of hours to each piece, employing techniques passed down through generations. Every stitch tells a story, every thread a connection to Morocco's rich cultural heritage.",
+      "description2": "From the selection of premium silks to the intricate hand-embroidery with gold and silver threads, we ensure that each creation is a masterpiece worthy of the most discerning clientele."
+    },
+    "lookbook": {
+      "title": "Editorial Lookbook",
+      "viewFull": "View Full Lookbook"
+    },
+    "testimonials": {
+      "title": "Testimonials",
+      "quote1": "The craftsmanship is extraordinary. Each piece feels like a work of art, carrying the essence of Moroccan heritage.",
+      "quote2": "DoujaCreation has redefined luxury for me. The attention to detail and quality is unmatched.",
+      "quote3": "Wearing their caftan made me feel like royalty. The elegance and sophistication are truly remarkable.",
+      "author1": "Sophie Laurent",
+      "author2": "Amina Al-Rashid",
+      "author3": "Isabella Martinez",
+      "location1": "Paris, France",
+      "location2": "Dubai, UAE",
+      "location3": "New York, USA"
+    },
+    "newsletter": {
+      "title": "Join Our Private Maison",
+      "description": "Receive exclusive access to new collections, private events, and special offers reserved for our members.",
+      "placeholder": "Enter your email",
+      "subscribe": "Subscribe"
+    }
+  },
+  "collections": {
+    "title": "Collections",
+    "subtitle": "Discover our curated selection of luxury Moroccan traditional wear",
+    "all": "All",
+    "new": "New",
+    "sale": "Sale"
+  },
+  "product": {
+    "quantity": "Quantity",
+    "addToCart": "Add to Cart",
+    "careInstructions": "Care Instructions",
+    "careText": "Dry clean only. Store in a cool, dry place. Avoid direct sunlight. Handle with care to preserve the intricate embroidery.",
+    "shipping": "Shipping & Returns",
+    "shippingText": "Free worldwide shipping on orders over $500. Returns accepted within 14 days of delivery. Items must be unworn and in original condition.",
+    "backToCollections": "Back to Collections"
+  },
+  "lookbook": {
+    "title": "Lookbook",
+    "subtitle": "Editorial photography showcasing our collections in their most elegant form"
+  },
+  "maison": {
+    "title": "Our Heritage",
+    "subtitle": "A Legacy of Excellence",
+    "description1": "DoujaCreation was born from a deep appreciation for Moroccan craftsmanship and a vision to bring this timeless elegance to the world. Our journey began with a simple belief: that true luxury lies in the details, in the stories woven into every thread, and in the heritage passed down through generations.",
+    "description2": "Each piece in our collection is a celebration of Morocco's rich cultural tapestry. From the ancient medinas of Fez to the vibrant souks of Marrakech, we draw inspiration from centuries of artistry and tradition. Our artisans, masters of their craft, dedicate countless hours to create pieces that are not merely garments, but works of art.",
+    "craftsmanship": "Craftsmanship",
+    "craftsmanshipText": "We work exclusively with master artisans who have dedicated their lives to preserving traditional techniques while embracing contemporary elegance.",
+    "heritage": "Heritage",
+    "heritageText": "Every design tells a story, connecting the wearer to Morocco's rich history and the artisans who bring these traditions to life."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you. Reach out for inquiries, custom orders, or simply to connect.",
+    "getInTouch": "Get in Touch",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "addressLine1": "123 Luxury Avenue",
+    "addressLine2": "Paris, France 75001",
+    "name": "Name",
+    "message": "Message",
+    "send": "Send Message"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty",
+    "continue": "Continue Shopping",
+    "total": "Total",
+    "checkout": "Proceed to Checkout"
+  },
+  "footer": {
+    "description": "Timeless elegance meets heritage craftsmanship. Discover the finest Moroccan caftans, jellabas, and takchitas, each piece a testament to centuries of tradition and luxury.",
+    "shop": "Shop",
+    "maison": "Maison",
+    "copyright": "All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "notFound": "Product Not Found"
+  }
+}
+
+
+

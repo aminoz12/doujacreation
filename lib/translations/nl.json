@@ -1,0 +1,119 @@
+{
+  "nav": {
+    "home": "Home",
+    "collections": "Collecties",
+    "lookbook": "Lookbook",
+    "maison": "Maison",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero": {
+      "title": "DoujaCreation",
+      "subtitle": "Tijdloze elegantie ontmoet ambachtelijk erfgoed. Ontdek de fijnste Marokkaanse kaftans, djellaba's en takchita's.",
+      "explore": "Collecties Bekijken",
+      "lookbook": "Lookbook Bekijken"
+    },
+    "brand": {
+      "title": "Erfgoed Ambachtelijk,",
+      "titleHighlight": "Tijdloze Elegantie",
+      "description": "Elk stuk in onze collectie is een bewijs van eeuwen Marokkaans vakmanschap. Van het ingewikkelde handborduurwerk tot de selectie van de fijnste zijden en stoffen, eren we traditie terwijl we hedendaagse elegantie omarmen."
+    },
+    "categories": {
+      "title": "Haute Collecties"
+    },
+    "signature": {
+      "title": "Signature Collectie",
+      "viewAll": "Alles Bekijken"
+    },
+    "craftsmanship": {
+      "title": "Ambachtelijk Vakmanschap",
+      "description1": "Onze ambachtslieden wijden honderden uren aan elk stuk, waarbij ze technieken gebruiken die van generatie op generatie zijn doorgegeven. Elke steek vertelt een verhaal, elke draad een verbinding met het rijke culturele erfgoed van Marokko.",
+      "description2": "Van de selectie van premium zijden tot het ingewikkelde handborduurwerk met goud- en zilverdraden, zorgen we ervoor dat elke creatie een meesterwerk is dat waardig is voor de meest veeleisende clientèle."
+    },
+    "lookbook": {
+      "title": "Editoriaal Lookbook",
+      "viewFull": "Volledig Lookbook Bekijken"
+    },
+    "testimonials": {
+      "title": "Getuigenissen",
+      "quote1": "Het vakmanschap is buitengewoon. Elk stuk voelt aan als een kunstwerk, met de essentie van Marokkaans erfgoed.",
+      "quote2": "DoujaCreation heeft luxe voor mij opnieuw gedefinieerd. De aandacht voor detail en kwaliteit is ongeëvenaard.",
+      "quote3": "Het dragen van hun kaftan liet me me voelen als royalty. De elegantie en verfijning zijn werkelijk opmerkelijk.",
+      "author1": "Sophie Laurent",
+      "author2": "Amina Al-Rashid",
+      "author3": "Isabella Martinez",
+      "location1": "Parijs, Frankrijk",
+      "location2": "Dubai, VAE",
+      "location3": "New York, VS"
+    },
+    "newsletter": {
+      "title": "Word Lid van Onze Privé Maison",
+      "description": "Ontvang exclusieve toegang tot nieuwe collecties, privé-evenementen en speciale aanbiedingen gereserveerd voor onze leden.",
+      "placeholder": "Voer uw e-mail in",
+      "subscribe": "Abonneren"
+    }
+  },
+  "collections": {
+    "title": "Collecties",
+    "subtitle": "Ontdek onze gecureerde selectie van luxe Marokkaanse traditionele kleding",
+    "all": "Alles",
+    "new": "Nieuw",
+    "sale": "Uitverkoop"
+  },
+  "product": {
+    "quantity": "Hoeveelheid",
+    "addToCart": "Toevoegen aan Winkelwagen",
+    "careInstructions": "Verzorgingsinstructies",
+    "careText": "Alleen chemisch reinigen. Bewaren op een koele, droge plaats. Vermijd direct zonlicht. Voorzichtig hanteren om het ingewikkelde borduurwerk te behouden.",
+    "shipping": "Verzending en Retourneren",
+    "shippingText": "Gratis wereldwijde verzending bij bestellingen boven €500. Retourneren geaccepteerd binnen 14 dagen na levering. Items moeten ongedragen en in originele staat zijn.",
+    "backToCollections": "Terug naar Collecties"
+  },
+  "lookbook": {
+    "title": "Lookbook",
+    "subtitle": "Editoriale fotografie die onze collecties toont in hun meest elegante vorm"
+  },
+  "maison": {
+    "title": "Ons Erfgoed",
+    "subtitle": "Een Erfenis van Uitmuntendheid",
+    "description1": "DoujaCreation is geboren uit een diepe waardering voor Marokkaans vakmanschap en een visie om deze tijdloze elegantie naar de wereld te brengen. Onze reis begon met een simpel geloof: dat ware luxe ligt in de details, in de verhalen geweven in elke draad, en in het erfgoed doorgegeven van generatie op generatie.",
+    "description2": "Elk stuk in onze collectie is een viering van de rijke culturele tapijt van Marokko. Van de oude medina's van Fez tot de levendige souks van Marrakech, putten we inspiratie uit eeuwen van kunst en traditie. Onze ambachtslieden, meesters van hun vak, wijden talloze uren aan het creëren van stukken die niet alleen kledingstukken zijn, maar kunstwerken.",
+    "craftsmanship": "Vakmanschap",
+    "craftsmanshipText": "We werken uitsluitend met meester-ambachtslieden die hun leven hebben gewijd aan het behouden van traditionele technieken terwijl ze hedendaagse elegantie omarmen.",
+    "heritage": "Erfgoed",
+    "heritageText": "Elk ontwerp vertelt een verhaal, verbindt de drager met de rijke geschiedenis van Marokko en de ambachtslieden die deze tradities tot leven brengen."
+  },
+  "contact": {
+    "title": "Neem Contact Op",
+    "subtitle": "We horen graag van u. Neem contact op voor vragen, aangepaste bestellingen of gewoon om contact te maken.",
+    "getInTouch": "Neem Contact Op",
+    "email": "E-mail",
+    "phone": "Telefoon",
+    "address": "Adres",
+    "addressLine1": "123 Luxe Avenue",
+    "addressLine2": "Parijs, Frankrijk 75001",
+    "name": "Naam",
+    "message": "Bericht",
+    "send": "Bericht Verzenden"
+  },
+  "cart": {
+    "title": "Winkelwagen",
+    "empty": "Uw winkelwagen is leeg",
+    "continue": "Verder Winkelen",
+    "total": "Totaal",
+    "checkout": "Doorgaan naar Afrekenen"
+  },
+  "footer": {
+    "description": "Tijdloze elegantie ontmoet ambachtelijk erfgoed. Ontdek de fijnste Marokkaanse kaftans, djellaba's en takchita's, elk stuk een bewijs van eeuwen traditie en luxe.",
+    "shop": "Winkel",
+    "maison": "Maison",
+    "copyright": "Alle rechten voorbehouden."
+  },
+  "common": {
+    "loading": "Laden...",
+    "notFound": "Product Niet Gevonden"
+  }
+}
+
+
+
