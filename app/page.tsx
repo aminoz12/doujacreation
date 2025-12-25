@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import HeroSection from '@/sections/HeroSection'
 import CollectionsCarousel from '@/sections/CollectionsCarousel'
 import SignatureCollection from '@/sections/SignatureCollection'
-import CraftsmanshipSection from '@/sections/CraftsmanshipSection'
 import TestimonialsSection from '@/sections/TestimonialsSection'
 import { pageTransition } from '@/lib/motion-variants'
 
@@ -19,7 +18,6 @@ export default function Home() {
       <HeroSection />
       <CollectionsCarousel />
       <SignatureCollection />
-      <CraftsmanshipSection />
       <TestimonialsSection />
     </motion.div>
   )

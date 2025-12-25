@@ -35,7 +35,8 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
               fill
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              unoptimized
+              priority={index === 0}
+              quality={75}
             />
             {product.new && (
               <div className="absolute top-4 left-4 bg-gold-imperial text-luxury-black px-3 py-1 text-xs font-sans tracking-wide uppercase">
