@@ -46,8 +46,8 @@ export interface Product {
   name_fr: string
   description_en: string | null
   description_fr: string | null
-  price_mad: number
-  original_price_mad: number | null
+  price_eur: number
+  original_price_eur: number | null
   is_promotion: boolean
   promotion_start_date: string | null
   promotion_end_date: string | null
@@ -110,7 +110,7 @@ export interface Tag {
 export interface CurrencyRate {
   id: string
   currency_code: string
-  rate_from_mad: number
+  rate_from_eur: number
   symbol: string
   updated_at: string
 }
@@ -132,4 +132,5 @@ export interface ProductWithRelations extends Product {
   collections: Collection[]
   tags: Tag[]
 }
+
 

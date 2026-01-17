@@ -18,3 +18,5 @@ bcrypt.hash(password, saltRounds, (err, hash) => {
   console.log(`INSERT INTO admins (username, password_hash) VALUES ('dija', '${hash}');`);
 });
 
+
+

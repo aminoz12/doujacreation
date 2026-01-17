@@ -52,8 +52,8 @@ export async function PUT(
         name_fr: body.name_fr,
         description_en: body.description_en || null,
         description_fr: body.description_fr || null,
-        price_mad: body.price_mad,
-        original_price_mad: body.original_price_mad || null,
+        price_eur: body.price_eur,
+        original_price_eur: body.original_price_eur || null,
         is_promotion: body.is_promotion || false,
         promotion_start_date: body.promotion_start_date || null,
         promotion_end_date: body.promotion_end_date || null,
@@ -181,4 +181,5 @@ export async function DELETE(
     )
   }
 }
+
 

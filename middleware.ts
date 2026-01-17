@@ -4,26 +4,33 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Check if accessing admin routes (except login)
-  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
-    const sessionToken = request.cookies.get('admin_session')?.value
+  // Allow login page without auth (with or without trailing slash)
+  if (pathname === '/admin/login' || pathname === '/admin/login/') {
+    return NextResponse.next()
+  }
 
+  // Redirect /admin to /admin/dashboard (or login if not authenticated)
+  if (pathname === '/admin' || pathname === '/admin/') {
+    const sessionToken = request.cookies.get('admin_session')?.value
     if (!sessionToken) {
-      const loginUrl = new URL('/admin/login', request.url)
+      return NextResponse.redirect(new URL('/admin/login/', request.url))
+    }
+    return NextResponse.redirect(new URL('/admin/dashboard/', request.url))
+  }
+
+  // Check auth for all other admin routes
+  if (pathname.startsWith('/admin/')) {
+    const sessionToken = request.cookies.get('admin_session')?.value
+    if (!sessionToken) {
+      const loginUrl = new URL('/admin/login/', request.url)
       loginUrl.searchParams.set('redirect', pathname)
       return NextResponse.redirect(loginUrl)
     }
-  }
-
-  // Redirect /admin to /admin/dashboard
-  if (pathname === '/admin') {
-    return NextResponse.redirect(new URL('/admin/dashboard', request.url))
   }
 
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/admin/:path*']
+  matcher: ['/admin', '/admin/', '/admin/:path*']
 }
-

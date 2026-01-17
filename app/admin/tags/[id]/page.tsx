@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Save, Trash2 } from 'lucide-react'
 import Link from 'next/link'
@@ -18,8 +18,9 @@ const initialFormData: TagFormData = {
   name_fr: ''
 }
 
-export default function TagEditPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function TagEditPage() {
+  const params = useParams()
+  const id = params.id as string
   const router = useRouter()
   const isNew = id === 'new'
   
@@ -46,8 +47,8 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
         })
       }
     } catch (error) {
-      console.error('Failed to fetch tag:', error)
-      setError('Failed to load tag')
+      console.error('Échec du chargement du tag:', error)
+      setError('Impossible de charger le tag')
     } finally {
       setLoading(false)
     }
@@ -85,18 +86,18 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
       if (data.success) {
         router.push('/admin/tags')
       } else {
-        setError(data.error || 'Failed to save tag')
+        setError(data.error || 'Échec de l\'enregistrement du tag')
       }
     } catch (error) {
-      console.error('Save error:', error)
-      setError('Failed to save tag')
+      console.error('Erreur d\'enregistrement:', error)
+      setError('Échec de l\'enregistrement du tag')
     } finally {
       setSaving(false)
     }
   }
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this tag?')) return
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce tag ?')) return
 
     try {
       const res = await fetch(`/api/admin/tags/${id}`, {
@@ -106,11 +107,11 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
       if (data.success) {
         router.push('/admin/tags')
       } else {
-        setError(data.error || 'Failed to delete tag')
+        setError(data.error || 'Échec de la suppression du tag')
       }
     } catch (error) {
-      console.error('Delete error:', error)
-      setError('Failed to delete tag')
+      console.error('Erreur de suppression:', error)
+      setError('Échec de la suppression du tag')
     }
   }
 
@@ -135,7 +136,7 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-white">
-              {isNew ? 'New Tag' : 'Edit Tag'}
+              {isNew ? 'Nouveau Tag' : 'Modifier le Tag'}
             </h1>
           </div>
         </div>
@@ -145,7 +146,7 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
             className="flex items-center px-4 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
           >
             <Trash2 size={18} className="mr-2" />
-            Delete
+            Supprimer
           </button>
         )}
       </div>
@@ -165,7 +166,7 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Name (English) *
+                Nom (Anglais) *
               </label>
               <input
                 type="text"
@@ -179,7 +180,7 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Name (French) *
+                Nom (Français) *
               </label>
               <input
                 type="text"
@@ -210,7 +211,7 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
                 onClick={generateSlug}
                 className="px-4 py-2.5 bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600 transition-colors"
               >
-                Generate
+                Générer
               </button>
             </div>
           </div>
@@ -222,7 +223,7 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
             href="/admin/tags"
             className="px-6 py-2.5 text-slate-300 hover:text-white transition-colors"
           >
-            Cancel
+            Annuler
           </Link>
           <button
             type="submit"
@@ -230,11 +231,10 @@ export default function TagEditPage({ params }: { params: Promise<{ id: string }
             className="flex items-center px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-medium rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all disabled:opacity-50"
           >
             <Save size={18} className="mr-2" />
-            {saving ? 'Saving...' : 'Save Tag'}
+            {saving ? 'Enregistrement...' : 'Enregistrer le Tag'}
           </button>
         </div>
       </form>
     </div>
   )
 }
-

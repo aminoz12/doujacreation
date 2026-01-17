@@ -48,9 +48,9 @@ CREATE TABLE products (
   name_fr VARCHAR(255) NOT NULL,
   description_en TEXT,
   description_fr TEXT,
-  -- Pricing (stored in MAD)
-  price_mad DECIMAL(10,2) NOT NULL,
-  original_price_mad DECIMAL(10,2),
+  -- Pricing (stored in EUR)
+  price_eur DECIMAL(10,2) NOT NULL,
+  original_price_eur DECIMAL(10,2),
   -- Promotion
   is_promotion BOOLEAN DEFAULT false,
   promotion_start_date DATE,
@@ -165,7 +165,7 @@ CREATE INDEX idx_product_tags_tag ON product_tags(tag_id);
 CREATE TABLE currency_rates (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   currency_code VARCHAR(3) NOT NULL UNIQUE,
-  rate_from_mad DECIMAL(10,6) NOT NULL,
+  rate_from_eur DECIMAL(10,6) NOT NULL,
   symbol VARCHAR(10) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -277,10 +277,10 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION get_effective_price(p products)
 RETURNS DECIMAL AS $$
 BEGIN
-  IF is_promotion_active(p) AND p.original_price_mad IS NOT NULL THEN
-    RETURN p.price_mad;
+  IF is_promotion_active(p) AND p.original_price_eur IS NOT NULL THEN
+    RETURN p.price_eur;
   END IF;
-  RETURN COALESCE(p.original_price_mad, p.price_mad);
+  RETURN COALESCE(p.original_price_eur, p.price_eur);
 END;
 $$ LANGUAGE plpgsql;
 
@@ -288,11 +288,11 @@ $$ LANGUAGE plpgsql;
 -- SEED DATA
 -- ============================================
 
--- Default currency rates
-INSERT INTO currency_rates (currency_code, rate_from_mad, symbol) VALUES
-  ('MAD', 1.000000, 'د.م.'),
-  ('EUR', 0.092000, '€'),
-  ('USD', 0.100000, '$');
+-- Default currency rates (EUR is now the base currency)
+INSERT INTO currency_rates (currency_code, rate_from_eur, symbol) VALUES
+  ('EUR', 1.000000, '€'),
+  ('USD', 1.080000, '$'),
+  ('MAD', 10.900000, 'د.م.');
 
 -- Default collections
 INSERT INTO collections (slug, name_en, name_fr, description_en, description_fr, display_order) VALUES

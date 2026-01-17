@@ -29,6 +29,7 @@ interface DashboardStats {
 interface LowStockProduct {
   id: string
   name_en: string
+  name_fr: string
   stock_quantity: number
   low_stock_threshold: number
 }
@@ -59,36 +60,36 @@ export default function DashboardPage() {
 
   const statCards = stats ? [
     {
-      title: 'Total Products',
+      title: 'Total Produits',
       value: stats.totalProducts,
-      subtitle: `${stats.publishedProducts} published, ${stats.draftProducts} drafts`,
+      subtitle: `${stats.publishedProducts} publiés, ${stats.draftProducts} brouillons`,
       icon: <Package className="w-6 h-6" />,
       color: 'from-blue-500 to-blue-600',
-      href: '/admin/products'
+      href: '/admin/products/'
     },
     {
       title: 'Collections',
       value: stats.totalCollections,
-      subtitle: `${stats.activeCollections} active`,
+      subtitle: `${stats.activeCollections} actives`,
       icon: <FolderOpen className="w-6 h-6" />,
       color: 'from-purple-500 to-purple-600',
-      href: '/admin/collections'
+      href: '/admin/collections/'
     },
     {
-      title: 'Low Stock Alerts',
+      title: 'Alertes Stock Faible',
       value: stats.lowStockProducts,
-      subtitle: 'Products need restocking',
+      subtitle: 'Produits à réapprovisionner',
       icon: <AlertTriangle className="w-6 h-6" />,
       color: stats.lowStockProducts > 0 ? 'from-red-500 to-red-600' : 'from-green-500 to-green-600',
-      href: '/admin/products?filter=low-stock'
+      href: '/admin/products/?filter=low-stock'
     },
     {
-      title: 'Active Promotions',
+      title: 'Promotions Actives',
       value: stats.activePromotions,
-      subtitle: 'Products on sale',
+      subtitle: 'Produits en solde',
       icon: <Percent className="w-6 h-6" />,
       color: 'from-amber-500 to-amber-600',
-      href: '/admin/products?filter=promotions'
+      href: '/admin/products/?filter=promotions'
     },
   ] : []
 
@@ -105,15 +106,15 @@ export default function DashboardPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-          <p className="text-slate-400 mt-1">Welcome back! Here&apos;s your store overview.</p>
+          <h1 className="text-2xl font-bold text-white">Tableau de bord</h1>
+          <p className="text-slate-400 mt-1">Bienvenue ! Voici l&apos;aperçu de votre boutique.</p>
         </div>
         <Link
-          href="/admin/products/new"
+          href="/admin/products/new/"
           className="flex items-center px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-medium rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all"
         >
           <Plus size={20} className="mr-2" />
-          Add Product
+          Ajouter un produit
         </Link>
       </div>
 
@@ -152,35 +153,35 @@ export default function DashboardPage() {
           transition={{ delay: 0.4 }}
           className="bg-slate-800 rounded-xl border border-slate-700 p-5"
         >
-          <h2 className="text-lg font-semibold text-white mb-4">Quick Actions</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">Actions rapides</h2>
           <div className="space-y-2">
             <Link
-              href="/admin/products/new"
+              href="/admin/products/new/"
               className="flex items-center justify-between p-3 rounded-lg bg-slate-700/50 hover:bg-slate-700 transition-colors group"
             >
               <div className="flex items-center">
                 <ShoppingBag className="w-5 h-5 text-amber-500 mr-3" />
-                <span className="text-slate-300">Add new product</span>
+                <span className="text-slate-300">Ajouter un nouveau produit</span>
               </div>
               <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-amber-500 transition-colors" />
             </Link>
             <Link
-              href="/admin/collections/new"
+              href="/admin/collections/new/"
               className="flex items-center justify-between p-3 rounded-lg bg-slate-700/50 hover:bg-slate-700 transition-colors group"
             >
               <div className="flex items-center">
                 <FolderOpen className="w-5 h-5 text-purple-500 mr-3" />
-                <span className="text-slate-300">Create collection</span>
+                <span className="text-slate-300">Créer une collection</span>
               </div>
               <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-purple-500 transition-colors" />
             </Link>
             <Link
-              href="/admin/tags/new"
+              href="/admin/tags/new/"
               className="flex items-center justify-between p-3 rounded-lg bg-slate-700/50 hover:bg-slate-700 transition-colors group"
             >
               <div className="flex items-center">
                 <TrendingUp className="w-5 h-5 text-green-500 mr-3" />
-                <span className="text-slate-300">Add new tag</span>
+                <span className="text-slate-300">Ajouter une étiquette</span>
               </div>
               <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-green-500 transition-colors" />
             </Link>
@@ -195,10 +196,10 @@ export default function DashboardPage() {
           className="bg-slate-800 rounded-xl border border-slate-700 p-5"
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white">Low Stock Alerts</h2>
+            <h2 className="text-lg font-semibold text-white">Alertes stock faible</h2>
             {lowStockProducts.length > 0 && (
               <span className="px-2 py-1 text-xs font-medium bg-red-500/20 text-red-400 rounded-full">
-                {lowStockProducts.length} items
+                {lowStockProducts.length} articles
               </span>
             )}
           </div>
@@ -208,23 +209,23 @@ export default function DashboardPage() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-500/20 mb-3">
                 <Package className="w-6 h-6 text-green-500" />
               </div>
-              <p className="text-slate-400">All products are well stocked!</p>
+              <p className="text-slate-400">Tous les produits sont bien approvisionnés !</p>
             </div>
           ) : (
             <div className="space-y-2 max-h-64 overflow-y-auto">
               {lowStockProducts.map((product) => (
                 <Link
                   key={product.id}
-                  href={`/admin/products/${product.id}`}
+                  href={`/admin/products/${product.id}/`}
                   className="flex items-center justify-between p-3 rounded-lg bg-slate-700/50 hover:bg-slate-700 transition-colors"
                 >
-                  <span className="text-slate-300 truncate flex-1 mr-3">{product.name_en}</span>
+                  <span className="text-slate-300 truncate flex-1 mr-3">{product.name_fr || product.name_en}</span>
                   <span className={`px-2 py-1 text-xs font-medium rounded ${
                     product.stock_quantity === 0 
                       ? 'bg-red-500/20 text-red-400' 
                       : 'bg-yellow-500/20 text-yellow-400'
                   }`}>
-                    {product.stock_quantity} left
+                    {product.stock_quantity} restant{product.stock_quantity > 1 ? 's' : ''}
                   </span>
                 </Link>
               ))}
@@ -241,23 +242,23 @@ export default function DashboardPage() {
           transition={{ delay: 0.6 }}
           className="bg-slate-800 rounded-xl border border-slate-700 p-5"
         >
-          <h2 className="text-lg font-semibold text-white mb-4">Product Highlights</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">Aperçu des produits</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center p-4 rounded-lg bg-slate-700/30">
               <p className="text-2xl font-bold text-amber-500">{stats.featuredProducts}</p>
-              <p className="text-sm text-slate-400">Featured</p>
+              <p className="text-sm text-slate-400">En vedette</p>
             </div>
             <div className="text-center p-4 rounded-lg bg-slate-700/30">
               <p className="text-2xl font-bold text-green-500">{stats.newProducts}</p>
-              <p className="text-sm text-slate-400">New Arrivals</p>
+              <p className="text-sm text-slate-400">Nouveautés</p>
             </div>
             <div className="text-center p-4 rounded-lg bg-slate-700/30">
               <p className="text-2xl font-bold text-purple-500">{stats.activePromotions}</p>
-              <p className="text-sm text-slate-400">On Sale</p>
+              <p className="text-sm text-slate-400">En promotion</p>
             </div>
             <div className="text-center p-4 rounded-lg bg-slate-700/30">
               <p className="text-2xl font-bold text-blue-500">{stats.publishedProducts}</p>
-              <p className="text-sm text-slate-400">Published</p>
+              <p className="text-sm text-slate-400">Publiés</p>
             </div>
           </div>
         </motion.div>
@@ -265,4 +266,3 @@ export default function DashboardPage() {
     </div>
   )
 }
-

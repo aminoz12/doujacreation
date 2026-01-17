@@ -15,7 +15,6 @@ import {
   X,
   ChevronDown,
   DollarSign,
-  Package
 } from 'lucide-react'
 
 interface NavItem {
@@ -26,12 +25,12 @@ interface NavItem {
 }
 
 const navigation: NavItem[] = [
-  { name: 'Dashboard', href: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
-  { name: 'Products', href: '/admin/products', icon: <ShoppingBag size={20} /> },
+  { name: 'Tableau de bord', href: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
+  { name: 'Produits', href: '/admin/products', icon: <ShoppingBag size={20} /> },
   { name: 'Collections', href: '/admin/collections', icon: <FolderOpen size={20} /> },
-  { name: 'Tags', href: '/admin/tags', icon: <Tags size={20} /> },
-  { name: 'Currency', href: '/admin/currency', icon: <DollarSign size={20} /> },
-  { name: 'Settings', href: '/admin/settings', icon: <Settings size={20} /> },
+  { name: 'Étiquettes', href: '/admin/tags', icon: <Tags size={20} /> },
+  { name: 'Devises', href: '/admin/currency', icon: <DollarSign size={20} /> },
+  { name: 'Paramètres', href: '/admin/settings', icon: <Settings size={20} /> },
 ]
 
 export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
@@ -40,26 +39,31 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [username, setUsername] = useState('')
   const [expandedItems, setExpandedItems] = useState<string[]>([])
+  
+  const isLoginPage = pathname === '/admin/login' || pathname === '/admin/login/'
+
+  useEffect(() => {
+    // Only fetch session info if not on login page
+    if (!isLoginPage) {
+      fetch('/api/admin/session')
+        .then(res => res.json())
+        .then(data => {
+          if (data.authenticated) {
+            setUsername(data.username)
+          }
+        })
+        .catch(err => console.error('Session fetch error:', err))
+    }
+  }, [isLoginPage])
 
   // Skip layout for login page
-  if (pathname === '/admin/login') {
+  if (isLoginPage) {
     return <>{children}</>
   }
 
-  useEffect(() => {
-    // Fetch session info
-    fetch('/api/admin/session')
-      .then(res => res.json())
-      .then(data => {
-        if (data.authenticated) {
-          setUsername(data.username)
-        }
-      })
-  }, [])
-
   const handleLogout = async () => {
     await fetch('/api/admin/logout', { method: 'POST' })
-    router.push('/admin/login')
+    router.push('/admin/login/')
     router.refresh()
   }
 
@@ -71,7 +75,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
     )
   }
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/')
+  const isActive = (href: string) => pathname === href || pathname === href + '/' || pathname.startsWith(href + '/')
 
   return (
     <div className="min-h-screen bg-slate-900">
@@ -96,7 +100,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
       >
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-4 border-b border-slate-700">
-          <Link href="/admin/dashboard" className="flex items-center space-x-3">
+          <Link href="/admin/dashboard/" className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
               <span className="text-sm font-bold text-slate-900">D</span>
             </div>
@@ -184,12 +188,12 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           <div className="flex items-center px-3 py-2 mb-2">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
               <span className="text-sm font-bold text-slate-900">
-                {username.charAt(0).toUpperCase()}
+                {username.charAt(0).toUpperCase() || 'A'}
               </span>
             </div>
             <div className="ml-3">
-              <p className="text-sm font-medium text-white">{username}</p>
-              <p className="text-xs text-slate-400">Administrator</p>
+              <p className="text-sm font-medium text-white">{username || 'Admin'}</p>
+              <p className="text-xs text-slate-400">Administrateur</p>
             </div>
           </div>
           <button
@@ -197,7 +201,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
             className="flex items-center w-full px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-red-500/10 hover:text-red-400 transition-colors"
           >
             <LogOut size={20} />
-            <span className="ml-3">Log out</span>
+            <span className="ml-3">Déconnexion</span>
           </button>
         </div>
       </aside>
@@ -219,7 +223,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
               target="_blank"
               className="text-sm text-slate-400 hover:text-white transition-colors"
             >
-              View Store →
+              Voir la boutique →
             </Link>
           </div>
         </header>
@@ -232,4 +236,3 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
     </div>
   )
 }
-

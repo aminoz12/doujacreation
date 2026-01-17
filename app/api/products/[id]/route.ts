@@ -46,8 +46,8 @@ export async function GET(
       description: product.description_en,
       description_en: product.description_en,
       description_fr: product.description_fr,
-      price: product.price_mad,
-      originalPrice: product.original_price_mad,
+      price: product.price_eur,
+      originalPrice: product.original_price_eur,
       isPromotion: product.is_promotion,
       promotionLabel: product.promotion_label_en,
       promotionLabel_en: product.promotion_label_en,
@@ -107,4 +107,5 @@ export async function GET(
     )
   }
 }
+
 

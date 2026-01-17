@@ -18,12 +18,12 @@ export default function SettingsPage() {
     setSuccess('')
 
     if (newPassword !== confirmPassword) {
-      setError('New passwords do not match')
+      setError('Les nouveaux mots de passe ne correspondent pas')
       return
     }
 
     if (newPassword.length < 8) {
-      setError('Password must be at least 8 characters')
+      setError('Le mot de passe doit contenir au moins 8 caractères')
       return
     }
 
@@ -38,17 +38,17 @@ export default function SettingsPage() {
       const data = await res.json()
       
       if (data.success) {
-        setSuccess('Password updated successfully')
+        setSuccess('Mot de passe mis à jour avec succès')
         setCurrentPassword('')
         setNewPassword('')
         setConfirmPassword('')
         setTimeout(() => setSuccess(''), 3000)
       } else {
-        setError(data.error || 'Failed to update password')
+        setError(data.error || 'Échec de la mise à jour du mot de passe')
       }
     } catch (error) {
       console.error('Password change error:', error)
-      setError('Failed to update password')
+      setError('Échec de la mise à jour du mot de passe')
     } finally {
       setSaving(false)
     }
@@ -58,8 +58,8 @@ export default function SettingsPage() {
     <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Settings</h1>
-        <p className="text-slate-400 mt-1">Manage your admin account settings</p>
+        <h1 className="text-2xl font-bold text-white">Paramètres</h1>
+        <p className="text-slate-400 mt-1">Gérez les paramètres de votre compte administrateur</p>
       </div>
 
       {error && (
@@ -89,15 +89,15 @@ export default function SettingsPage() {
             <Key size={20} className="text-amber-500" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-white">Change Password</h2>
-            <p className="text-sm text-slate-400">Update your admin password</p>
+            <h2 className="text-lg font-semibold text-white">Changer le mot de passe</h2>
+            <p className="text-sm text-slate-400">Mettez à jour votre mot de passe administrateur</p>
           </div>
         </div>
 
         <form onSubmit={handlePasswordChange} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              Current Password
+              Mot de passe actuel
             </label>
             <input
               type="password"
@@ -110,7 +110,7 @@ export default function SettingsPage() {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              New Password
+              Nouveau mot de passe
             </label>
             <input
               type="password"
@@ -124,7 +124,7 @@ export default function SettingsPage() {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              Confirm New Password
+              Confirmer le nouveau mot de passe
             </label>
             <input
               type="password"
@@ -142,7 +142,7 @@ export default function SettingsPage() {
             className="flex items-center px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-medium rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all disabled:opacity-50"
           >
             <Save size={18} className="mr-2" />
-            {saving ? 'Updating...' : 'Update Password'}
+            {saving ? 'Mise à jour...' : 'Mettre à jour'}
           </button>
         </form>
       </div>
@@ -154,31 +154,30 @@ export default function SettingsPage() {
             <Shield size={20} className="text-blue-500" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-white">Security Tips</h2>
-            <p className="text-sm text-slate-400">Keep your account secure</p>
+            <h2 className="text-lg font-semibold text-white">Conseils de sécurité</h2>
+            <p className="text-sm text-slate-400">Gardez votre compte sécurisé</p>
           </div>
         </div>
 
         <ul className="space-y-2 text-sm text-slate-300">
           <li className="flex items-start">
             <span className="text-amber-500 mr-2">•</span>
-            Use a strong, unique password with at least 8 characters
+            Utilisez un mot de passe fort et unique d&apos;au moins 8 caractères
           </li>
           <li className="flex items-start">
             <span className="text-amber-500 mr-2">•</span>
-            Include numbers, symbols, and mixed case letters
+            Incluez des chiffres, symboles et lettres majuscules/minuscules
           </li>
           <li className="flex items-start">
             <span className="text-amber-500 mr-2">•</span>
-            Don&apos;t share your credentials with anyone
+            Ne partagez jamais vos identifiants avec qui que ce soit
           </li>
           <li className="flex items-start">
             <span className="text-amber-500 mr-2">•</span>
-            Log out when using shared computers
+            Déconnectez-vous lorsque vous utilisez un ordinateur partagé
           </li>
         </ul>
       </div>
     </div>
   )
 }
-

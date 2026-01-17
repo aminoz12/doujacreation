@@ -30,7 +30,7 @@ export async function PUT(request: NextRequest) {
     for (const currency of currencies) {
       const { error } = await supabaseAdmin
         .from('currency_rates')
-        .update({ rate_from_mad: currency.rate_from_mad })
+        .update({ rate_from_eur: currency.rate_from_eur })
         .eq('id', currency.id)
 
       if (error) throw error
@@ -45,4 +45,5 @@ export async function PUT(request: NextRequest) {
     )
   }
 }
+
 

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.42",
+    "@supabase/supabase-js": "^2.90.1",
     "bcryptjs": "^3.0.3",
     "framer-motion": "^11.0.0",
     "lucide-react": "^0.344.0",

@@ -10,13 +10,10 @@ import {
   Search,
   Edit,
   Trash2,
-  Eye,
-  EyeOff,
   AlertTriangle,
   Percent,
   Star,
   Filter,
-  X
 } from 'lucide-react'
 import type { Product, ProductImage } from '@/lib/supabase'
 
@@ -32,10 +29,10 @@ const statusColors = {
 }
 
 const statusLabels = {
-  draft: 'Draft',
-  published: 'Published',
-  archived: 'Archived',
-  out_of_season: 'Out of Season'
+  draft: 'Brouillon',
+  published: 'Publié',
+  archived: 'Archivé',
+  out_of_season: 'Hors saison'
 }
 
 export default function ProductsPage() {
@@ -53,7 +50,6 @@ export default function ProductsPage() {
   }, [])
 
   useEffect(() => {
-    // Handle URL filter params
     if (filterParam === 'low-stock') {
       setStatusFilter('low-stock')
     } else if (filterParam === 'promotions') {
@@ -76,7 +72,7 @@ export default function ProductsPage() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this product?')) return
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) return
 
     try {
       const res = await fetch(`/api/admin/products/${id}`, {
@@ -92,7 +88,6 @@ export default function ProductsPage() {
   }
 
   const filteredProducts = products.filter(p => {
-    // Search filter
     const matchesSearch = 
       p.name_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.name_fr.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -100,7 +95,6 @@ export default function ProductsPage() {
     
     if (!matchesSearch) return false
 
-    // Status filter
     if (statusFilter === 'all') return true
     if (statusFilter === 'low-stock') return p.stock_quantity <= p.low_stock_threshold
     if (statusFilter === 'promotion') return p.is_promotion
@@ -128,15 +122,15 @@ export default function ProductsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">Products</h1>
-          <p className="text-slate-400 mt-1">{products.length} total products</p>
+          <h1 className="text-2xl font-bold text-white">Produits</h1>
+          <p className="text-slate-400 mt-1">{products.length} produits au total</p>
         </div>
         <Link
-          href="/admin/products/new"
+          href="/admin/products/new/"
           className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-medium rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all"
         >
           <Plus size={20} className="mr-2" />
-          Add Product
+          Ajouter un produit
         </Link>
       </div>
 
@@ -146,7 +140,7 @@ export default function ProductsPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
           <input
             type="text"
-            placeholder="Search products by name or SKU..."
+            placeholder="Rechercher par nom ou SKU..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-amber-500/50"
@@ -161,7 +155,7 @@ export default function ProductsPage() {
           }`}
         >
           <Filter size={18} className="mr-2" />
-          Filters
+          Filtres
           {statusFilter !== 'all' && (
             <span className="ml-2 px-1.5 py-0.5 text-xs bg-amber-500 text-slate-900 rounded">1</span>
           )}
@@ -177,26 +171,26 @@ export default function ProductsPage() {
           className="bg-slate-800 rounded-xl border border-slate-700 p-4"
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-slate-300">Filter by</span>
+            <span className="text-sm font-medium text-slate-300">Filtrer par</span>
             {statusFilter !== 'all' && (
               <button
                 onClick={() => setStatusFilter('all')}
                 className="text-xs text-amber-500 hover:text-amber-400"
               >
-                Clear filters
+                Effacer les filtres
               </button>
             )}
           </div>
           <div className="flex flex-wrap gap-2">
             {[
-              { value: 'all', label: 'All' },
-              { value: 'published', label: 'Published' },
-              { value: 'draft', label: 'Draft' },
-              { value: 'archived', label: 'Archived' },
-              { value: 'low-stock', label: 'Low Stock', icon: <AlertTriangle size={14} /> },
-              { value: 'promotion', label: 'On Sale', icon: <Percent size={14} /> },
-              { value: 'featured', label: 'Featured', icon: <Star size={14} /> },
-              { value: 'new', label: 'New Arrivals' },
+              { value: 'all', label: 'Tous' },
+              { value: 'published', label: 'Publiés' },
+              { value: 'draft', label: 'Brouillons' },
+              { value: 'archived', label: 'Archivés' },
+              { value: 'low-stock', label: 'Stock faible', icon: <AlertTriangle size={14} /> },
+              { value: 'promotion', label: 'En promo', icon: <Percent size={14} /> },
+              { value: 'featured', label: 'En vedette', icon: <Star size={14} /> },
+              { value: 'new', label: 'Nouveautés' },
             ].map((filter) => (
               <button
                 key={filter.value}
@@ -221,19 +215,19 @@ export default function ProductsPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-700 mb-4">
             <Plus size={24} className="text-slate-400" />
           </div>
-          <h3 className="text-lg font-medium text-white mb-2">No products found</h3>
+          <h3 className="text-lg font-medium text-white mb-2">Aucun produit trouvé</h3>
           <p className="text-slate-400 mb-4">
             {searchQuery || statusFilter !== 'all' 
-              ? 'Try adjusting your filters' 
-              : 'Create your first product to get started'}
+              ? 'Essayez d\'ajuster vos filtres' 
+              : 'Créez votre premier produit pour commencer'}
           </p>
           {!searchQuery && statusFilter === 'all' && (
             <Link
-              href="/admin/products/new"
+              href="/admin/products/new/"
               className="inline-flex items-center px-4 py-2 bg-amber-500 text-slate-900 font-medium rounded-lg hover:bg-amber-400 transition-colors"
             >
               <Plus size={20} className="mr-2" />
-              Add Product
+              Ajouter un produit
             </Link>
           )}
         </div>
@@ -243,12 +237,12 @@ export default function ProductsPage() {
             <table className="w-full">
               <thead className="bg-slate-900/50">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Product</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Produit</th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider hidden lg:table-cell">SKU</th>
-                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Price</th>
+                  <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Prix</th>
                   <th className="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider">Stock</th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider hidden md:table-cell">Status</th>
-                  <th className="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider hidden sm:table-cell">Flags</th>
+                  <th className="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider hidden md:table-cell">Statut</th>
+                  <th className="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider hidden sm:table-cell">Badges</th>
                   <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
@@ -267,19 +261,19 @@ export default function ProductsPage() {
                           {getMainImage(product) ? (
                             <Image
                               src={getMainImage(product)!}
-                              alt={product.name_en}
+                              alt={product.name_fr}
                               fill
                               className="object-cover"
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-slate-500 text-xs">
-                              No img
+                              Pas d&apos;img
                             </div>
                           )}
                         </div>
                         <div className="min-w-0">
-                          <p className="font-medium text-white truncate">{product.name_en}</p>
-                          <p className="text-sm text-slate-400 truncate">{product.name_fr}</p>
+                          <p className="font-medium text-white truncate">{product.name_fr}</p>
+                          <p className="text-sm text-slate-400 truncate">{product.name_en}</p>
                         </div>
                       </div>
                     </td>
@@ -291,11 +285,11 @@ export default function ProductsPage() {
                     <td className="px-4 py-4 text-right">
                       <div>
                         <span className="text-white font-medium">
-                          {product.price_mad.toLocaleString()} MAD
+                          {(product.price_eur ?? 0).toLocaleString('fr-FR')} €
                         </span>
-                        {product.original_price_mad && product.is_promotion && (
+                        {product.original_price_eur && product.is_promotion && (
                           <p className="text-sm text-slate-500 line-through">
-                            {product.original_price_mad.toLocaleString()} MAD
+                            {product.original_price_eur.toLocaleString('fr-FR')} €
                           </p>
                         )}
                       </div>
@@ -320,17 +314,17 @@ export default function ProductsPage() {
                     <td className="px-4 py-4 text-center hidden sm:table-cell">
                       <div className="flex items-center justify-center gap-1">
                         {product.is_featured && (
-                          <span className="p-1 bg-amber-500/20 rounded" title="Featured">
+                          <span className="p-1 bg-amber-500/20 rounded" title="En vedette">
                             <Star size={14} className="text-amber-400" />
                           </span>
                         )}
                         {product.is_new && (
-                          <span className="px-1.5 py-0.5 bg-blue-500/20 rounded text-xs text-blue-400" title="New">
+                          <span className="px-1.5 py-0.5 bg-blue-500/20 rounded text-xs text-blue-400" title="Nouveau">
                             NEW
                           </span>
                         )}
                         {product.is_promotion && (
-                          <span className="p-1 bg-green-500/20 rounded" title="On Sale">
+                          <span className="p-1 bg-green-500/20 rounded" title="En promo">
                             <Percent size={14} className="text-green-400" />
                           </span>
                         )}
@@ -339,16 +333,16 @@ export default function ProductsPage() {
                     <td className="px-4 py-4 text-right">
                       <div className="flex items-center justify-end space-x-2">
                         <Link
-                          href={`/admin/products/${product.id}`}
+                          href={`/admin/products/${product.id}/`}
                           className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
-                          title="Edit"
+                          title="Modifier"
                         >
                           <Edit size={18} />
                         </Link>
                         <button
                           onClick={() => handleDelete(product.id)}
                           className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-                          title="Delete"
+                          title="Supprimer"
                         >
                           <Trash2 size={18} />
                         </button>
@@ -364,4 +358,3 @@ export default function ProductsPage() {
     </div>
   )
 }
-

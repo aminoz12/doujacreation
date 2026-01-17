@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Save, Trash2, Upload, X } from 'lucide-react'
 import Link from 'next/link'
@@ -38,8 +38,9 @@ const initialFormData: CollectionFormData = {
   is_active: true
 }
 
-export default function CollectionEditPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function CollectionEditPage() {
+  const params = useParams()
+  const id = params.id as string
   const router = useRouter()
   const isNew = id === 'new'
   
@@ -76,8 +77,8 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
         })
       }
     } catch (error) {
-      console.error('Failed to fetch collection:', error)
-      setError('Failed to load collection')
+      console.error('Échec du chargement de la collection:', error)
+      setError('Impossible de charger la collection')
     } finally {
       setLoading(false)
     }
@@ -118,11 +119,11 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
       if (data.success) {
         setFormData(prev => ({ ...prev, image_url: data.url }))
       } else {
-        setError(data.error || 'Failed to upload image')
+        setError(data.error || 'Échec du téléchargement de l\'image')
       }
     } catch (error) {
-      console.error('Upload error:', error)
-      setError('Failed to upload image')
+      console.error('Erreur de téléchargement:', error)
+      setError('Échec du téléchargement de l\'image')
     } finally {
       setUploading(false)
     }
@@ -147,18 +148,18 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
       if (data.success) {
         router.push('/admin/collections')
       } else {
-        setError(data.error || 'Failed to save collection')
+        setError(data.error || 'Échec de l\'enregistrement de la collection')
       }
     } catch (error) {
-      console.error('Save error:', error)
-      setError('Failed to save collection')
+      console.error('Erreur d\'enregistrement:', error)
+      setError('Échec de l\'enregistrement de la collection')
     } finally {
       setSaving(false)
     }
   }
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this collection?')) return
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette collection ?')) return
 
     try {
       const res = await fetch(`/api/admin/collections/${id}`, {
@@ -168,11 +169,11 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
       if (data.success) {
         router.push('/admin/collections')
       } else {
-        setError(data.error || 'Failed to delete collection')
+        setError(data.error || 'Échec de la suppression de la collection')
       }
     } catch (error) {
-      console.error('Delete error:', error)
-      setError('Failed to delete collection')
+      console.error('Erreur de suppression:', error)
+      setError('Échec de la suppression de la collection')
     }
   }
 
@@ -197,7 +198,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-white">
-              {isNew ? 'New Collection' : 'Edit Collection'}
+              {isNew ? 'Nouvelle Collection' : 'Modifier la Collection'}
             </h1>
             {!isNew && (
               <p className="text-slate-400 text-sm mt-1">ID: {id}</p>
@@ -210,7 +211,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
             className="flex items-center px-4 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
           >
             <Trash2 size={18} className="mr-2" />
-            Delete
+            Supprimer
           </button>
         )}
       </div>
@@ -228,12 +229,12 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Info */}
         <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Basic Information</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">Informations de Base</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Name (English) *
+                Nom (Anglais) *
               </label>
               <input
                 type="text"
@@ -247,7 +248,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Name (French) *
+                Nom (Français) *
               </label>
               <input
                 type="text"
@@ -278,7 +279,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
                 onClick={generateSlug}
                 className="px-4 py-2.5 bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600 transition-colors"
               >
-                Generate
+                Générer
               </button>
             </div>
           </div>
@@ -286,7 +287,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Description (English)
+                Description (Anglais)
               </label>
               <textarea
                 name="description_en"
@@ -298,7 +299,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Description (French)
+                Description (Français)
               </label>
               <textarea
                 name="description_fr"
@@ -313,7 +314,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
 
         {/* Image */}
         <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Collection Image</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">Image de la Collection</h2>
           
           <div className="flex items-start gap-4">
             <div className="relative w-32 h-32 rounded-lg overflow-hidden bg-slate-700 flex-shrink-0">
@@ -335,14 +336,14 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
                 </>
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-slate-500">
-                  No image
+                  Pas d&apos;image
                 </div>
               )}
             </div>
             <div>
               <label className="flex items-center px-4 py-2 bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600 cursor-pointer transition-colors">
                 <Upload size={18} className="mr-2" />
-                {uploading ? 'Uploading...' : 'Upload Image'}
+                {uploading ? 'Téléchargement...' : 'Télécharger une Image'}
                 <input
                   type="file"
                   accept="image/*"
@@ -352,7 +353,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
                 />
               </label>
               <p className="text-xs text-slate-500 mt-2">
-                Recommended: 800x800px, JPG or PNG
+                Recommandé: 800x800px, JPG ou PNG
               </p>
             </div>
           </div>
@@ -360,12 +361,12 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
 
         {/* SEO */}
         <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">SEO Settings</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">Paramètres SEO</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Meta Title (English)
+                Titre Meta (Anglais)
               </label>
               <input
                 type="text"
@@ -377,7 +378,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Meta Title (French)
+                Titre Meta (Français)
               </label>
               <input
                 type="text"
@@ -389,7 +390,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Meta Description (English)
+                Description Meta (Anglais)
               </label>
               <textarea
                 name="meta_description_en"
@@ -401,7 +402,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Meta Description (French)
+                Description Meta (Français)
               </label>
               <textarea
                 name="meta_description_fr"
@@ -416,12 +417,12 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
 
         {/* Settings */}
         <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">Settings</h2>
+          <h2 className="text-lg font-semibold text-white mb-4">Paramètres</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">
-                Display Order
+                Ordre d&apos;Affichage
               </label>
               <input
                 type="number"
@@ -454,7 +455,7 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
             href="/admin/collections"
             className="px-6 py-2.5 text-slate-300 hover:text-white transition-colors"
           >
-            Cancel
+            Annuler
           </Link>
           <button
             type="submit"
@@ -462,11 +463,10 @@ export default function CollectionEditPage({ params }: { params: Promise<{ id: s
             className="flex items-center px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-medium rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all disabled:opacity-50"
           >
             <Save size={18} className="mr-2" />
-            {saving ? 'Saving...' : 'Save Collection'}
+            {saving ? 'Enregistrement...' : 'Enregistrer la Collection'}
           </button>
         </div>
       </form>
     </div>
   )
 }
-

@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect, use, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { 
   ArrowLeft, Save, Trash2, Upload, X, Plus, GripVertical,
@@ -17,8 +17,8 @@ interface ProductFormData {
   name_fr: string
   description_en: string
   description_fr: string
-  price_mad: number
-  original_price_mad: number | null
+  price_eur: number
+  original_price_eur: number | null
   is_promotion: boolean
   promotion_start_date: string
   promotion_end_date: string
@@ -68,8 +68,8 @@ const initialFormData: ProductFormData = {
   name_fr: '',
   description_en: '',
   description_fr: '',
-  price_mad: 0,
-  original_price_mad: null,
+  price_eur: 0,
+  original_price_eur: null,
   is_promotion: false,
   promotion_start_date: '',
   promotion_end_date: '',
@@ -89,8 +89,9 @@ const initialFormData: ProductFormData = {
 
 const defaultSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
-export default function ProductEditPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
+export default function ProductEditPage() {
+  const params = useParams()
+  const id = params.id as string
   const router = useRouter()
   const isNew = id === 'new'
   
@@ -129,7 +130,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
       if (collectionsData.success) setAllCollections(collectionsData.collections)
       if (tagsData.success) setAllTags(tagsData.tags)
     } catch (error) {
-      console.error('Failed to fetch collections/tags:', error)
+      console.error('Échec du chargement des collections/tags:', error)
     }
   }
 
@@ -146,8 +147,8 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
           name_fr: p.name_fr || '',
           description_en: p.description_en || '',
           description_fr: p.description_fr || '',
-          price_mad: p.price_mad || 0,
-          original_price_mad: p.original_price_mad,
+          price_eur: p.price_eur || 0,
+          original_price_eur: p.original_price_eur,
           is_promotion: p.is_promotion || false,
           promotion_start_date: p.promotion_start_date || '',
           promotion_end_date: p.promotion_end_date || '',
@@ -210,8 +211,8 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
         }
       }
     } catch (error) {
-      console.error('Failed to fetch product:', error)
-      setError('Failed to load product')
+      console.error('Échec du chargement du produit:', error)
+      setError('Impossible de charger le produit')
     } finally {
       setLoading(false)
     }
@@ -254,7 +255,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
           }])
         }
       } catch (error) {
-        console.error('Upload error:', error)
+        console.error('Erreur de téléchargement:', error)
       }
     }
     
@@ -324,7 +325,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
     try {
       const payload = {
         ...formData,
-        original_price_mad: formData.is_promotion ? formData.original_price_mad : null,
+        original_price_eur: formData.is_promotion ? formData.original_price_eur : null,
         images: images.map((img, i) => ({
           id: img.id,
           image_url: img.url,
@@ -351,18 +352,18 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
       if (data.success) {
         router.push('/admin/products')
       } else {
-        setError(data.error || 'Failed to save product')
+        setError(data.error || 'Échec de l\'enregistrement du produit')
       }
     } catch (error) {
-      console.error('Save error:', error)
-      setError('Failed to save product')
+      console.error('Erreur d\'enregistrement:', error)
+      setError('Échec de l\'enregistrement du produit')
     } finally {
       setSaving(false)
     }
   }
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this product?')) return
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) return
 
     try {
       const res = await fetch(`/api/admin/products/${id}`, {
@@ -372,11 +373,11 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
       if (data.success) {
         router.push('/admin/products')
       } else {
-        setError(data.error || 'Failed to delete product')
+        setError(data.error || 'Échec de la suppression du produit')
       }
     } catch (error) {
-      console.error('Delete error:', error)
-      setError('Failed to delete product')
+      console.error('Erreur de suppression:', error)
+      setError('Échec de la suppression du produit')
     }
   }
 
@@ -389,11 +390,11 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
   }
 
   const tabs = [
-    { id: 'basic', label: 'Basic Info', icon: <Package size={18} /> },
+    { id: 'basic', label: 'Informations', icon: <Package size={18} /> },
     { id: 'media', label: 'Images', icon: <Upload size={18} /> },
-    { id: 'pricing', label: 'Pricing & Stock', icon: <Percent size={18} /> },
-    { id: 'variants', label: 'Variants', icon: <Sparkles size={18} /> },
-    { id: 'organization', label: 'Organization', icon: <Star size={18} /> },
+    { id: 'pricing', label: 'Prix & Stock', icon: <Percent size={18} /> },
+    { id: 'variants', label: 'Variantes', icon: <Sparkles size={18} /> },
+    { id: 'organization', label: 'Organisation', icon: <Star size={18} /> },
   ]
 
   return (
@@ -409,7 +410,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
           </Link>
           <div>
             <h1 className="text-2xl font-bold text-white">
-              {isNew ? 'New Product' : 'Edit Product'}
+              {isNew ? 'Nouveau Produit' : 'Modifier le Produit'}
             </h1>
             {!isNew && formData.sku && (
               <p className="text-slate-400 text-sm mt-1">SKU: {formData.sku}</p>
@@ -422,7 +423,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
             className="flex items-center px-4 py-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
           >
             <Trash2 size={18} className="mr-2" />
-            Delete
+            Supprimer
           </button>
         )}
       </div>
@@ -460,12 +461,12 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
         {activeTab === 'basic' && (
           <div className="space-y-6">
             <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-              <h2 className="text-lg font-semibold text-white mb-4">Basic Information</h2>
+              <h2 className="text-lg font-semibold text-white mb-4">Informations de Base</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Name (English) *
+                    Nom (Anglais) *
                   </label>
                   <input
                     type="text"
@@ -478,7 +479,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Name (French) *
+                    Nom (Français) *
                   </label>
                   <input
                     type="text"
@@ -499,14 +500,14 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                   value={formData.sku}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50"
-                  placeholder="e.g., CAF-001"
+                  placeholder="ex: CAF-001"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Description (English)
+                    Description (Anglais)
                   </label>
                   <textarea
                     name="description_en"
@@ -518,7 +519,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Description (French)
+                    Description (Français)
                   </label>
                   <textarea
                     name="description_fr"
@@ -533,12 +534,12 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
 
             {/* SEO */}
             <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-              <h2 className="text-lg font-semibold text-white mb-4">SEO Settings</h2>
+              <h2 className="text-lg font-semibold text-white mb-4">Paramètres SEO</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Meta Title (English)
+                    Titre Meta (Anglais)
                   </label>
                   <input
                     type="text"
@@ -550,7 +551,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Meta Title (French)
+                    Titre Meta (Français)
                   </label>
                   <input
                     type="text"
@@ -562,7 +563,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Meta Description (English)
+                    Description Meta (Anglais)
                   </label>
                   <textarea
                     name="meta_description_en"
@@ -574,7 +575,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Meta Description (French)
+                    Description Meta (Français)
                   </label>
                   <textarea
                     name="meta_description_fr"
@@ -593,7 +594,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
         {activeTab === 'media' && (
           <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Product Images</h2>
+              <h2 className="text-lg font-semibold text-white">Images du Produit</h2>
               <span className="text-sm text-slate-400">{images.length}/5 images</span>
             </div>
             
@@ -602,7 +603,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 <div key={index} className="relative aspect-square rounded-lg overflow-hidden bg-slate-700 group">
                   <Image
                     src={image.url}
-                    alt={`Product ${index + 1}`}
+                    alt={`Produit ${index + 1}`}
                     fill
                     className="object-cover"
                   />
@@ -617,7 +618,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                   </div>
                   {index === 0 && (
                     <span className="absolute bottom-2 left-2 px-2 py-0.5 bg-amber-500 text-xs font-medium text-slate-900 rounded">
-                      Main
+                      Principal
                     </span>
                   )}
                 </div>
@@ -627,7 +628,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 <label className="aspect-square rounded-lg border-2 border-dashed border-slate-600 hover:border-amber-500/50 cursor-pointer flex flex-col items-center justify-center transition-colors">
                   <Upload size={24} className="text-slate-500 mb-2" />
                   <span className="text-xs text-slate-500">
-                    {uploading ? 'Uploading...' : 'Add Image'}
+                    {uploading ? 'Téléchargement...' : 'Ajouter une Image'}
                   </span>
                   <input
                     type="file"
@@ -642,7 +643,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
             </div>
             
             <p className="text-xs text-slate-500">
-              Drag to reorder. First image will be the main product image. Max 5 images, 5MB each.
+              Glissez pour réorganiser. La première image sera l&apos;image principale du produit. Max 5 images, 5Mo chacune.
             </p>
           </div>
         )}
@@ -651,17 +652,17 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
         {activeTab === 'pricing' && (
           <div className="space-y-6">
             <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-              <h2 className="text-lg font-semibold text-white mb-4">Pricing</h2>
+              <h2 className="text-lg font-semibold text-white mb-4">Tarification</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Price (MAD) *
+                    Prix (EUR) *
                   </label>
                   <input
                     type="number"
-                    name="price_mad"
-                    value={formData.price_mad}
+                    name="price_eur"
+                    value={formData.price_eur}
                     onChange={handleChange}
                     required
                     min={0}
@@ -679,7 +680,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                       className="sr-only peer"
                     />
                     <div className="relative w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                    <span className="ml-3 text-sm font-medium text-slate-300">On Promotion</span>
+                    <span className="ml-3 text-sm font-medium text-slate-300">En Promotion</span>
                   </label>
                 </div>
               </div>
@@ -692,17 +693,17 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 >
                   <h3 className="text-sm font-medium text-slate-300 mb-3 flex items-center">
                     <Percent size={16} className="mr-2 text-green-500" />
-                    Promotion Settings
+                    Paramètres de Promotion
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2">
-                        Original Price (MAD) - Will be shown as crossed out
+                        Prix Original (EUR) - Affiché barré
                       </label>
                       <input
                         type="number"
-                        name="original_price_mad"
-                        value={formData.original_price_mad || ''}
+                        name="original_price_eur"
+                        value={formData.original_price_eur || ''}
                         onChange={handleChange}
                         min={0}
                         step={0.01}
@@ -711,7 +712,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">Start Date</label>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Date de Début</label>
                         <input
                           type="date"
                           name="promotion_start_date"
@@ -721,7 +722,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">End Date</label>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Date de Fin</label>
                         <input
                           type="date"
                           name="promotion_end_date"
@@ -733,27 +734,27 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2">
-                        Promotion Label (EN)
+                        Libellé Promo (EN)
                       </label>
                       <input
                         type="text"
                         name="promotion_label_en"
                         value={formData.promotion_label_en}
                         onChange={handleChange}
-                        placeholder="e.g., 30% OFF"
+                        placeholder="ex: 30% OFF"
                         className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-slate-300 mb-2">
-                        Promotion Label (FR)
+                        Libellé Promo (FR)
                       </label>
                       <input
                         type="text"
                         name="promotion_label_fr"
                         value={formData.promotion_label_fr}
                         onChange={handleChange}
-                        placeholder="e.g., -30%"
+                        placeholder="ex: -30%"
                         className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50"
                       />
                     </div>
@@ -763,12 +764,12 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
             </div>
 
             <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-              <h2 className="text-lg font-semibold text-white mb-4">Inventory</h2>
+              <h2 className="text-lg font-semibold text-white mb-4">Inventaire</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Stock Quantity
+                    Quantité en Stock
                   </label>
                   <input
                     type="number"
@@ -781,7 +782,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Low Stock Alert Threshold
+                    Seuil d&apos;Alerte Stock Bas
                   </label>
                   <input
                     type="number"
@@ -792,7 +793,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                     className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50"
                   />
                   <p className="text-xs text-slate-500 mt-1">
-                    You&apos;ll be alerted when stock falls below this number
+                    Vous serez alerté lorsque le stock descend en dessous de ce nombre
                   </p>
                 </div>
               </div>
@@ -806,20 +807,20 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
             {/* Sizes */}
             <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">Sizes</h2>
+                <h2 className="text-lg font-semibold text-white">Tailles</h2>
                 <button
                   type="button"
                   onClick={addSize}
                   className="flex items-center px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600 transition-colors"
                 >
                   <Plus size={16} className="mr-1" />
-                  Add Size
+                  Ajouter une Taille
                 </button>
               </div>
 
               {sizes.length === 0 ? (
                 <div className="text-center py-8 text-slate-400">
-                  <p className="mb-3">No sizes added yet</p>
+                  <p className="mb-3">Aucune taille ajoutée</p>
                   <div className="flex flex-wrap justify-center gap-2">
                     {defaultSizes.map((size) => (
                       <button
@@ -846,7 +847,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                         type="text"
                         value={size.size}
                         onChange={(e) => updateSize(index, 'size', e.target.value)}
-                        placeholder="Size"
+                        placeholder="Taille"
                         className="w-24 px-3 py-2 bg-slate-900/50 border border-slate-600 rounded text-white text-sm"
                       />
                       <input
@@ -857,7 +858,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                         className="w-24 px-3 py-2 bg-slate-900/50 border border-slate-600 rounded text-white text-sm"
                       />
                       <div className="flex items-center">
-                        <span className="text-slate-500 text-sm mr-2">Price +/-</span>
+                        <span className="text-slate-500 text-sm mr-2">Prix +/-</span>
                         <input
                           type="number"
                           value={size.price_adjustment}
@@ -881,20 +882,20 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
             {/* Colors */}
             <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-white">Colors</h2>
+                <h2 className="text-lg font-semibold text-white">Couleurs</h2>
                 <button
                   type="button"
                   onClick={addColor}
                   className="flex items-center px-3 py-1.5 text-sm bg-slate-700 text-slate-300 rounded-lg hover:bg-slate-600 transition-colors"
                 >
                   <Plus size={16} className="mr-1" />
-                  Add Color
+                  Ajouter une Couleur
                 </button>
               </div>
 
               {colors.length === 0 ? (
                 <div className="text-center py-8 text-slate-400">
-                  <p>No colors added yet. Click &quot;Add Color&quot; to get started.</p>
+                  <p>Aucune couleur ajoutée. Cliquez sur &quot;Ajouter une Couleur&quot; pour commencer.</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -910,14 +911,14 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                         type="text"
                         value={color.name_en}
                         onChange={(e) => updateColor(index, 'name_en', e.target.value)}
-                        placeholder="Name (EN)"
+                        placeholder="Nom (EN)"
                         className="flex-1 px-3 py-2 bg-slate-900/50 border border-slate-600 rounded text-white text-sm"
                       />
                       <input
                         type="text"
                         value={color.name_fr}
                         onChange={(e) => updateColor(index, 'name_fr', e.target.value)}
-                        placeholder="Name (FR)"
+                        placeholder="Nom (FR)"
                         className="flex-1 px-3 py-2 bg-slate-900/50 border border-slate-600 rounded text-white text-sm"
                       />
                       <input
@@ -947,25 +948,25 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
           <div className="space-y-6">
             {/* Status & Flags */}
             <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-              <h2 className="text-lg font-semibold text-white mb-4">Status & Visibility</h2>
+              <h2 className="text-lg font-semibold text-white mb-4">Statut & Visibilité</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Status</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Statut</label>
                   <select
                     name="status"
                     value={formData.status}
                     onChange={handleChange}
                     className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50"
                   >
-                    <option value="draft">Draft</option>
-                    <option value="published">Published</option>
-                    <option value="archived">Archived</option>
-                    <option value="out_of_season">Out of Season</option>
+                    <option value="draft">Brouillon</option>
+                    <option value="published">Publié</option>
+                    <option value="archived">Archivé</option>
+                    <option value="out_of_season">Hors Saison</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Display Order</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Ordre d&apos;Affichage</label>
                   <input
                     type="number"
                     name="display_order"
@@ -987,7 +988,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                     className="sr-only peer"
                   />
                   <div className="relative w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
-                  <span className="ml-3 text-sm font-medium text-slate-300">Featured Product</span>
+                  <span className="ml-3 text-sm font-medium text-slate-300">Produit Vedette</span>
                 </label>
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -998,7 +999,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                     className="sr-only peer"
                   />
                   <div className="relative w-11 h-6 bg-slate-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
-                  <span className="ml-3 text-sm font-medium text-slate-300">New Arrival</span>
+                  <span className="ml-3 text-sm font-medium text-slate-300">Nouveauté</span>
                 </label>
               </div>
             </div>
@@ -1019,14 +1020,14 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                         : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                     }`}
                   >
-                    {collection.name_en}
+                    {collection.name_fr || collection.name_en}
                   </button>
                 ))}
               </div>
               
               {allCollections.length === 0 && (
                 <p className="text-slate-400 text-sm">
-                  No collections available. <Link href="/admin/collections/new" className="text-amber-500 hover:underline">Create one</Link>
+                  Aucune collection disponible. <Link href="/admin/collections/new" className="text-amber-500 hover:underline">Créer une collection</Link>
                 </p>
               )}
             </div>
@@ -1047,14 +1048,14 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
                         : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                     }`}
                   >
-                    {tag.name_en}
+                    {tag.name_fr || tag.name_en}
                   </button>
                 ))}
               </div>
               
               {allTags.length === 0 && (
                 <p className="text-slate-400 text-sm">
-                  No tags available. <Link href="/admin/tags/new" className="text-amber-500 hover:underline">Create one</Link>
+                  Aucun tag disponible. <Link href="/admin/tags/new" className="text-amber-500 hover:underline">Créer un tag</Link>
                 </p>
               )}
             </div>
@@ -1067,7 +1068,7 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
             href="/admin/products"
             className="px-6 py-2.5 text-slate-300 hover:text-white transition-colors"
           >
-            Cancel
+            Annuler
           </Link>
           <button
             type="submit"
@@ -1075,11 +1076,10 @@ export default function ProductEditPage({ params }: { params: Promise<{ id: stri
             className="flex items-center px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-medium rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all disabled:opacity-50"
           >
             <Save size={18} className="mr-2" />
-            {saving ? 'Saving...' : 'Save Product'}
+            {saving ? 'Enregistrement...' : 'Enregistrer le Produit'}
           </button>
         </div>
       </form>
     </div>
   )
 }
-

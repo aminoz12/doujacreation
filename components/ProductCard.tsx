@@ -3,16 +3,35 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Product } from '@/data/products'
 import { useLanguage } from '@/contexts/LanguageContext'
 
+export interface ProductCardData {
+  id: string
+  name: string
+  category?: string
+  price: number
+  originalPrice?: number | null
+  description?: string
+  images?: string[]
+  image?: string
+  featured?: boolean
+  new?: boolean
+  isNew?: boolean
+  isSale?: boolean
+}
+
 interface ProductCardProps {
-  product: Product
+  product: ProductCardData
   index?: number
 }
 
 export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { t } = useLanguage()
+  
+  const imageUrl = product.image || (product.images && product.images[0]) || '/images/placeholder.jpg'
+  const isNew = product.new || product.isNew
+  const isSale = product.isSale || (product.originalPrice && product.originalPrice > 0)
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -30,7 +49,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
           {/* Image Container */}
           <div className="relative aspect-[3/5] overflow-hidden">
             <Image
-              src={product.images[0]}
+              src={imageUrl}
               alt={product.name}
               fill
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
@@ -38,12 +57,12 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
               priority={index === 0}
               quality={75}
             />
-            {product.new && (
+            {isNew && (
               <div className="absolute top-4 left-4 bg-gold-imperial text-luxury-black px-3 py-1 text-xs font-sans tracking-wide uppercase">
                 {t.collections.new}
               </div>
             )}
-            {product.originalPrice && (
+            {isSale && (
               <div className="absolute top-4 right-4 bg-luxury-black text-luxury-white px-3 py-1 text-xs font-sans tracking-wide">
                 {t.collections.sale}
               </div>
@@ -57,11 +76,11 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             </h3>
             <div className="flex items-center gap-3">
               <span className="font-sans text-lg text-gold-imperial">
-                ${product.price.toLocaleString()}
+                {product.price.toLocaleString('fr-FR')} €
               </span>
-              {product.originalPrice && (
+              {product.originalPrice && product.originalPrice > 0 && (
                 <span className="font-sans text-sm text-luxury-black/40 line-through">
-                  ${product.originalPrice.toLocaleString()}
+                  {product.originalPrice.toLocaleString('fr-FR')} €
                 </span>
               )}
             </div>
@@ -71,4 +90,3 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
     </motion.div>
   )
 }
-

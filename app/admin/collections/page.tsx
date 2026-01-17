@@ -9,10 +9,8 @@ import {
   Search,
   Edit,
   Trash2,
-  GripVertical,
   Eye,
   EyeOff,
-  MoreHorizontal
 } from 'lucide-react'
 import type { Collection } from '@/lib/supabase'
 
@@ -20,7 +18,6 @@ export default function CollectionsPage() {
   const [collections, setCollections] = useState<Collection[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const [deleteId, setDeleteId] = useState<string | null>(null)
 
   useEffect(() => {
     fetchCollections()
@@ -41,7 +38,7 @@ export default function CollectionsPage() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this collection?')) return
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette collection ?')) return
 
     try {
       const res = await fetch(`/api/admin/collections/${id}`, {
@@ -94,14 +91,14 @@ export default function CollectionsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white">Collections</h1>
-          <p className="text-slate-400 mt-1">Manage your product collections</p>
+          <p className="text-slate-400 mt-1">Gérez vos collections de produits</p>
         </div>
         <Link
-          href="/admin/collections/new"
+          href="/admin/collections/new/"
           className="flex items-center justify-center px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-medium rounded-lg hover:from-amber-400 hover:to-amber-500 transition-all"
         >
           <Plus size={20} className="mr-2" />
-          Add Collection
+          Ajouter une collection
         </Link>
       </div>
 
@@ -110,7 +107,7 @@ export default function CollectionsPage() {
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
         <input
           type="text"
-          placeholder="Search collections..."
+          placeholder="Rechercher des collections..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-amber-500/50"
@@ -123,17 +120,17 @@ export default function CollectionsPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-700 mb-4">
             <Plus size={24} className="text-slate-400" />
           </div>
-          <h3 className="text-lg font-medium text-white mb-2">No collections found</h3>
+          <h3 className="text-lg font-medium text-white mb-2">Aucune collection trouvée</h3>
           <p className="text-slate-400 mb-4">
-            {searchQuery ? 'Try a different search term' : 'Create your first collection to get started'}
+            {searchQuery ? 'Essayez un autre terme de recherche' : 'Créez votre première collection pour commencer'}
           </p>
           {!searchQuery && (
             <Link
-              href="/admin/collections/new"
+              href="/admin/collections/new/"
               className="inline-flex items-center px-4 py-2 bg-amber-500 text-slate-900 font-medium rounded-lg hover:bg-amber-400 transition-colors"
             >
               <Plus size={20} className="mr-2" />
-              Add Collection
+              Ajouter une collection
             </Link>
           )}
         </div>
@@ -144,8 +141,8 @@ export default function CollectionsPage() {
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Collection</th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider hidden md:table-cell">Slug</th>
-                <th className="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider">Status</th>
-                <th className="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider">Order</th>
+                <th className="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider">Statut</th>
+                <th className="px-4 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider">Ordre</th>
                 <th className="px-4 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -164,19 +161,19 @@ export default function CollectionsPage() {
                         {collection.image_url ? (
                           <Image
                             src={collection.image_url}
-                            alt={collection.name_en}
+                            alt={collection.name_fr}
                             fill
                             className="object-cover"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-slate-500 text-xs">
-                            No img
+                            Pas d&apos;img
                           </div>
                         )}
                       </div>
                       <div>
-                        <p className="font-medium text-white">{collection.name_en}</p>
-                        <p className="text-sm text-slate-400">{collection.name_fr}</p>
+                        <p className="font-medium text-white">{collection.name_fr}</p>
+                        <p className="text-sm text-slate-400">{collection.name_en}</p>
                       </div>
                     </div>
                   </td>
@@ -200,7 +197,7 @@ export default function CollectionsPage() {
                         </>
                       ) : (
                         <>
-                          <EyeOff size={12} className="mr-1" /> Hidden
+                          <EyeOff size={12} className="mr-1" /> Masquée
                         </>
                       )}
                     </button>
@@ -211,16 +208,16 @@ export default function CollectionsPage() {
                   <td className="px-4 py-4 text-right">
                     <div className="flex items-center justify-end space-x-2">
                       <Link
-                        href={`/admin/collections/${collection.id}`}
+                        href={`/admin/collections/${collection.id}/`}
                         className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
-                        title="Edit"
+                        title="Modifier"
                       >
                         <Edit size={18} />
                       </Link>
                       <button
                         onClick={() => handleDelete(collection.id)}
                         className="p-2 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-                        title="Delete"
+                        title="Supprimer"
                       >
                         <Trash2 size={18} />
                       </button>
@@ -235,4 +232,3 @@ export default function CollectionsPage() {
     </div>
   )
 }
-

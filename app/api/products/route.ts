@@ -79,8 +79,8 @@ export async function GET(request: NextRequest) {
       description: product.description_en,
       description_en: product.description_en,
       description_fr: product.description_fr,
-      price: product.price_mad,
-      originalPrice: product.original_price_mad,
+      price: product.price_eur,
+      originalPrice: product.original_price_eur,
       isPromotion: product.is_promotion,
       promotionLabel: product.promotion_label_en,
       stockQuantity: product.stock_quantity,
@@ -122,4 +122,5 @@ export async function GET(request: NextRequest) {
     )
   }
 }
+
 
