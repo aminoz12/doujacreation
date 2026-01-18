@@ -12,6 +12,7 @@ This website embodies **quiet luxury** - power, heritage, and prestige. Every de
 - **TypeScript**
 - **Tailwind CSS** + CSS variables
 - **Framer Motion** (Advanced animations)
+- **Supabase** (Database & Storage)
 - **Lenis** (Smooth scrolling)
 - **Lucide React** (Icons)
 - **next/image** (Optimized images)
@@ -31,11 +32,35 @@ This website embodies **quiet luxury** - power, heritage, and prestige. Every de
 
 ## 🚀 Getting Started
 
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Supabase account
+
 ### Installation
 
 ```bash
 npm install
 ```
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
+```
+
+### Database Setup
+
+1. Go to your Supabase project dashboard
+2. Open the SQL Editor
+3. Run the `supabase-schema.sql` file to create all tables
+4. Create a storage bucket named `product-images` with public access
 
 ### Development
 
@@ -52,63 +77,92 @@ npm run build
 npm start
 ```
 
+## 🚀 Deploy on Vercel
+
+### One-Click Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/aminoz12/doujacreation)
+
+### Manual Deployment
+
+1. Go to [vercel.com](https://vercel.com) and sign in with GitHub
+2. Click **"Add New Project"**
+3. Import the `doujacreation` repository
+4. Add environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+5. Click **Deploy**
+
+Your site will be live at `https://doujacreation.vercel.app`
+
 ## 📁 Project Structure
 
 ```
 doujacreation/
 ├── app/                    # Next.js App Router pages
+│   ├── admin/              # Admin panel pages
+│   │   ├── login/          # Admin login
+│   │   ├── dashboard/      # Admin dashboard
+│   │   ├── products/       # Product management
+│   │   ├── collections/    # Collection management
+│   │   ├── tags/           # Tag management
+│   │   ├── currency/       # Currency rates
+│   │   └── settings/       # Admin settings
+│   ├── api/                # API routes
+│   │   ├── admin/          # Admin API endpoints
+│   │   ├── products/       # Public product API
+│   │   └── collections/    # Public collections API
 │   ├── collections/        # Collections page
 │   ├── product/[id]/       # Product detail page
-│   ├── lookbook/          # Editorial lookbook
-│   ├── maison/            # Heritage/About page
-│   ├── contact/           # Contact page
-│   ├── cart/              # Shopping cart (UI only)
-│   └── page.tsx           # Home page
+│   ├── produits/           # Products listing page
+│   ├── lookbook/           # Editorial lookbook
+│   ├── maison/             # Heritage/About page
+│   ├── contact/            # Contact page
+│   ├── cart/               # Shopping cart
+│   └── page.tsx            # Home page
 ├── components/             # Reusable components
-│   ├── Navigation.tsx
-│   ├── Footer.tsx
-│   ├── ProductCard.tsx
-│   ├── Button.tsx
-│   ├── SmoothScroll.tsx
-│   ├── ScrollProgress.tsx
-│   └── PageLoader.tsx
-├── sections/              # Home page sections
-│   ├── HeroSection.tsx
-│   ├── BrandStatement.tsx
-│   ├── CategoryGrid.tsx
-│   ├── SignatureCollection.tsx
-│   ├── CraftsmanshipSection.tsx
-│   ├── LookbookSection.tsx
-│   ├── TestimonialsSection.tsx
-│   └── NewsletterSection.tsx
-├── lib/                   # Utilities
-│   └── motion-variants.ts # Framer Motion variants
-├── data/                  # Mock data
-│   ├── products.ts
-│   └── lookbook.ts
-└── styles/                # Global styles
-    └── globals.css
+├── sections/               # Home page sections
+├── lib/                    # Utilities & Supabase client
+├── data/                   # Static data
+└── styles/                 # Global styles
 ```
+
+## 🔐 Admin Panel
+
+Access the admin panel at `/admin/login`
+
+### Default Credentials
+- **Username**: dija
+- **Password**: dija123@
+
+### Features
+- 📦 Product management (CRUD, images, variants)
+- 📁 Collection management
+- 🏷️ Tag management
+- 💰 Currency rate management (auto-sync with EUR)
+- 🖼️ Image upload to Supabase Storage
+- 🌐 Multilingual support (EN/FR)
+- 📊 Dashboard with statistics
 
 ## ✨ Features
 
-### Home Page Sections
-1. **Cinematic Hero** - Fullscreen with parallax and animated reveals
-2. **Luxury Brand Statement** - Minimal, elegant typography
-3. **Haute Collection Categories** - Animated grid with hover effects
-4. **Signature Collection Slider** - Horizontal scroll with cinematic transitions
-5. **Craftsmanship Section** - Split layout with scroll-linked motion
-6. **Lookbook Editorial** - Magazine-style layout
-7. **Testimonials** - Luxury tone, minimal design
-8. **Newsletter** - Private club signup
+### Public Website
+- **Cinematic Hero** - Fullscreen with parallax and animated reveals
+- **Luxury Brand Statement** - Minimal, elegant typography
+- **Haute Collection Categories** - Animated grid with hover effects
+- **Signature Collection Slider** - Horizontal scroll with cinematic transitions
+- **Craftsmanship Section** - Split layout with scroll-linked motion
+- **Lookbook Editorial** - Magazine-style layout
+- **Testimonials** - Luxury tone, minimal design
+- **Newsletter** - Private club signup
 
-### Pages
-- **Collections** - Filterable product grid
-- **Product Detail** - Cinematic gallery with smooth transitions
-- **Lookbook** - Editorial photography showcase
-- **Maison** - Heritage and brand story
-- **Contact** - Elegant contact form
-- **Cart** - Shopping cart UI (ready for backend integration)
+### E-Commerce
+- Dynamic product listing from database
+- Product filtering by collection
+- Product detail pages
+- Shopping cart UI
+- Multilingual content (EN/FR)
 
 ### Animations
 - Page transitions
@@ -131,25 +185,11 @@ doujacreation/
 
 ## 📝 Notes
 
-- This is a **frontend-only** implementation
-- No backend or API calls
-- Mock product data included
-- Ready for NestJS backend integration later
-- All images use Unsplash placeholders (replace with actual product images)
-
-## 🔮 Future Enhancements
-
-- Backend integration (NestJS)
-- Real product data
-- Shopping cart functionality
-- Checkout process
-- User authentication
-- Admin dashboard
-- Payment integration
+- Primary currency: EUR (€)
+- Admin panel language: French
+- Images stored in Supabase Storage
+- All API routes are protected with session authentication
 
 ---
 
 **DoujaCreation** - Timeless elegance meets heritage craftsmanship.
-
-
-

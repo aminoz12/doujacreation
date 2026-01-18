@@ -31,3 +31,5 @@ $$ LANGUAGE plpgsql;
 -- Done! Your database now uses EUR as the primary currency.
 
 
+
+
