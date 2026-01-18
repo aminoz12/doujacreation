@@ -6,12 +6,15 @@ import Link from 'next/link'
 import {
   Package,
   FolderOpen,
-  AlertTriangle,
   Percent,
   TrendingUp,
   ShoppingBag,
   Plus,
-  ArrowRight
+  ArrowRight,
+  ClipboardList,
+  Clock,
+  CheckCircle,
+  Sparkles
 } from 'lucide-react'
 
 interface DashboardStats {
@@ -26,17 +29,27 @@ interface DashboardStats {
   newProducts: number
 }
 
-interface LowStockProduct {
+interface OrderStats {
+  newOrders: number
+  pendingOrders: number
+  deliveredOrders: number
+}
+
+interface RecentOrder {
   id: string
-  name_en: string
-  name_fr: string
-  stock_quantity: number
-  low_stock_threshold: number
+  order_number: string
+  customer_first_name: string
+  customer_last_name: string
+  total_amount: number
+  currency: string
+  status: string
+  created_at: string
 }
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
-  const [lowStockProducts, setLowStockProducts] = useState<LowStockProduct[]>([])
+  const [orderStats, setOrderStats] = useState<OrderStats>({ newOrders: 0, pendingOrders: 0, deliveredOrders: 0 })
+  const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -49,12 +62,33 @@ export default function DashboardPage() {
       const data = await res.json()
       if (data.success) {
         setStats(data.stats)
-        setLowStockProducts(data.lowStockProducts || [])
+        setOrderStats(data.orderStats || { newOrders: 0, pendingOrders: 0, deliveredOrders: 0 })
+        setRecentOrders(data.recentOrders || [])
       }
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'new': return 'bg-blue-500/20 text-blue-400'
+      case 'pending': return 'bg-yellow-500/20 text-yellow-400'
+      case 'delivered': return 'bg-green-500/20 text-green-400'
+      case 'cancelled': return 'bg-red-500/20 text-red-400'
+      default: return 'bg-slate-500/20 text-slate-400'
+    }
+  }
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'new': return 'Nouvelle'
+      case 'pending': return 'En attente'
+      case 'delivered': return 'Livrée'
+      case 'cancelled': return 'Annulée'
+      default: return status
     }
   }
 
@@ -76,12 +110,12 @@ export default function DashboardPage() {
       href: '/admin/collections/'
     },
     {
-      title: 'Alertes Stock Faible',
-      value: stats.lowStockProducts,
-      subtitle: 'Produits à réapprovisionner',
-      icon: <AlertTriangle className="w-6 h-6" />,
-      color: stats.lowStockProducts > 0 ? 'from-red-500 to-red-600' : 'from-green-500 to-green-600',
-      href: '/admin/products/?filter=low-stock'
+      title: 'Nouvelles Commandes',
+      value: orderStats.newOrders,
+      subtitle: 'À traiter',
+      icon: <Sparkles className="w-6 h-6" />,
+      color: 'from-green-500 to-green-600',
+      href: '/admin/orders/?filter=new'
     },
     {
       title: 'Promotions Actives',
@@ -188,7 +222,7 @@ export default function DashboardPage() {
           </div>
         </motion.div>
 
-        {/* Low Stock Alerts */}
+        {/* Order Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -196,37 +230,72 @@ export default function DashboardPage() {
           className="bg-slate-800 rounded-xl border border-slate-700 p-5"
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white">Alertes stock faible</h2>
-            {lowStockProducts.length > 0 && (
-              <span className="px-2 py-1 text-xs font-medium bg-red-500/20 text-red-400 rounded-full">
-                {lowStockProducts.length} articles
-              </span>
-            )}
+            <h2 className="text-lg font-semibold text-white">Aperçu des commandes</h2>
+            <Link 
+              href="/admin/orders/"
+              className="text-sm text-amber-500 hover:text-amber-400 transition-colors"
+            >
+              Voir tout →
+            </Link>
           </div>
           
-          {lowStockProducts.length === 0 ? (
-            <div className="text-center py-8">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-500/20 mb-3">
-                <Package className="w-6 h-6 text-green-500" />
+          {/* Order Stats */}
+          <div className="grid grid-cols-3 gap-3 mb-4">
+            <Link href="/admin/orders/?filter=new" className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20 hover:border-blue-500/40 transition-colors text-center">
+              <div className="flex items-center justify-center mb-2">
+                <Sparkles className="w-5 h-5 text-blue-400" />
               </div>
-              <p className="text-slate-400">Tous les produits sont bien approvisionnés !</p>
+              <p className="text-2xl font-bold text-blue-400">{orderStats.newOrders}</p>
+              <p className="text-xs text-slate-400">Nouvelle</p>
+            </Link>
+            <Link href="/admin/orders/?filter=pending" className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20 hover:border-yellow-500/40 transition-colors text-center">
+              <div className="flex items-center justify-center mb-2">
+                <Clock className="w-5 h-5 text-yellow-400" />
+              </div>
+              <p className="text-2xl font-bold text-yellow-400">{orderStats.pendingOrders}</p>
+              <p className="text-xs text-slate-400">En attente</p>
+            </Link>
+            <Link href="/admin/orders/?filter=delivered" className="p-3 rounded-lg bg-green-500/10 border border-green-500/20 hover:border-green-500/40 transition-colors text-center">
+              <div className="flex items-center justify-center mb-2">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+              </div>
+              <p className="text-2xl font-bold text-green-400">{orderStats.deliveredOrders}</p>
+              <p className="text-xs text-slate-400">Livrée</p>
+            </Link>
+          </div>
+
+          {/* Recent Orders */}
+          {recentOrders.length === 0 ? (
+            <div className="text-center py-4">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-700/50 mb-3">
+                <ClipboardList className="w-6 h-6 text-slate-500" />
+              </div>
+              <p className="text-slate-400">Aucune commande récente</p>
             </div>
           ) : (
-            <div className="space-y-2 max-h-64 overflow-y-auto">
-              {lowStockProducts.map((product) => (
+            <div className="space-y-2 max-h-48 overflow-y-auto">
+              {recentOrders.slice(0, 5).map((order) => (
                 <Link
-                  key={product.id}
-                  href={`/admin/products/${product.id}/`}
+                  key={order.id}
+                  href={`/admin/orders/${order.id}/`}
                   className="flex items-center justify-between p-3 rounded-lg bg-slate-700/50 hover:bg-slate-700 transition-colors"
                 >
-                  <span className="text-slate-300 truncate flex-1 mr-3">{product.name_fr || product.name_en}</span>
-                  <span className={`px-2 py-1 text-xs font-medium rounded ${
-                    product.stock_quantity === 0 
-                      ? 'bg-red-500/20 text-red-400' 
-                      : 'bg-yellow-500/20 text-yellow-400'
-                  }`}>
-                    {product.stock_quantity} restant{product.stock_quantity > 1 ? 's' : ''}
-                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white truncate">
+                      {order.order_number}
+                    </p>
+                    <p className="text-xs text-slate-400 truncate">
+                      {order.customer_first_name} {order.customer_last_name}
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-2 ml-3">
+                    <span className="text-sm font-medium text-amber-500">
+                      {order.total_amount.toFixed(2)}€
+                    </span>
+                    <span className={`px-2 py-0.5 text-xs font-medium rounded ${getStatusColor(order.status)}`}>
+                      {getStatusLabel(order.status)}
+                    </span>
+                  </div>
                 </Link>
               ))}
             </div>

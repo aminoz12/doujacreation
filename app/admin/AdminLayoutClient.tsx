@@ -15,6 +15,7 @@ import {
   X,
   ChevronDown,
   DollarSign,
+  ClipboardList,
 } from 'lucide-react'
 
 interface NavItem {
@@ -26,6 +27,7 @@ interface NavItem {
 
 const navigation: NavItem[] = [
   { name: 'Tableau de bord', href: '/admin/dashboard', icon: <LayoutDashboard size={20} /> },
+  { name: 'Commandes', href: '/admin/orders', icon: <ClipboardList size={20} /> },
   { name: 'Produits', href: '/admin/products', icon: <ShoppingBag size={20} /> },
   { name: 'Collections', href: '/admin/collections', icon: <FolderOpen size={20} /> },
   { name: 'Étiquettes', href: '/admin/tags', icon: <Tags size={20} /> },
@@ -218,13 +220,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           </button>
           
           <div className="flex items-center ml-auto space-x-4">
-            <Link
-              href="/"
-              target="_blank"
-              className="text-sm text-slate-400 hover:text-white transition-colors"
-            >
-              Voir la boutique →
-            </Link>
+            {/* Space for future notifications or quick actions */}
           </div>
         </header>
 

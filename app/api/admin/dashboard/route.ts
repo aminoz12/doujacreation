@@ -7,24 +7,27 @@ export async function GET() {
     const [
       productsResult,
       collectionsResult,
-      lowStockResult
+      ordersResult,
+      recentOrdersResult
     ] = await Promise.all([
       // Products stats
       supabaseAdmin.from('products').select('id, status, is_featured, is_new, is_promotion, promotion_start_date, promotion_end_date, stock_quantity, low_stock_threshold'),
       // Collections stats
       supabaseAdmin.from('collections').select('id, is_active'),
-      // Low stock products
+      // Orders stats
+      supabaseAdmin.from('orders').select('id, status'),
+      // Recent orders
       supabaseAdmin
-        .from('products')
-        .select('id, name_en, stock_quantity, low_stock_threshold')
-        .or('stock_quantity.lte.low_stock_threshold')
-        .eq('status', 'published')
-        .order('stock_quantity', { ascending: true })
-        .limit(10)
+        .from('orders')
+        .select('id, order_number, customer_first_name, customer_last_name, total_amount, currency, status, created_at')
+        .order('created_at', { ascending: false })
+        .limit(5)
     ])
 
     const products = productsResult.data || []
     const collections = collectionsResult.data || []
+    const orders = ordersResult.data || []
+    const recentOrders = recentOrdersResult.data || []
     const today = new Date().toISOString().split('T')[0]
 
     // Calculate stats
@@ -48,15 +51,18 @@ export async function GET() {
       newProducts: products.filter(p => p.is_new && p.status === 'published').length
     }
 
-    // Filter low stock products properly
-    const lowStockProducts = (lowStockResult.data || []).filter(p => 
-      p.stock_quantity <= p.low_stock_threshold
-    )
+    // Order stats
+    const orderStats = {
+      newOrders: orders.filter(o => o.status === 'new').length,
+      pendingOrders: orders.filter(o => o.status === 'pending').length,
+      deliveredOrders: orders.filter(o => o.status === 'delivered').length
+    }
 
     return NextResponse.json({
       success: true,
       stats,
-      lowStockProducts
+      orderStats,
+      recentOrders
     })
   } catch (error) {
     console.error('Dashboard API error:', error)
