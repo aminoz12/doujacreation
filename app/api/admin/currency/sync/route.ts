@@ -25,6 +25,15 @@ export async function POST() {
 
     const data: ExchangeRateResponse = await response.json()
 
+    // Ensure EUR rate is always 1.0 (base currency)
+    await supabaseAdmin
+      .from('currency_rates')
+      .update({ 
+        rate_from_eur: 1.0,
+        updated_at: new Date().toISOString()
+      })
+      .eq('currency_code', 'EUR')
+
     // Update rates in database (USD and MAD relative to EUR)
     const currencies = ['USD', 'MAD']
     
@@ -52,10 +61,16 @@ export async function POST() {
 
     if (fetchError) throw fetchError
 
+    // Ensure EUR rate is always 1.0 in response
+    const fixedRates = updatedRates?.map(c => ({
+      ...c,
+      rate_from_eur: c.currency_code === 'EUR' ? 1.0 : c.rate_from_eur
+    }))
+
     return NextResponse.json({ 
       success: true, 
       message: 'Rates updated successfully',
-      currencies: updatedRates,
+      currencies: fixedRates,
       source: 'exchangerate-api.com',
       date: data.date
     })

@@ -11,7 +11,13 @@ export async function GET() {
 
     if (error) throw error
 
-    return NextResponse.json({ success: true, currencies })
+    // Ensure EUR rate is always 1.0 (base currency)
+    const fixedCurrencies = currencies?.map(c => ({
+      ...c,
+      rate_from_eur: c.currency_code === 'EUR' ? 1.0 : c.rate_from_eur
+    }))
+
+    return NextResponse.json({ success: true, currencies: fixedCurrencies })
   } catch (error) {
     console.error('Currency GET error:', error)
     return NextResponse.json(
@@ -28,6 +34,9 @@ export async function PUT(request: NextRequest) {
     const { currencies } = body
 
     for (const currency of currencies) {
+      // Don't allow changing EUR rate - it's always 1.0
+      if (currency.currency_code === 'EUR') continue
+      
       const { error } = await supabaseAdmin
         .from('currency_rates')
         .update({ rate_from_eur: currency.rate_from_eur })
@@ -35,6 +44,12 @@ export async function PUT(request: NextRequest) {
 
       if (error) throw error
     }
+
+    // Ensure EUR is always 1.0 in database
+    await supabaseAdmin
+      .from('currency_rates')
+      .update({ rate_from_eur: 1.0 })
+      .eq('currency_code', 'EUR')
 
     return NextResponse.json({ success: true })
   } catch (error) {
