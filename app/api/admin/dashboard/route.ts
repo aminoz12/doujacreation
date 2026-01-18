@@ -11,7 +11,7 @@ export async function GET() {
       recentOrdersResult
     ] = await Promise.all([
       // Products stats
-      supabaseAdmin.from('products').select('id, status, is_featured, is_new, is_promotion, promotion_start_date, promotion_end_date, stock_quantity, low_stock_threshold'),
+      supabaseAdmin.from('products').select('id, name_fr, name_en, sku, status, is_featured, is_new, is_promotion, promotion_start_date, promotion_end_date, stock_quantity, low_stock_threshold'),
       // Collections stats
       supabaseAdmin.from('collections').select('id, is_active'),
       // Orders stats
@@ -58,11 +58,24 @@ export async function GET() {
       deliveredOrders: orders.filter(o => o.status === 'delivered').length
     }
 
+    // Get low stock products details
+    const lowStockProducts = products
+      .filter(p => p.status === 'published' && p.stock_quantity <= p.low_stock_threshold)
+      .map(p => ({
+        id: p.id,
+        name_fr: p.name_fr,
+        name_en: p.name_en,
+        sku: p.sku,
+        stock_quantity: p.stock_quantity,
+        low_stock_threshold: p.low_stock_threshold
+      }))
+
     return NextResponse.json({
       success: true,
       stats,
       orderStats,
-      recentOrders
+      recentOrders,
+      lowStockProducts
     })
   } catch (error) {
     console.error('Dashboard API error:', error)

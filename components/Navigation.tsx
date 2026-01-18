@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ShoppingBag } from 'lucide-react'
@@ -78,8 +79,15 @@ export default function Navigation() {
       >
         <div className="container-luxury">
           <div className="flex items-center justify-between h-20 md:h-24">
-            <Link href="/" className="font-serif text-xl md:text-2xl text-gold-imperial tracking-wider">
-              Zina Chic
+            <Link href="/" className="relative">
+              <Image 
+                src="/logo.png" 
+                alt="Zina Chic" 
+                width={120} 
+                height={48} 
+                className="h-10 md:h-12 w-auto object-contain"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation */}

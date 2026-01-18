@@ -14,7 +14,8 @@ import {
   ClipboardList,
   Clock,
   CheckCircle,
-  Sparkles
+  Sparkles,
+  AlertTriangle
 } from 'lucide-react'
 
 interface DashboardStats {
@@ -46,10 +47,20 @@ interface RecentOrder {
   created_at: string
 }
 
+interface LowStockProduct {
+  id: string
+  name_fr: string
+  name_en: string
+  sku: string
+  stock_quantity: number
+  low_stock_threshold: number
+}
+
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [orderStats, setOrderStats] = useState<OrderStats>({ newOrders: 0, pendingOrders: 0, deliveredOrders: 0 })
   const [recentOrders, setRecentOrders] = useState<RecentOrder[]>([])
+  const [lowStockProducts, setLowStockProducts] = useState<LowStockProduct[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -64,6 +75,7 @@ export default function DashboardPage() {
         setStats(data.stats)
         setOrderStats(data.orderStats || { newOrders: 0, pendingOrders: 0, deliveredOrders: 0 })
         setRecentOrders(data.recentOrders || [])
+        setLowStockProducts(data.lowStockProducts || [])
       }
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error)
@@ -303,12 +315,70 @@ export default function DashboardPage() {
         </motion.div>
       </div>
 
+      {/* Stock Alert Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="bg-slate-800 rounded-xl border border-slate-700 p-5"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
+            <h2 className="text-lg font-semibold text-white">Alertes stock faible</h2>
+          </div>
+          {lowStockProducts.length > 0 && (
+            <span className="px-2 py-1 text-xs font-medium bg-red-500/20 text-red-400 rounded-full">
+              {lowStockProducts.length} produit{lowStockProducts.length > 1 ? 's' : ''}
+            </span>
+          )}
+        </div>
+        
+        {lowStockProducts.length === 0 ? (
+          <div className="text-center py-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-500/10 mb-3">
+              <CheckCircle className="w-6 h-6 text-green-500" />
+            </div>
+            <p className="text-slate-400">Tous les produits sont bien approvisionnés !</p>
+          </div>
+        ) : (
+          <div className="space-y-2 max-h-64 overflow-y-auto">
+            {lowStockProducts.map((product) => (
+              <Link
+                key={product.id}
+                href={`/admin/products/${product.id}/`}
+                className="flex items-center justify-between p-3 rounded-lg bg-slate-700/50 hover:bg-slate-700 transition-colors border-l-4 border-red-500"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-white truncate">
+                    {product.name_fr || product.name_en}
+                  </p>
+                  {product.sku && (
+                    <p className="text-xs text-slate-400">
+                      SKU: {product.sku}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center space-x-2 ml-3">
+                  <span className="text-sm font-bold text-red-400">
+                    {product.stock_quantity}
+                  </span>
+                  <span className="text-xs text-slate-500">
+                    / {product.low_stock_threshold}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+      </motion.div>
+
       {/* Featured & New Products Stats */}
       {stats && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.7 }}
           className="bg-slate-800 rounded-xl border border-slate-700 p-5"
         >
           <h2 className="text-lg font-semibold text-white mb-4">Aperçu des produits</h2>

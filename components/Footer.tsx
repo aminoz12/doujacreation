@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Instagram, Facebook, Mail } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -27,15 +28,23 @@ export default function Footer() {
       <div className="container-luxury">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-10 mb-12">
           <div className="md:col-span-2">
-            <motion.h3
-              className="font-serif text-3xl md:text-4xl text-gold-imperial mb-6 tracking-luxury"
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
+              className="mb-6"
             >
-              Zina Chic
-            </motion.h3>
+              <Link href="/">
+                <Image 
+                  src="/logo.png" 
+                  alt="Zina Chic" 
+                  width={160} 
+                  height={64} 
+                  className="h-14 md:h-16 w-auto object-contain brightness-0 invert"
+                />
+              </Link>
+            </motion.div>
             <motion.p
               className="text-luxury-white/70 text-sm leading-relaxed max-w-md"
               initial={{ opacity: 0, y: 20 }}
@@ -116,7 +125,7 @@ export default function Footer() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <p className="text-luxury-white/50 text-sm">
-            © {new Date().getFullYear()} Zina Chic. {t.footer.copyright}
+            © {new Date().getFullYear()} Zinachic. {t.footer.copyright}
           </p>
           <div className="flex items-center gap-4">
             <a

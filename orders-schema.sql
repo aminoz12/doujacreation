@@ -134,3 +134,4 @@ GRANT ALL ON order_items TO service_role;
 -- SELECT * FROM orders LIMIT 5;
 -- SELECT * FROM order_items LIMIT 5;
 
+
