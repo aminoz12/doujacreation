@@ -2,8 +2,8 @@ import { Suspense } from 'react'
 import AdminLayoutClient from './AdminLayoutClient'
 
 export const metadata = {
-  title: 'Admin Panel - Douja Creation',
-  description: 'Manage your Douja Creation store',
+  title: 'Admin Panel - Zinachic',
+  description: 'Manage your Zinachic store',
 }
 
 export default function AdminLayout({

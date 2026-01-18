@@ -67,10 +67,10 @@ export default function ContactPage() {
                         {t.contact.email}
                       </p>
                       <a
-                        href="mailto:contact@doujacreation.com"
+                        href="mailto:contact@Zina Chic.com"
                         className="font-sans text-lg text-luxury-black hover:text-gold-imperial transition-colors"
                       >
-                        contact@doujacreation.com
+                        contact@Zina Chic.com
                       </a>
                     </div>
                   </div>

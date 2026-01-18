@@ -36,7 +36,7 @@ const caveat = Caveat({
 })
 
 export const metadata: Metadata = {
-  title: 'DoujaCreation | Luxury Moroccan Caftans & Traditional Wear',
+  title: 'Zina Chic | Luxury Moroccan Caftans & Traditional Wear',
   description: 'Discover the finest Moroccan caftans, jellabas, and takchitas. Timeless elegance meets heritage craftsmanship.',
   keywords: 'Moroccan caftan, jellaba, takchita, luxury fashion, traditional wear',
 }

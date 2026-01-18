@@ -104,7 +104,7 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
               <span className="text-sm font-bold text-slate-900">D</span>
             </div>
-            <span className="text-lg font-semibold text-white">Douja Admin</span>
+            <span className="text-lg font-semibold text-white">Zinachic Admin</span>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}

@@ -56,7 +56,7 @@ function LoginForm() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 mb-4">
             <span className="text-2xl font-bold text-slate-900">D</span>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-1">Douja Creation</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">Zinachic</h1>
           <p className="text-slate-400 text-sm">Panneau d&apos;administration</p>
         </div>
 
@@ -135,7 +135,7 @@ function LoginForm() {
 
       {/* Footer */}
       <p className="text-center text-slate-500 text-sm mt-6">
-        © {new Date().getFullYear()} Douja Creation. Tous droits réservés.
+        © {new Date().getFullYear()} Zinachic. Tous droits réservés.
       </p>
     </motion.div>
   )

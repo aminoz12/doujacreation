@@ -1,4 +1,4 @@
-# DoujaCreation - Luxury Moroccan E-Commerce
+# Zinachic - Luxury Moroccan E-Commerce
 
 A cinematic, immersive, ultra-luxury e-commerce frontend for selling Moroccan caftans, jellabas, takchitas, and traditional luxury items.
 
@@ -81,25 +81,25 @@ npm start
 
 ### One-Click Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/aminoz12/doujacreation)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/aminoz12/zinachic)
 
 ### Manual Deployment
 
 1. Go to [vercel.com](https://vercel.com) and sign in with GitHub
 2. Click **"Add New Project"**
-3. Import the `doujacreation` repository
+3. Import the `zinachic` repository
 4. Add environment variables:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY`
 5. Click **Deploy**
 
-Your site will be live at `https://doujacreation.vercel.app`
+Your site will be live at `https://zinachic.vercel.app`
 
 ## 📁 Project Structure
 
 ```
-doujacreation/
+zinachic/
 ├── app/                    # Next.js App Router pages
 │   ├── admin/              # Admin panel pages
 │   │   ├── login/          # Admin login
@@ -192,4 +192,4 @@ Access the admin panel at `/admin/login`
 
 ---
 
-**DoujaCreation** - Timeless elegance meets heritage craftsmanship.
+**Zinachic** - Timeless elegance meets heritage craftsmanship.

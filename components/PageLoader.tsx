@@ -36,7 +36,7 @@ export default function PageLoader() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              DoujaCreation
+              Zina Chic
             </motion.h1>
             <motion.div
               className="w-24 h-0.5 bg-gold-imperial mx-auto"

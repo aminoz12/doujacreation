@@ -1,5 +1,5 @@
 -- ============================================
--- DOUJA CREATION - COMPLETE DATABASE SCHEMA
+-- ZINACHIC - COMPLETE DATABASE SCHEMA
 -- Run this in your Supabase SQL Editor
 -- ============================================
 

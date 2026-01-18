@@ -34,7 +34,7 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              DoujaCreation
+              Zina Chic
             </motion.h3>
             <motion.p
               className="text-luxury-white/70 text-sm leading-relaxed max-w-md"
@@ -116,7 +116,7 @@ export default function Footer() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <p className="text-luxury-white/50 text-sm">
-            © {new Date().getFullYear()} DoujaCreation. {t.footer.copyright}
+            © {new Date().getFullYear()} Zina Chic. {t.footer.copyright}
           </p>
           <div className="flex items-center gap-4">
             <a

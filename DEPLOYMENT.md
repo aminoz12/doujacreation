@@ -2,7 +2,7 @@
 
 ## Project Ready for Vercel Deployment ✅
 
-Your DoujaCreation project is fully optimized and ready for deployment on Vercel.
+Your Zina Chic project is fully optimized and ready for deployment on Vercel.
 
 ### ✅ Pre-Deployment Checklist
 - [x] Next.js configuration optimized for Vercel

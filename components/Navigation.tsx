@@ -79,7 +79,7 @@ export default function Navigation() {
         <div className="container-luxury">
           <div className="flex items-center justify-between h-20 md:h-24">
             <Link href="/" className="font-serif text-xl md:text-2xl text-gold-imperial tracking-wider">
-              DoujaCreation
+              Zina Chic
             </Link>
 
             {/* Desktop Navigation */}
