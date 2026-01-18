@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Save, Key, Shield } from 'lucide-react'
+import { Save, Key } from 'lucide-react'
 
 export default function SettingsPage() {
   const [currentPassword, setCurrentPassword] = useState('')
@@ -145,38 +145,6 @@ export default function SettingsPage() {
             {saving ? 'Mise à jour...' : 'Mettre à jour'}
           </button>
         </form>
-      </div>
-
-      {/* Security Info */}
-      <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
-        <div className="flex items-center mb-4">
-          <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mr-4">
-            <Shield size={20} className="text-blue-500" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold text-white">Conseils de sécurité</h2>
-            <p className="text-sm text-slate-400">Gardez votre compte sécurisé</p>
-          </div>
-        </div>
-
-        <ul className="space-y-2 text-sm text-slate-300">
-          <li className="flex items-start">
-            <span className="text-amber-500 mr-2">•</span>
-            Utilisez un mot de passe fort et unique d&apos;au moins 8 caractères
-          </li>
-          <li className="flex items-start">
-            <span className="text-amber-500 mr-2">•</span>
-            Incluez des chiffres, symboles et lettres majuscules/minuscules
-          </li>
-          <li className="flex items-start">
-            <span className="text-amber-500 mr-2">•</span>
-            Ne partagez jamais vos identifiants avec qui que ce soit
-          </li>
-          <li className="flex items-start">
-            <span className="text-amber-500 mr-2">•</span>
-            Déconnectez-vous lorsque vous utilisez un ordinateur partagé
-          </li>
-        </ul>
       </div>
     </div>
   )
