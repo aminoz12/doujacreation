@@ -16,8 +16,7 @@ export default function Footer() {
       { href: '/collections?category=jellaba', label: 'Jellabas' },
       { href: '/collections?category=takchita', label: 'Takchitas' },
     ],
-    maison: [
-      { href: '/maison', label: t.footer.maison },
+    discover: [
       { href: '/lookbook', label: t.nav.lookbook },
       { href: '/contact', label: t.nav.contact },
     ],
@@ -94,7 +93,7 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              Maison
+              {t.footer.discover}
             </motion.h4>
             <motion.ul
               className="space-y-3"
@@ -103,7 +102,7 @@ export default function Footer() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              {footerLinks.maison.map((link) => (
+              {footerLinks.discover.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

@@ -46,7 +46,6 @@ export default function Navigation() {
     { href: '/', label: t.nav.home },
     { href: '/collections', label: t.nav.collections },
     { href: '/produits', label: 'PRODUITS' },
-    { href: '/maison', label: t.nav.maison },
     { href: '/contact', label: t.nav.contact },
   ]
 
