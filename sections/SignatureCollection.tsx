@@ -23,7 +23,7 @@ export default function SignatureCollection() {
           transition={{ duration: 0.8 }}
         >
           <div>
-            <h2 className="font-serif text-4xl md:text-6xl mb-4 text-luxury-black">
+            <h2 className="font-serif text-2xl md:text-3xl mb-4 text-luxury-black uppercase tracking-wide">
               {t.home.signature.title}
             </h2>
             <div className="w-24 h-0.5 bg-gold-imperial" />

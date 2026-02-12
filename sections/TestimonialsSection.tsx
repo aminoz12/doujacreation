@@ -52,7 +52,7 @@ export default function TestimonialsSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="font-serif text-4xl md:text-6xl mb-4 text-luxury-black">
+          <h2 className="font-serif text-2xl md:text-3xl mb-4 text-luxury-black uppercase tracking-wide">
             NOS CLIENTS
           </h2>
           <div className="w-24 h-0.5 bg-gold-imperial mx-auto" />
