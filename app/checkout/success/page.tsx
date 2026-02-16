@@ -50,7 +50,7 @@ export default function CheckoutSuccessPage() {
     )
   }
 
-  if (error || !orderId) {
+  if (error || !orderId || !order) {
     return (
       <motion.div
         variants={pageTransition}
