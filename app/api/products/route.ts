@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { productSlug } from '@/lib/slug'
 
+export const dynamic = 'force-dynamic'
+
 // GET published products for the frontend
 export async function GET(request: NextRequest) {
   try {

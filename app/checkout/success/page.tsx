@@ -1,8 +1,8 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { CheckCircle } from 'lucide-react'
 import Button from '@/components/Button'
@@ -17,7 +17,7 @@ interface OrderInfo {
   currency: string
 }
 
-export default function CheckoutSuccessPage() {
+function CheckoutSuccessContent() {
   const { t } = useLanguage()
   const searchParams = useSearchParams()
   const orderId = searchParams.get('order')
@@ -118,5 +118,19 @@ export default function CheckoutSuccessPage() {
         </div>
       </section>
     </motion.div>
+  )
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="pt-24 md:pt-32 section-padding min-h-screen flex items-center justify-center">
+          <p className="text-luxury-black/70">Loading...</p>
+        </div>
+      }
+    >
+      <CheckoutSuccessContent />
+    </Suspense>
   )
 }

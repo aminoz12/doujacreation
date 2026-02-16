@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 
+export const dynamic = 'force-dynamic'
+
 // Public endpoint: minimal order info for success page (no sensitive data)
 export async function GET(request: NextRequest) {
   try {
