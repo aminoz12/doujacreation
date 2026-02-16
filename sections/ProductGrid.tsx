@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { products } from '@/data/products'
+import { productSlug } from '@/lib/slug'
 
 export default function ProductGrid() {
   // Get the 8 newest products (ids 14-21)
@@ -24,7 +25,7 @@ export default function ProductGrid() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {displayProducts.map((product) => (
             <div key={product.id} className="group cursor-pointer">
-              <Link href={`/products/${product.id}`}>
+              <Link href={`/product/${productSlug(product.id, product.name)}`}>
                 <div className="relative aspect-[3/4] overflow-hidden bg-luxury-white">
                   <Image
                     src={product.images[0]}

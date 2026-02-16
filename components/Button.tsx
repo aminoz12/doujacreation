@@ -10,6 +10,7 @@ interface ButtonProps {
   onClick?: () => void
   href?: string
   type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
 }
 
 export default function Button({
@@ -19,6 +20,7 @@ export default function Button({
   onClick,
   href,
   type = 'button',
+  disabled = false,
 }: ButtonProps) {
   const baseClasses = 'btn-luxury'
   const variantClasses =
@@ -27,10 +29,11 @@ export default function Button({
   const buttonContent = (
     <motion.button
       type={type}
+      disabled={disabled}
       className={`${baseClasses} ${variantClasses} ${className}`}
       onClick={onClick}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
+      whileHover={disabled ? undefined : { scale: 1.02 }}
+      whileTap={disabled ? undefined : { scale: 0.98 }}
       transition={{ duration: 0.2 }}
     >
       {children}

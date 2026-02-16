@@ -1,15 +1,17 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Image from 'next/image'
+import Link from 'next/link'
 import { ShoppingBag, X } from 'lucide-react'
 import Button from '@/components/Button'
 import { pageTransition } from '@/lib/motion-variants'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useCart } from '@/contexts/CartContext'
 
 export default function CartPage() {
   const { t } = useLanguage()
-  // This is a UI-only cart page as specified
-  const cartItems: any[] = [] // Empty cart for now
+  const { items, removeItem, updateQuantity, subtotal } = useCart()
 
   return (
     <motion.div
@@ -33,7 +35,7 @@ export default function CartPage() {
             <div className="w-24 h-0.5 bg-gold-imperial mx-auto" />
           </motion.div>
 
-          {cartItems.length === 0 ? (
+          {items.length === 0 ? (
             <motion.div
               className="text-center py-20"
               initial={{ opacity: 0, y: 30 }}
@@ -50,18 +52,87 @@ export default function CartPage() {
             </motion.div>
           ) : (
             <div className="max-w-4xl mx-auto">
-              {/* Cart items would be rendered here */}
               <div className="space-y-6 mb-12">
-                {/* Cart item components */}
+                {items.map((item) => (
+                  <div
+                    key={`${item.product_id}-${item.size ?? ''}-${item.color ?? ''}`}
+                    className="flex gap-4 md:gap-6 p-4 border border-luxury-black/10 rounded-lg"
+                  >
+                    {item.product_image_url && (
+                      <div className="relative w-24 h-28 flex-shrink-0 rounded overflow-hidden bg-luxury-ivory">
+                        <Image
+                          src={item.product_image_url}
+                          alt={item.product_name_en}
+                          fill
+                          className="object-cover"
+                          sizes="96px"
+                        />
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-sans font-medium text-luxury-black truncate">
+                        {item.product_name_en}
+                      </p>
+                      <p className="text-sm text-luxury-black/60 mt-1">
+                        {(item.unit_price * item.quantity).toFixed(2)} €
+                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            updateQuantity(
+                              item.product_id,
+                              Math.max(0, item.quantity - 1),
+                              item.size,
+                              item.color
+                            )
+                          }
+                          className="w-8 h-8 flex items-center justify-center border border-luxury-black/20 rounded hover:bg-luxury-ivory"
+                          aria-label="Decrease"
+                        >
+                          −
+                        </button>
+                        <span className="w-8 text-center">{item.quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            updateQuantity(
+                              item.product_id,
+                              item.quantity + 1,
+                              item.size,
+                              item.color
+                            )
+                          }
+                          className="w-8 h-8 flex items-center justify-center border border-luxury-black/20 rounded hover:bg-luxury-ivory"
+                          aria-label="Increase"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeItem(item.product_id, item.size, item.color)}
+                      className="p-2 text-luxury-black/50 hover:text-luxury-black self-start"
+                      aria-label="Remove"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                ))}
               </div>
               <div className="border-t border-luxury-black/10 pt-8">
                 <div className="flex justify-between items-center mb-6">
                   <span className="font-serif text-2xl text-luxury-black">{t.cart.total}</span>
-                  <span className="font-serif text-2xl text-gold-imperial">$0.00</span>
+                  <span className="font-serif text-2xl text-gold-imperial">
+                    {subtotal.toFixed(2)} €
+                  </span>
                 </div>
-                <Button variant="primary" className="w-full">
-                  {t.cart.checkout}
-                </Button>
+                <Link href="/checkout">
+                  <Button variant="primary" className="w-full">
+                    {t.cart.checkout}
+                  </Button>
+                </Link>
               </div>
             </div>
           )}

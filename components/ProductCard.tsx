@@ -4,9 +4,11 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { productSlug } from '@/lib/slug'
 
 export interface ProductCardData {
   id: string
+  slug?: string
   name: string
   category?: string
   price: number
@@ -44,7 +46,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       }}
       className="group"
     >
-      <Link href={`/product/${product.id}`}>
+      <Link href={`/product/${product.slug ?? productSlug(product.id, product.name)}`}>
         <div className="relative overflow-hidden bg-luxury-white">
           {/* Image Container */}
           <div className="relative aspect-[3/5] overflow-hidden">

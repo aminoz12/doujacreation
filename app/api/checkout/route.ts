@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 
-// SumUp Checkout API
-// Documentation: https://developer.sumup.com/api/checkouts
+// SumUp Hosted Checkout API – card, Apple Pay, Google Pay
+// Docs: https://developer.sumup.com/online-payments/checkouts/hosted-checkout
 
 interface CartItem {
   product_id: string
@@ -91,7 +91,19 @@ export async function POST(request: NextRequest) {
 
     if (orderError) {
       console.error('Order creation error:', orderError)
-      throw new Error('Erreur lors de la création de la commande')
+      return NextResponse.json(
+        { success: false, error: 'Erreur lors de la création de la commande' },
+        { status: 500 }
+      )
+    }
+
+    if (!order?.order_number) {
+      console.error('Order missing order_number:', order)
+      await supabaseAdmin.from('orders').delete().eq('id', order.id)
+      return NextResponse.json(
+        { success: false, error: 'Commande invalide (order_number manquant)' },
+        { status: 500 }
+      )
     }
 
     // Add order items
@@ -138,39 +150,71 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Create SumUp checkout
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    const successUrl = `${siteUrl}/checkout/success?order=${order.id}`
+
+    const amount = Math.round(Number(total_amount) * 100) / 100
+    if (amount <= 0 || !Number.isFinite(amount)) {
+      return NextResponse.json(
+        { success: false, error: 'Montant invalide' },
+        { status: 400 }
+      )
+    }
+
+    // Create SumUp Hosted Checkout (card, Apple Pay, Google Pay)
+    const checkoutPayload = {
+      amount,
+      checkout_reference: String(order.order_number),
+      currency: 'EUR',
+      description: `Commande Zinachic #${order.order_number}`.slice(0, 255),
+      merchant_code: String(sumupMerchantCode).trim(),
+      redirect_url: successUrl,
+      hosted_checkout: { enabled: true }
+    }
     const checkoutResponse = await fetch('https://api.sumup.com/v0.1/checkouts', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${sumupApiKey}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        checkout_reference: order.order_number,
-        amount: total_amount,
-        currency: 'EUR',
-        pay_to_email: sumupMerchantCode,
-        description: `Commande Zinachic #${order.order_number}`,
-        return_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/checkout/success?order=${order.id}`,
-        redirect_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/checkout/success?order=${order.id}`
-      })
+      body: JSON.stringify(checkoutPayload)
     })
 
     if (!checkoutResponse.ok) {
-      const errorData = await checkoutResponse.json()
-      console.error('SumUp checkout error:', errorData)
-      throw new Error('Erreur lors de la création du paiement')
+      const errorData = (await checkoutResponse.json().catch(() => ({}))) as Record<string, unknown>
+      const sumupMessage =
+        typeof errorData?.error_message === 'string' ? errorData.error_message
+        : typeof errorData?.message === 'string' ? errorData.message
+        : typeof errorData?.error === 'string' ? errorData.error
+        : typeof errorData?.param === 'string' ? `Paramètre invalide: ${errorData.param}` : null
+      const fallback =
+        checkoutResponse.status === 401 ? 'Clé API ou code marchand invalide. Vérifiez SUMUP_API_KEY et SUMUP_MERCHANT_CODE.'
+        : checkoutResponse.status === 403 ? 'Paiements en ligne non autorisés pour ce compte SumUp.'
+        : checkoutResponse.status === 400 ? 'Paramètres SumUp invalides (montant, devise, merchant_code).'
+        : `SumUp a répondu: ${checkoutResponse.status}`
+      console.error('SumUp checkout error:', checkoutResponse.status, JSON.stringify(errorData))
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Erreur lors de la création du paiement',
+          details: sumupMessage || fallback
+        },
+        { status: 500 }
+      )
     }
 
     const checkoutData = await checkoutResponse.json()
 
-    // Update order with SumUp checkout ID
+    // Prefer Hosted Checkout URL (card, Apple Pay, Google Pay); fallback to legacy pay link
+    const checkoutUrl =
+      checkoutData.hosted_checkout_url ||
+      `https://pay.sumup.com/b2c/Q${checkoutData.id}`
+
     await supabaseAdmin
       .from('orders')
       .update({ sumup_checkout_id: checkoutData.id })
       .eq('id', order.id)
 
-    // Return checkout URL
     return NextResponse.json({
       success: true,
       order: {
@@ -178,13 +222,14 @@ export async function POST(request: NextRequest) {
         order_number: order.order_number,
         total_amount: order.total_amount
       },
-      checkout_url: `https://pay.sumup.com/b2c/Q${checkoutData.id}`
+      checkout_url: checkoutUrl
     })
 
   } catch (error) {
     console.error('Checkout error:', error)
+    const message = error instanceof Error ? error.message : 'Erreur lors du checkout'
     return NextResponse.json(
-      { success: false, error: error instanceof Error ? error.message : 'Erreur lors du checkout' },
+      { success: false, error: message },
       { status: 500 }
     )
   }

@@ -103,6 +103,26 @@
     "total": "Totaal",
     "checkout": "Doorgaan naar Afrekenen"
   },
+  "checkout": {
+    "title": "Afrekenen",
+    "successTitle": "Bedankt voor uw bestelling",
+    "successMessage": "Uw betaling is geslaagd. We verwerken uw bestelling zo snel mogelijk.",
+    "pendingTitle": "Bestelling ontvangen",
+    "pendingMessage": "Uw bestelling is geplaatst. De betaling wordt bevestigd.",
+    "customerDetails": "Uw gegevens",
+    "shippingAddress": "Verzendadres",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "email": "E-mail",
+    "phone": "Telefoon",
+    "address": "Adres",
+    "city": "Stad",
+    "postalCode": "Postcode",
+    "country": "Land",
+    "notes": "Opmerkingen (optioneel)",
+    "payWithCard": "Betaal met kaart, Apple Pay of Google Pay",
+    "creatingOrder": "Bestelling aanmaken..."
+  },
   "footer": {
     "description": "Tijdloze elegantie ontmoet ambachtelijk erfgoed. Ontdek de fijnste Marokkaanse kaftans, djellaba's en takchita's, elk stuk een bewijs van eeuwen traditie en luxe.",
     "shop": "Winkel",

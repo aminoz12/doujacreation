@@ -103,6 +103,26 @@
     "total": "Total",
     "checkout": "Proceed to Checkout"
   },
+  "checkout": {
+    "title": "Checkout",
+    "successTitle": "Thank you for your order",
+    "successMessage": "Your payment was successful. We will process your order shortly.",
+    "pendingTitle": "Order received",
+    "pendingMessage": "Your order has been created. Payment is being confirmed.",
+    "customerDetails": "Your details",
+    "shippingAddress": "Shipping address",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "city": "City",
+    "postalCode": "Postal code",
+    "country": "Country",
+    "notes": "Order notes (optional)",
+    "payWithCard": "Pay with card, Apple Pay or Google Pay",
+    "creatingOrder": "Creating order..."
+  },
   "footer": {
     "description": "Timeless elegance meets heritage craftsmanship. Discover the finest Moroccan caftans, jellabas, and takchitas, each piece a testament to centuries of tradition and luxury.",
     "shop": "Shop",

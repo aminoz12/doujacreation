@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
+import { productSlug } from '@/lib/slug'
 
 // GET published products for the frontend
 export async function GET(request: NextRequest) {
@@ -72,6 +73,7 @@ export async function GET(request: NextRequest) {
     // Transform products for frontend
     const transformedProducts = (products || []).map(product => ({
       id: product.id,
+      slug: productSlug(product.id, product.name_en),
       sku: product.sku,
       name: product.name_en,
       name_en: product.name_en,

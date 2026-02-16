@@ -103,6 +103,26 @@
     "total": "Total",
     "checkout": "Proceder al Pago"
   },
+  "checkout": {
+    "title": "Pago",
+    "successTitle": "Gracias por su pedido",
+    "successMessage": "Su pago se ha realizado correctamente. Procesaremos su pedido en breve.",
+    "pendingTitle": "Pedido recibido",
+    "pendingMessage": "Su pedido ha sido creado. El pago se está confirmando.",
+    "customerDetails": "Sus datos",
+    "shippingAddress": "Dirección de envío",
+    "firstName": "Nombre",
+    "lastName": "Apellidos",
+    "email": "Email",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "city": "Ciudad",
+    "postalCode": "Código postal",
+    "country": "País",
+    "notes": "Notas (opcional)",
+    "payWithCard": "Pagar con tarjeta, Apple Pay o Google Pay",
+    "creatingOrder": "Creando pedido..."
+  },
   "footer": {
     "description": "La elegancia atemporal se encuentra con la artesanía del patrimonio. Descubre los mejores caftanes, jellabas y takchitas marroquíes, cada pieza un testimonio de siglos de tradición y lujo.",
     "shop": "Tienda",

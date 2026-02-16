@@ -7,10 +7,12 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ShoppingBag } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useCart } from '@/contexts/CartContext'
 import LanguageSwitcher from './LanguageSwitcher'
 
 export default function Navigation() {
   const { t } = useLanguage()
+  const { totalItems } = useCart()
   const pathname = usePathname()
   const isHome = pathname === '/'
   const [isScrolled, setIsScrolled] = useState(false)
@@ -101,14 +103,14 @@ export default function Navigation() {
                 </Link>
               ))}
               <LanguageSwitcher variant={languageVariant} />
-              <button className="relative">
+              <Link href="/cart" className="relative">
                 <ShoppingBag
                   className={`w-5 h-5 transition-all duration-300 ${desktopNavLinkColor} ${desktopNavLinkHover}`}
                 />
                 <span className="absolute -top-2 -right-2 w-4 h-4 bg-gold-imperial rounded-full text-xs text-luxury-black flex items-center justify-center">
-                  0
+                  {totalItems}
                 </span>
-              </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -153,6 +155,19 @@ export default function Navigation() {
                   </Link>
                 </motion.div>
               ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: navLinks.length * 0.1 }}
+              >
+                <Link
+                  href="/cart"
+                  className="font-serif text-2xl text-luxury-black hover:text-gold-imperial transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {t.cart.title} {totalItems > 0 ? `(${totalItems})` : ''}
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         )}

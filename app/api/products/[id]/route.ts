@@ -1,13 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 
-// GET single product for frontend
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+function isUUID(str: string): boolean {
+  return UUID_REGEX.test(str)
+}
+
+// GET single product by id or short slug (e.g. 93ee8be9-imperial-caftan-royale)
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params
+    const { id: slugOrId } = await params
+
+    let productId: string | null = null
+    if (isUUID(slugOrId)) {
+      productId = slugOrId
+    } else {
+      const shortId = slugOrId.split('-')[0]
+      if (shortId && /^[0-9a-f]{8}$/i.test(shortId)) {
+        const { data: productMatches } = await supabase
+          .from('products')
+          .select('id')
+          .eq('status', 'published')
+          .like('id', `${shortId}%`)
+          .limit(1)
+        const productMatch = productMatches?.[0]
+        if (productMatch) productId = productMatch.id
+      }
+    }
+
+    if (!productId) {
+      return NextResponse.json(
+        { success: false, error: 'Product not found' },
+        { status: 404 }
+      )
+    }
 
     const { data: product, error } = await supabase
       .from('products')
@@ -25,7 +55,7 @@ export async function GET(
           tags (*)
         )
       `)
-      .eq('id', id)
+      .eq('id', productId)
       .eq('status', 'published')
       .single()
 

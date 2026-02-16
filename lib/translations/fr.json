@@ -98,6 +98,26 @@
     "total": "Total",
     "checkout": "Passer à la Caisse"
   },
+  "checkout": {
+    "title": "Paiement",
+    "successTitle": "Merci pour votre commande",
+    "successMessage": "Votre paiement a bien été enregistré. Nous traiterons votre commande sous peu.",
+    "pendingTitle": "Commande enregistrée",
+    "pendingMessage": "Votre commande a été créée. Le paiement est en cours de confirmation.",
+    "customerDetails": "Vos coordonnées",
+    "shippingAddress": "Adresse de livraison",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "city": "Ville",
+    "postalCode": "Code postal",
+    "country": "Pays",
+    "notes": "Notes (optionnel)",
+    "payWithCard": "Payer par carte, Apple Pay ou Google Pay",
+    "creatingOrder": "Création de la commande..."
+  },
   "footer": {
     "description": "L'élégance intemporelle rencontre l'artisanat du patrimoine. Découvrez les plus beaux caftans, jellabas et takchitas marocains, chaque pièce témoignant de siècles de tradition et de luxe.",
     "shop": "Boutique",
