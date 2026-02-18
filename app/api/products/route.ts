@@ -119,7 +119,13 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       { success: true, products: transformedProducts },
-      { headers: { 'Cache-Control': 'private, no-store, max-age=0' } }
+      {
+        headers: {
+          'Cache-Control': 'private, no-store, no-cache, must-revalidate, max-age=0',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      }
     )
   } catch (error) {
     console.error('Products API error:', error)

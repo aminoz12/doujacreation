@@ -9,6 +9,7 @@ import { pageTransition, staggerContainer } from '@/lib/motion-variants'
 
 interface Product {
   id: string
+  slug?: string
   name: string
   name_en: string
   name_fr: string
@@ -183,10 +184,12 @@ export default function ProduitsPage() {
                   key={product.id}
                   product={{
                     id: product.id,
+                    slug: product.slug,
                     name: product.name_fr || product.name,
                     price: product.price || 0,
                     originalPrice: product.originalPrice,
                     image: product.images?.[0] || '/images/placeholder.jpg',
+                    images: product.images,
                     isNew: product.isNew,
                     isSale: product.isPromotion,
                     category: product.collections?.[0] || 'produit'
