@@ -53,7 +53,7 @@ export default function ProductPage() {
       setLoading(false)
       return
     }
-    fetch(`/api/products/${slug}`)
+    fetch(`/api/products/${slug}?_t=${Date.now()}`, { cache: 'no-store' })
       .then((res) => (res.ok ? res.json() : Promise.reject()))
       .then((data) => {
         if (data.success && data.product) {

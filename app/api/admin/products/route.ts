@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         low_stock_threshold: body.low_stock_threshold || 5,
         is_featured: body.is_featured || false,
         is_new: body.is_new || false,
-        status: body.status || 'draft',
+        status: body.status || 'published',
         meta_title_en: body.meta_title_en || null,
         meta_title_fr: body.meta_title_fr || null,
         meta_description_en: body.meta_description_en || null,

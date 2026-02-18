@@ -117,7 +117,10 @@ export async function GET(request: NextRequest) {
         .filter(Boolean)
     }))
 
-    return NextResponse.json({ success: true, products: transformedProducts })
+    return NextResponse.json(
+      { success: true, products: transformedProducts },
+      { headers: { 'Cache-Control': 'private, no-store, max-age=0' } }
+    )
   } catch (error) {
     console.error('Products API error:', error)
     return NextResponse.json(

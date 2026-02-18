@@ -21,14 +21,14 @@ export async function GET(
     } else {
       const shortId = slugOrId.split('-')[0]
       if (shortId && /^[0-9a-f]{8}$/i.test(shortId)) {
-        const { data: productMatches } = await supabase
+        const { data: allProducts } = await supabase
           .from('products')
           .select('id')
           .eq('status', 'published')
-          .like('id', `${shortId}%`)
-          .limit(1)
-        const productMatch = productMatches?.[0]
-        if (productMatch) productId = productMatch.id
+        const match = (allProducts || []).find(
+          (p: { id: string }) => p.id.replace(/-/g, '').startsWith(shortId.toLowerCase())
+        )
+        if (match) productId = match.id
       }
     }
 
@@ -66,7 +66,15 @@ export async function GET(
       )
     }
 
-    // Transform product for frontend
+    // Use a fresh cache-buster on every request so product detail always shows current images
+    // (product.updated_at may not change when only images are updated in admin)
+    const imageVersion = `v=${Date.now()}`
+    const appendImageVersion = (url: string) => {
+      if (!url) return url
+      return url + (url.includes('?') ? '&' : '?') + imageVersion
+    }
+
+    // Transform product for frontend (append version to image URLs to bust cache when product is updated)
     const transformedProduct = {
       id: product.id,
       sku: product.sku,
@@ -92,7 +100,7 @@ export async function GET(
       images: (product.product_images || [])
         .sort((a: any, b: any) => a.display_order - b.display_order)
         .map((img: any) => ({
-          url: img.image_url,
+          url: appendImageVersion(img.image_url || ''),
           alt_en: img.alt_text_en,
           alt_fr: img.alt_text_fr
         })),
@@ -128,7 +136,14 @@ export async function GET(
         .filter((t: any) => t.slug)
     }
 
-    return NextResponse.json({ success: true, product: transformedProduct })
+    return NextResponse.json(
+      { success: true, product: transformedProduct },
+      {
+        headers: {
+          'Cache-Control': 'private, no-store, max-age=0',
+        },
+      }
+    )
   } catch (error) {
     console.error('Product API error:', error)
     return NextResponse.json(

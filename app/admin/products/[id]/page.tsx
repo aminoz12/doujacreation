@@ -79,7 +79,7 @@ const initialFormData: ProductFormData = {
   low_stock_threshold: 5,
   is_featured: false,
   is_new: false,
-  status: 'draft',
+  status: 'published',
   meta_title_en: '',
   meta_title_fr: '',
   meta_description_en: '',
