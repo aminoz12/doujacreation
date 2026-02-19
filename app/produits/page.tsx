@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { Filter } from 'lucide-react'
+import { Filter, RefreshCw } from 'lucide-react'
 import ProductCard from '@/components/ProductCard'
 import FilterPopup, { FilterState } from '@/components/FilterPopup'
 import { pageTransition, staggerContainer } from '@/lib/motion-variants'
@@ -41,6 +41,18 @@ export default function ProduitsPage() {
   useEffect(() => {
     fetchProducts()
     fetchCollections()
+  }, [])
+
+  // Refetch products when user returns to the tab (e.g. after deleting in admin)
+  useEffect(() => {
+    const onFocus = () => fetchProducts()
+    window.addEventListener('focus', onFocus)
+    const onVisibility = () => { if (document.visibilityState === 'visible') fetchProducts() }
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => {
+      window.removeEventListener('focus', onFocus)
+      document.removeEventListener('visibilitychange', onVisibility)
+    }
   }, [])
 
   const fetchProducts = async () => {
@@ -155,13 +167,21 @@ export default function ProduitsPage() {
             ))}
           </motion.div>
 
-          {/* Filter Button */}
+          {/* Filter + Refresh */}
           <motion.div
-            className="flex justify-end mb-8"
+            className="flex justify-end gap-2 mb-8"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
+            <button
+              onClick={() => { setLoading(true); fetchProducts() }}
+              className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:border-gold-imperial transition-colors duration-300"
+              title="Rafraîchir la liste"
+            >
+              <RefreshCw className="w-4 h-4" />
+              <span className="font-sans text-sm">Rafraîchir</span>
+            </button>
             <button
               onClick={() => setIsFilterOpen(true)}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:border-gold-imperial transition-colors duration-300"
