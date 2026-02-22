@@ -51,6 +51,16 @@
       "description": "Recibe acceso exclusivo a nuevas colecciones, eventos privados y ofertas especiales reservadas para nuestros miembros.",
       "placeholder": "Ingresa tu correo",
       "subscribe": "Suscribirse"
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "items": [
+        { "q": "¿Cuáles son los plazos de entrega?", "a": "Enviamos en 2 a 4 días laborables. La entrega estándar a Francia y Europa suele tardar 5 a 10 días. Para pedidos internacionales, de 10 a 15 días. Envío gratis a partir de un importe mínimo." },
+        { "q": "¿Cómo tomo mis medidas para un caftán o jellaba?", "a": "Cada ficha de producto incluye una guía de tallas. Recomendamos medir pecho, cintura, caderas y hombro a dobladillo. En caso de duda, contáctenos y le ayudaremos a elegir la talla." },
+        { "q": "¿Cómo cuido las piezas bordadas?", "a": "Recomendamos limpieza en seco para preservar bordados e hilos metálicos. Guarde las piezas lejos de luz directa y humedad. Las instrucciones detalladas van con cada pedido." },
+        { "q": "¿Hacen piezas a medida?", "a": "Sí. Para ocasiones especiales podemos adaptar ciertos modelos a medida. Use el formulario de contacto con el modelo y sus medidas; nuestro equipo responderá en 48 h." },
+        { "q": "¿Cuál es su política de devoluciones?", "a": "Artículos no usados, en estado original y con etiquetas pueden devolverse en 14 días. Contáctenos para una etiqueta de devolución. Reembolso en 10 días laborables tras recibir el artículo." }
+      ]
     }
   },
   "collections": {

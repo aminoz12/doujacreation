@@ -6,6 +6,7 @@ import CollectionsCarousel from '@/sections/CollectionsCarousel'
 import SignatureCollection from '@/sections/SignatureCollection'
 import EleganceSection from '@/sections/EleganceSection'
 import TestimonialsSection from '@/sections/TestimonialsSection'
+import FAQSection from '@/sections/FAQSection'
 import { pageTransition } from '@/lib/motion-variants'
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <SignatureCollection />
       <EleganceSection />
       <TestimonialsSection />
+      <FAQSection />
     </motion.div>
   )
 }

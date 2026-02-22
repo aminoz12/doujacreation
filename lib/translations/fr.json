@@ -46,6 +46,16 @@
       "description": "Recevez un accès exclusif aux nouvelles collections, événements privés et offres spéciales réservées à nos membres.",
       "placeholder": "Entrez votre email",
       "subscribe": "S'abonner"
+    },
+    "faq": {
+      "title": "Questions Fréquentes",
+      "items": [
+        { "q": "Quels délais de livraison proposez-vous ?", "a": "Nous expédions sous 2 à 4 jours ouvrés. La livraison standard en France et en Europe prend généralement 5 à 10 jours. Pour les commandes internationales, comptez 10 à 15 jours. La livraison est offerte à partir d'un certain montant." },
+        { "q": "Comment prendre mes mesures pour un caftan ou une jellaba ?", "a": "Chaque fiche produit indique un guide des tailles. Nous recommandons de mesurer tour de poitrine, tour de taille, tour de hanches et longueur d'épaule à ourlet. En cas de doute, contactez-nous : nous vous aiderons à choisir la taille idéale." },
+        { "q": "Quel entretien pour mes pièces en broderie ?", "a": "Nous conseillons le nettoyage à sec pour préserver les broderies et les fils métalliques. Conservez vos pièces à l'abri de la lumière directe et de l'humidité. Des instructions détaillées accompagnent chaque envoi." },
+        { "q": "Proposez-vous des pièces sur mesure ?", "a": "Oui. Pour les occasions spéciales, nous pouvons adapter certaines pièces sur mesure. Remplissez le formulaire de contact en précisant le modèle et vos mensurations ; notre équipe vous recontactera sous 48 h." },
+        { "q": "Quelle est votre politique de retours ?", "a": "Les articles non portés, en état d'origine et avec étiquettes peuvent être retournés sous 14 jours. Contactez-nous pour obtenir une étiquette de retour. Le remboursement est effectué sous 10 jours ouvrés après réception." }
+      ]
     }
   },
   "collections": {

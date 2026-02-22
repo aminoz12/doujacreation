@@ -51,6 +51,16 @@
       "description": "Ontvang exclusieve toegang tot nieuwe collecties, privé-evenementen en speciale aanbiedingen gereserveerd voor onze leden.",
       "placeholder": "Voer uw e-mail in",
       "subscribe": "Abonneren"
+    },
+    "faq": {
+      "title": "Veelgestelde Vragen",
+      "items": [
+        { "q": "Wat zijn jullie levertijden?", "a": "Wij verzenden binnen 2 tot 4 werkdagen. Standaardlevering naar Frankrijk en Europa duurt doorgaans 5 tot 10 dagen. Voor internationale bestellingen reken op 10 tot 15 dagen. Gratis verzending vanaf een bepaald bestelbedrag." },
+        { "q": "Hoe meet ik me voor een kaftan of jellaba?", "a": "Op elke productpagina staat een maatgids. We raden aan borst, taille, heupen en schouder-tot-zoom te meten. Bij twijfel neem contact op; we helpen u graag de juiste maat te kiezen." },
+        { "q": "Hoe onderhoud ik geborduurde kleding?", "a": "We adviseren stomerij om borduurwerk en metaaldraad te behouden. Bewaar kleding uit direct zonlicht en vocht. Gedetailleerde instructies zitten bij elke bestelling." },
+        { "q": "Bieden jullie maatwerk aan?", "a": "Ja. Voor bijzondere gelegenheden kunnen we bepaalde modellen op maat aanpassen. Gebruik het contactformulier met het model en uw maten; ons team neemt binnen 48 uur contact op." },
+        { "q": "Wat is jullie retourbeleid?", "a": "Ongedragen artikelen in originele staat met labels kunnen binnen 14 dagen worden geretourneerd. Neem contact op voor een retouretiket. Terugbetaling binnen 10 werkdagen na ontvangst." }
+      ]
     }
   },
   "collections": {
