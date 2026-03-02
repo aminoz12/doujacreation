@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabaseAdmin } from '@/lib/supabase'
 import { productSlug } from '@/lib/slug'
 
 export const dynamic = 'force-dynamic'
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     const isNew = searchParams.get('new')
     const limit = searchParams.get('limit')
 
-    let query = supabase
+    let query = supabaseAdmin
       .from('products')
       .select(`
         *,
@@ -35,14 +35,14 @@ export async function GET(request: NextRequest) {
     // Filter by collection
     if (collection) {
       // First get the collection ID
-      const { data: collectionData } = await supabase
+      const { data: collectionData } = await supabaseAdmin
         .from('collections')
         .select('id')
         .eq('slug', collection)
         .single()
 
       if (collectionData) {
-        const { data: productIds } = await supabase
+        const { data: productIds } = await supabaseAdmin
           .from('product_collections')
           .select('product_id')
           .eq('collection_id', collectionData.id)

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     // Fetch all stats in parallel
@@ -70,13 +72,22 @@ export async function GET() {
         low_stock_threshold: p.low_stock_threshold
       }))
 
-    return NextResponse.json({
-      success: true,
-      stats,
-      orderStats,
-      recentOrders,
-      lowStockProducts
-    })
+    return NextResponse.json(
+      {
+        success: true,
+        stats,
+        orderStats,
+        recentOrders,
+        lowStockProducts
+      },
+      {
+        headers: {
+          'Cache-Control': 'private, no-store, no-cache, must-revalidate, max-age=0',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      }
+    )
   } catch (error) {
     console.error('Dashboard API error:', error)
     return NextResponse.json(

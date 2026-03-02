@@ -1,16 +1,42 @@
 'use client'
 
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { useRef } from 'react'
 import ProductCard from '@/components/ProductCard'
-import { featuredProducts } from '@/data/products'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
 
+interface ApiProduct {
+  id: string
+  slug?: string
+  name: string
+  name_fr?: string
+  name_en?: string
+  price: number
+  originalPrice?: number | null
+  images: string[]
+  isNew?: boolean
+  isFeatured?: boolean
+}
+
 export default function SignatureCollection() {
   const { t } = useLanguage()
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [products, setProducts] = useState<ApiProduct[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch(`/api/products?limit=8&_t=${Date.now()}`, { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.products)) {
+          setProducts(data.products)
+        }
+      })
+      .catch(() => setProducts([]))
+      .finally(() => setLoading(false))
+  }, [])
 
   return (
     <section className="section-padding bg-luxury-white overflow-hidden">
@@ -45,11 +71,30 @@ export default function SignatureCollection() {
             msOverflowStyle: 'none',
           }}
         >
-          {featuredProducts.map((product, index) => (
-            <div key={product.id} className="flex-shrink-0 w-80 md:w-96">
-              <ProductCard product={product} index={index} />
-            </div>
-          ))}
+          {loading ? (
+            [...Array(4)].map((_, i) => (
+              <div key={i} className="flex-shrink-0 w-80 md:w-96 aspect-[3/4] bg-luxury-ivory animate-pulse rounded" />
+            ))
+          ) : products.length > 0 ? (
+            products.map((product, index) => (
+              <div key={product.id} className="flex-shrink-0 w-80 md:w-96">
+                <ProductCard
+                  product={{
+                    id: product.id,
+                    slug: product.slug,
+                    name: product.name_fr || product.name_en || product.name,
+                    price: product.price,
+                    originalPrice: product.originalPrice ?? undefined,
+                    images: product.images || [],
+                    isNew: product.isNew,
+                  }}
+                  index={index}
+                />
+              </div>
+            ))
+          ) : (
+            <p className="text-luxury-black/60 font-sans text-sm py-8">Aucun produit pour le moment.</p>
+          )}
         </div>
       </div>
     </section>
