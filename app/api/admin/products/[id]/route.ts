@@ -34,6 +34,34 @@ export async function GET(
   }
 }
 
+// PATCH — quick update (e.g. set status to published only)
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    const body = await request.json()
+    if (body.status == null) {
+      return NextResponse.json({ success: false, error: 'status required' }, { status: 400 })
+    }
+    const { data: product, error } = await supabaseAdmin
+      .from('products')
+      .update({ status: body.status })
+      .eq('id', id)
+      .select()
+      .single()
+    if (error) throw error
+    return NextResponse.json({ success: true, product })
+  } catch (error) {
+    console.error('Product PATCH error:', error)
+    return NextResponse.json(
+      { success: false, error: 'Failed to update product' },
+      { status: 500 }
+    )
+  }
+}
+
 // PUT update product
 export async function PUT(
   request: NextRequest,

@@ -14,6 +14,7 @@ import {
   Percent,
   Star,
   Filter,
+  Eye,
 } from 'lucide-react'
 import type { Product, ProductImage } from '@/lib/supabase'
 
@@ -68,6 +69,25 @@ export default function ProductsPage() {
       console.error('Failed to fetch products:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handlePublish = async (id: string) => {
+    setPublishingId(id)
+    try {
+      const res = await fetch(`/api/admin/products/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'published' })
+      })
+      const data = await res.json()
+      if (data.success) {
+        setProducts(prev => prev.map(p => p.id === id ? { ...p, status: 'published' } : p))
+      }
+    } catch (error) {
+      console.error('Failed to publish product:', error)
+    } finally {
+      setPublishingId(null)
     }
   }
 
@@ -332,6 +352,16 @@ export default function ProductsPage() {
                     </td>
                     <td className="px-4 py-4 text-right">
                       <div className="flex items-center justify-end space-x-2">
+                        {product.status === 'draft' && (
+                          <button
+                            onClick={() => handlePublish(product.id)}
+                            disabled={publishingId === product.id}
+                            className="p-2 text-slate-400 hover:text-green-400 hover:bg-green-500/10 rounded-lg transition-colors disabled:opacity-50"
+                            title="Publier (visible sur le site)"
+                          >
+                            <Eye size={18} />
+                          </button>
+                        )}
                         <Link
                           href={`/admin/products/${product.id}/`}
                           className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
