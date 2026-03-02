@@ -42,6 +42,7 @@ export default function ProductsPage() {
   
   const [products, setProducts] = useState<ProductWithImages[]>([])
   const [loading, setLoading] = useState(true)
+  const [publishingId, setPublishingId] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [showFilters, setShowFilters] = useState(false)
