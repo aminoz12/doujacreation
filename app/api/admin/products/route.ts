@@ -26,12 +26,12 @@ export async function GET() {
   }
 }
 
-// POST create new product
+// POST create new product — new products are always created as published so they appear on the site
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
-    // Create product
+    // Create product (always published on create so it shows on the storefront immediately)
     const { data: product, error: productError } = await supabaseAdmin
       .from('products')
       .insert({
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
         low_stock_threshold: body.low_stock_threshold || 5,
         is_featured: body.is_featured || false,
         is_new: body.is_new || false,
-        status: body.status || 'published',
+        status: 'published',
         meta_title_en: body.meta_title_en || null,
         meta_title_fr: body.meta_title_fr || null,
         meta_description_en: body.meta_description_en || null,

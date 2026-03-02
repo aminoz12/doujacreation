@@ -959,8 +959,8 @@ export default function ProductEditPage() {
                     onChange={handleChange}
                     className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50"
                   >
-                    <option value="draft">Brouillon</option>
                     <option value="published">Publié</option>
+                    <option value="draft">Brouillon</option>
                     <option value="archived">Archivé</option>
                     <option value="out_of_season">Hors Saison</option>
                   </select>
