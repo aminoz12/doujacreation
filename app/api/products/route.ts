@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 import { productSlug } from '@/lib/slug'
 
 export const dynamic = 'force-dynamic'
 
-// GET published products for the frontend
+// GET published products for the frontend (uses anon client so it works in prod without service role key; RLS allows reading published)
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     const isNew = searchParams.get('new')
     const limit = searchParams.get('limit')
 
-    let query = supabaseAdmin
+    let query = supabase
       .from('products')
       .select(`
         *,
@@ -35,14 +35,14 @@ export async function GET(request: NextRequest) {
     // Filter by collection
     if (collection) {
       // First get the collection ID
-      const { data: collectionData } = await supabaseAdmin
+      const { data: collectionData } = await supabase
         .from('collections')
         .select('id')
         .eq('slug', collection)
         .single()
 
       if (collectionData) {
-        const { data: productIds } = await supabaseAdmin
+        const { data: productIds } = await supabase
           .from('product_collections')
           .select('product_id')
           .eq('collection_id', collectionData.id)
