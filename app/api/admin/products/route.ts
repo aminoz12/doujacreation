@@ -65,6 +65,9 @@ export async function POST(request: NextRequest) {
 
     const productId = product.id
 
+    // Force status to published (DB has DEFAULT 'draft' which can override in some cases)
+    await supabaseAdmin.from('products').update({ status: 'published' }).eq('id', productId)
+
     // Add images
     if (body.images && body.images.length > 0) {
       const { error: imagesError } = await supabaseAdmin
@@ -130,7 +133,7 @@ export async function POST(request: NextRequest) {
       if (tagsError) console.error('Tags insert error:', tagsError)
     }
 
-    return NextResponse.json({ success: true, product })
+    return NextResponse.json({ success: true, product: { ...product, status: 'published' } })
   } catch (error) {
     console.error('Products POST error:', error)
     return NextResponse.json(

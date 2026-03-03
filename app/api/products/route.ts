@@ -73,13 +73,15 @@ export async function GET(request: NextRequest) {
     if (error) throw error
 
     // Transform products for frontend
-    const transformedProducts = (products || []).map(product => ({
+    const transformedProducts = (products || []).map(product => {
+      const nameEn = product.name_en ?? product.name_fr ?? ''
+      return {
       id: product.id,
-      slug: productSlug(product.id, product.name_en),
+      slug: productSlug(product.id, nameEn),
       sku: product.sku,
-      name: product.name_en,
-      name_en: product.name_en,
-      name_fr: product.name_fr,
+      name: nameEn,
+      name_en: product.name_en ?? nameEn,
+      name_fr: product.name_fr ?? nameEn,
       description: product.description_en,
       description_en: product.description_en,
       description_fr: product.description_fr,
@@ -115,7 +117,8 @@ export async function GET(request: NextRequest) {
       tags: (product.product_tags || [])
         .map((pt: any) => pt.tags?.slug)
         .filter(Boolean)
-    }))
+    }
+    })
 
     return NextResponse.json(
       { success: true, products: transformedProducts },
