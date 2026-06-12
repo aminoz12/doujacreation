@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdmin } from '@/lib/api-auth'
 
 // GET single tag
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     const { id } = await params
     
@@ -32,10 +35,12 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     const { id } = await params
     const body = await request.json()
-    
+
     const { data: tag, error } = await supabaseAdmin
       .from('tags')
       .update({
@@ -72,9 +77,11 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     const { id } = await params
-    
+
     const { error } = await supabaseAdmin
       .from('tags')
       .delete()

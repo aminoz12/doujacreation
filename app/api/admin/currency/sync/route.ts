@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdmin } from '@/lib/api-auth'
 
 // Free exchange rate API - no key required (EUR as base currency)
 const EXCHANGE_API_URL = 'https://api.exchangerate-api.com/v4/latest/EUR'
@@ -13,6 +14,8 @@ interface ExchangeRateResponse {
 }
 
 export async function POST() {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     // Fetch latest rates from API
     const response = await fetch(EXCHANGE_API_URL, {

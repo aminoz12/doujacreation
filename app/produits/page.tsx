@@ -30,6 +30,7 @@ export default function ProduitsPage() {
   const [loading, setLoading] = useState(true)
   const [collections, setCollections] = useState<{ slug: string; name_fr: string }[]>([])
   const [selectedCollection, setSelectedCollection] = useState('all')
+  const [selectedTag, setSelectedTag] = useState<string | null>(null)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
     category: 'All',
@@ -41,6 +42,15 @@ export default function ProduitsPage() {
   useEffect(() => {
     fetchProducts()
     fetchCollections()
+    // Read ?tag= / ?collection= from the URL (e.g. "Shop the occasion" links).
+    // Uses window.location to avoid wrapping the page in a Suspense boundary.
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const tag = params.get('tag')
+      const collection = params.get('collection')
+      if (tag) setSelectedTag(tag)
+      if (collection) setSelectedCollection(collection)
+    }
   }, [])
 
   // Refetch products when user returns to the tab (e.g. after deleting in admin)
@@ -87,15 +97,20 @@ export default function ProduitsPage() {
       if (selectedCollection !== 'all' && !product.collections.includes(selectedCollection)) {
         return false
       }
-      
+
+      // Occasion / tag filter (from ?tag= in the URL)
+      if (selectedTag && !product.tags?.includes(selectedTag)) {
+        return false
+      }
+
       // Price range filter
       if (filters.priceRange[0] > product.price || filters.priceRange[1] < product.price) {
         return false
       }
-      
+
       return true
     })
-  }, [selectedCollection, filters, products])
+  }, [selectedCollection, selectedTag, filters, products])
 
   const handleFilterChange = (newFilters: FilterState) => {
     setFilters(newFilters)
@@ -167,6 +182,20 @@ export default function ProduitsPage() {
             ))}
           </motion.div>
 
+          {/* Active occasion / tag chip */}
+          {selectedTag && (
+            <div className="flex justify-center mb-8">
+              <button
+                onClick={() => setSelectedTag(null)}
+                className="inline-flex items-center gap-2 px-5 py-2 bg-gold-imperial text-white font-sans text-sm tracking-wide uppercase rounded-full hover:bg-gold-champagne transition-colors"
+                title="Retirer ce filtre"
+              >
+                {selectedTag}
+                <span className="text-white/90">×</span>
+              </button>
+            </div>
+          )}
+
           {/* Filter + Refresh */}
           <motion.div
             className="flex justify-end gap-2 mb-8"
@@ -230,6 +259,7 @@ export default function ProduitsPage() {
               <button
                 onClick={() => {
                   setSelectedCollection('all')
+                  setSelectedTag(null)
                   setFilters({
                     category: 'All',
                     size: '',

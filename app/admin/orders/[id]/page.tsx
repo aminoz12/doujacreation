@@ -58,8 +58,10 @@ interface Order {
   currency: string
   payment_method: string
   payment_status: string
-  sumup_checkout_id: string
-  sumup_transaction_id: string
+  sumup_checkout_id?: string
+  sumup_transaction_id?: string
+  stripe_session_id?: string
+  stripe_payment_intent_id?: string
   status: string
   customer_notes: string
   admin_notes: string
@@ -399,9 +401,15 @@ export default function OrderDetailPage() {
                   <p className="text-white">{formatDate(order.paid_at)}</p>
                 </div>
               )}
+              {order.stripe_payment_intent_id && (
+                <div>
+                  <p className="text-xs text-slate-500">Stripe PaymentIntent</p>
+                  <p className="text-slate-400 text-sm font-mono">{order.stripe_payment_intent_id}</p>
+                </div>
+              )}
               {order.sumup_transaction_id && (
                 <div>
-                  <p className="text-xs text-slate-500">Transaction SumUp</p>
+                  <p className="text-xs text-slate-500">Transaction SumUp (legacy)</p>
                   <p className="text-slate-400 text-sm font-mono">{order.sumup_transaction_id}</p>
                 </div>
               )}

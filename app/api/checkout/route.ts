@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { stripe } from '@/lib/stripe'
 
-// SumUp Hosted Checkout API – card, Apple Pay, Google Pay
-// Docs: https://developer.sumup.com/online-payments/checkouts/hosted-checkout
+// Stripe Checkout — card payments (and wallets) via Stripe-hosted Checkout.
+// Docs: https://stripe.com/docs/payments/checkout
 
 interface CartItem {
   product_id: string
-  product_name_en: string
-  product_name_fr: string
+  product_name_en?: string
+  product_name_fr?: string
   product_sku?: string
   product_image_url?: string
   quantity: number
-  unit_price: number
+  // NOTE: any price sent by the client is IGNORED. Prices are resolved
+  // server-side from the database to prevent price tampering.
+  unit_price?: number
   size?: string
   color?: string
 }
@@ -46,26 +49,85 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!customer.email || !customer.first_name || !customer.last_name) {
+    if (!customer?.email || !customer?.first_name || !customer?.last_name) {
       return NextResponse.json(
         { success: false, error: 'Informations client manquantes' },
         { status: 400 }
       )
     }
 
-    if (!shipping.address || !shipping.city || !shipping.country) {
+    if (!shipping?.address || !shipping?.city || !shipping?.country) {
       return NextResponse.json(
         { success: false, error: 'Adresse de livraison manquante' },
         { status: 400 }
       )
     }
 
-    // Calculate totals
-    const subtotal = items.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0)
-    const shipping_cost = 0 // Free shipping or calculate based on location
-    const total_amount = subtotal + shipping_cost
+    // ---------------------------------------------------------------------
+    // SERVER-SIDE PRICING — never trust prices from the client.
+    // Resolve each line's price from the products table (only published
+    // products can be purchased). The cart's `unit_price` is discarded.
+    // ---------------------------------------------------------------------
+    const productIds = Array.from(new Set(items.map((i) => i.product_id)))
 
-    // Create order in database first
+    const { data: dbProducts, error: productsError } = await supabaseAdmin
+      .from('products')
+      .select('id, name_en, name_fr, price_eur, status, stock_quantity')
+      .in('id', productIds)
+
+    if (productsError) {
+      console.error('Product lookup error:', productsError)
+      return NextResponse.json(
+        { success: false, error: 'Erreur lors de la validation du panier' },
+        { status: 500 }
+      )
+    }
+
+    const productMap = new Map((dbProducts || []).map((p) => [p.id, p]))
+
+    const pricedItems = items.map((item) => {
+      const product = productMap.get(item.product_id)
+      const quantity = Math.floor(Number(item.quantity))
+
+      if (!product || product.status !== 'published') {
+        throw new Error(`Article indisponible: ${item.product_name_en ?? item.product_id}`)
+      }
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        throw new Error('Quantité invalide')
+      }
+
+      const unit_price = Number(product.price_eur)
+      if (!Number.isFinite(unit_price) || unit_price <= 0) {
+        throw new Error(`Prix invalide pour ${product.name_en}`)
+      }
+
+      return {
+        product_id: product.id,
+        product_name_en: product.name_en,
+        product_name_fr: product.name_fr || product.name_en,
+        product_sku: item.product_sku || null,
+        product_image_url: item.product_image_url || null,
+        quantity,
+        unit_price,
+        total_price: Math.round(unit_price * quantity * 100) / 100,
+        size: item.size || null,
+        color: item.color || null,
+      }
+    })
+
+    const subtotal =
+      Math.round(pricedItems.reduce((sum, i) => sum + i.total_price, 0) * 100) / 100
+    const shipping_cost = 0 // Free shipping for now
+    const total_amount = Math.round((subtotal + shipping_cost) * 100) / 100
+
+    if (total_amount <= 0 || !Number.isFinite(total_amount)) {
+      return NextResponse.json(
+        { success: false, error: 'Montant invalide' },
+        { status: 400 }
+      )
+    }
+
+    // Create order in database first (server-computed totals only)
     const { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
       .insert({
@@ -81,10 +143,10 @@ export async function POST(request: NextRequest) {
         shipping_cost,
         total_amount,
         currency: 'EUR',
-        payment_method: 'sumup',
+        payment_method: 'stripe',
         payment_status: 'pending',
         status: 'new',
-        customer_notes: customer_notes || null
+        customer_notes: customer_notes || null,
       })
       .select()
       .single()
@@ -99,26 +161,17 @@ export async function POST(request: NextRequest) {
 
     if (!order?.order_number) {
       console.error('Order missing order_number:', order)
-      await supabaseAdmin.from('orders').delete().eq('id', order.id)
+      if (order?.id) await supabaseAdmin.from('orders').delete().eq('id', order.id)
       return NextResponse.json(
         { success: false, error: 'Commande invalide (order_number manquant)' },
         { status: 500 }
       )
     }
 
-    // Add order items
-    const orderItems = items.map(item => ({
+    // Add order items (with server-resolved prices)
+    const orderItems = pricedItems.map((item) => ({
       order_id: order.id,
-      product_id: item.product_id,
-      product_name_en: item.product_name_en,
-      product_name_fr: item.product_name_fr || item.product_name_en,
-      product_sku: item.product_sku || null,
-      product_image_url: item.product_image_url || null,
-      quantity: item.quantity,
-      unit_price: item.unit_price,
-      total_price: item.unit_price * item.quantity,
-      size: item.size || null,
-      color: item.color || null
+      ...item,
     }))
 
     const { error: itemsError } = await supabaseAdmin
@@ -127,92 +180,78 @@ export async function POST(request: NextRequest) {
 
     if (itemsError) {
       console.error('Order items error:', itemsError)
-      // Delete the order if items failed
       await supabaseAdmin.from('orders').delete().eq('id', order.id)
-      throw new Error('Erreur lors de l\'ajout des articles')
+      return NextResponse.json(
+        { success: false, error: "Erreur lors de l'ajout des articles" },
+        { status: 500 }
+      )
     }
 
-    // Create SumUp checkout
-    const sumupApiKey = process.env.SUMUP_API_KEY
-    const sumupMerchantCode = process.env.SUMUP_MERCHANT_CODE
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-    if (!sumupApiKey || !sumupMerchantCode) {
-      console.error('SumUp credentials not configured')
-      // Return order without payment link for testing
+    // If Stripe is not configured, return the created order without a payment
+    // link (useful for local testing without keys).
+    if (!stripe) {
+      console.warn('STRIPE_SECRET_KEY not configured — returning order without payment link')
       return NextResponse.json({
         success: true,
         order: {
           id: order.id,
           order_number: order.order_number,
-          total_amount: order.total_amount
+          total_amount: order.total_amount,
         },
-        message: 'Commande créée (paiement non configuré)'
+        message: 'Commande créée (paiement non configuré)',
       })
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-    const successUrl = `${siteUrl}/checkout/success?order=${order.id}`
-
-    const amount = Math.round(Number(total_amount) * 100) / 100
-    if (amount <= 0 || !Number.isFinite(amount)) {
-      return NextResponse.json(
-        { success: false, error: 'Montant invalide' },
-        { status: 400 }
-      )
-    }
-
-    // Create SumUp Hosted Checkout (card, Apple Pay, Google Pay)
-    const checkoutPayload = {
-      amount,
-      checkout_reference: String(order.order_number),
-      currency: 'EUR',
-      description: `Commande Zinachic #${order.order_number}`.slice(0, 255),
-      merchant_code: String(sumupMerchantCode).trim(),
-      redirect_url: successUrl,
-      hosted_checkout: { enabled: true }
-    }
-    const checkoutResponse = await fetch('https://api.sumup.com/v0.1/checkouts', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${sumupApiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(checkoutPayload)
-    })
-
-    if (!checkoutResponse.ok) {
-      const errorData = (await checkoutResponse.json().catch(() => ({}))) as Record<string, unknown>
-      const sumupMessage =
-        typeof errorData?.error_message === 'string' ? errorData.error_message
-        : typeof errorData?.message === 'string' ? errorData.message
-        : typeof errorData?.error === 'string' ? errorData.error
-        : typeof errorData?.param === 'string' ? `Paramètre invalide: ${errorData.param}` : null
-      const fallback =
-        checkoutResponse.status === 401 ? 'Clé API ou code marchand invalide. Vérifiez SUMUP_API_KEY et SUMUP_MERCHANT_CODE.'
-        : checkoutResponse.status === 403 ? 'Paiements en ligne non autorisés pour ce compte SumUp.'
-        : checkoutResponse.status === 400 ? 'Paramètres SumUp invalides (montant, devise, merchant_code).'
-        : `SumUp a répondu: ${checkoutResponse.status}`
-      console.error('SumUp checkout error:', checkoutResponse.status, JSON.stringify(errorData))
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Erreur lors de la création du paiement',
-          details: sumupMessage || fallback
+    // Create Stripe Checkout Session
+    let session
+    try {
+      session = await stripe.checkout.sessions.create({
+        mode: 'payment',
+        customer_email: customer.email,
+        client_reference_id: String(order.order_number),
+        line_items: pricedItems.map((item) => ({
+          quantity: item.quantity,
+          price_data: {
+            currency: 'eur',
+            unit_amount: Math.round(item.unit_price * 100),
+            product_data: {
+              name: item.product_name_en,
+              ...(item.product_image_url && /^https?:\/\//.test(item.product_image_url)
+                ? { images: [item.product_image_url] }
+                : {}),
+            },
+          },
+        })),
+        metadata: {
+          order_id: order.id,
+          order_number: String(order.order_number),
         },
+        payment_intent_data: {
+          metadata: {
+            order_id: order.id,
+            order_number: String(order.order_number),
+          },
+        },
+        success_url: `${siteUrl}/checkout/success?order=${order.id}`,
+        cancel_url: `${siteUrl}/cart`,
+      })
+    } catch (stripeErr) {
+      console.error('Stripe checkout error:', stripeErr)
+      // Roll back the pending order so we don't leave orphans on failure.
+      await supabaseAdmin.from('order_items').delete().eq('order_id', order.id)
+      await supabaseAdmin.from('orders').delete().eq('id', order.id)
+      const details = stripeErr instanceof Error ? stripeErr.message : undefined
+      return NextResponse.json(
+        { success: false, error: 'Erreur lors de la création du paiement', details },
         { status: 500 }
       )
     }
 
-    const checkoutData = await checkoutResponse.json()
-
-    // Prefer Hosted Checkout URL (card, Apple Pay, Google Pay); fallback to legacy pay link
-    const checkoutUrl =
-      checkoutData.hosted_checkout_url ||
-      `https://pay.sumup.com/b2c/Q${checkoutData.id}`
-
     await supabaseAdmin
       .from('orders')
-      .update({ sumup_checkout_id: checkoutData.id })
+      .update({ stripe_session_id: session.id })
       .eq('id', order.id)
 
     return NextResponse.json({
@@ -220,20 +259,13 @@ export async function POST(request: NextRequest) {
       order: {
         id: order.id,
         order_number: order.order_number,
-        total_amount: order.total_amount
+        total_amount: order.total_amount,
       },
-      checkout_url: checkoutUrl
+      checkout_url: session.url,
     })
-
   } catch (error) {
     console.error('Checkout error:', error)
     const message = error instanceof Error ? error.message : 'Erreur lors du checkout'
-    return NextResponse.json(
-      { success: false, error: message },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: false, error: message }, { status: 400 })
   }
 }
-
-
-

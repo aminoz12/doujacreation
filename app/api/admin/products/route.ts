@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdmin } from '@/lib/api-auth'
 
 export const dynamic = 'force-dynamic'
 
 // GET all products with images
 export async function GET() {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     const { data: products, error } = await supabaseAdmin
       .from('products')
@@ -28,9 +31,11 @@ export async function GET() {
 
 // POST create new product — new products are always created as published so they appear on the site
 export async function POST(request: NextRequest) {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     const body = await request.json()
-    
+
     // Create product (always published on create so it shows on the storefront immediately)
     const { data: product, error: productError } = await supabaseAdmin
       .from('products')

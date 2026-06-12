@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdmin } from '@/lib/api-auth'
+
+export const dynamic = 'force-dynamic'
 
 // GET all collections
 export async function GET() {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     const { data: collections, error } = await supabaseAdmin
       .from('collections')
@@ -23,9 +28,11 @@ export async function GET() {
 
 // POST create new collection
 export async function POST(request: NextRequest) {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     const body = await request.json()
-    
+
     const { data: collection, error } = await supabaseAdmin
       .from('collections')
       .insert({

@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdmin } from '@/lib/api-auth'
+
+export const dynamic = 'force-dynamic'
 
 // GET all currency rates
 export async function GET() {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     const { data: currencies, error } = await supabaseAdmin
       .from('currency_rates')
@@ -29,6 +34,8 @@ export async function GET() {
 
 // PUT update currency rates
 export async function PUT(request: NextRequest) {
+  const auth = await requireAdmin()
+  if (auth instanceof NextResponse) return auth
   try {
     const body = await request.json()
     const { currencies } = body

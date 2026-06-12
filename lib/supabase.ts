@@ -4,12 +4,25 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-// Client for public operations
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Client for public operations (storefront, anon key, RLS-restricted)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: { persistSession: false },
+})
 
-// Client for admin operations (server-side only)
-export const supabaseAdmin = supabaseServiceKey 
-  ? createClient(supabaseUrl, supabaseServiceKey)
+// Client for admin/server operations (service role — bypasses RLS).
+// If the service key is missing we fall back to the anon client so the
+// storefront still renders, but admin writes will then fail under RLS.
+// We warn loudly rather than silently degrade.
+if (!supabaseServiceKey) {
+  console.warn(
+    'SUPABASE_SERVICE_ROLE_KEY is not set — admin/server operations will fall back to the anon client and fail under RLS.'
+  )
+}
+
+export const supabaseAdmin = supabaseServiceKey
+  ? createClient(supabaseUrl, supabaseServiceKey, {
+      auth: { persistSession: false },
+    })
   : supabase
 
 // Database types
