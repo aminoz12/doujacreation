@@ -2,8 +2,13 @@
 # Netlify deployment — Zinachic (Next.js 14 App Router)
 # ============================================================================
 # This app is NOT a static site: it has API routes, middleware, and server
-# rendering. The official Next.js runtime plugin is REQUIRED — it turns the
-# API routes into Netlify Functions and the middleware into an Edge Function.
+# rendering. Netlify auto-detects Next.js and installs its built-in Next.js
+# Runtime (v5), which turns API routes into Functions, middleware into an Edge
+# Function, and serves next/image through the Netlify Image CDN.
+#
+# IMPORTANT: do NOT add `[[plugins]] @netlify/plugin-nextjs` here — declaring it
+# pins the legacy v4 runtime, which breaks next/image on Netlify. Leaving it out
+# lets Netlify use the current v5 runtime automatically.
 # ============================================================================
 
 [build]
@@ -15,11 +20,6 @@
   NODE_VERSION = "20"
   # Ensure devDependencies (TypeScript, types) are available at build time.
   NPM_FLAGS = "--include=dev"
-
-# Official Next.js runtime (API routes -> Functions, middleware -> Edge).
-# Netlify installs this automatically from the toml declaration.
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
 
 # ---------------------------------------------------------------------------
 # Redirects
