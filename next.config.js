@@ -29,7 +29,9 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   swcMinify: true,
-  trailingSlash: true,
+  // NOTE: trailingSlash must stay false. With `true`, next/image URLs become
+  // `/_next/image/?url=...` which breaks image optimization on Netlify
+  // (redirects to a malformed _ipx path that 500s). Keep it off.
 }
 
 module.exports = nextConfig
