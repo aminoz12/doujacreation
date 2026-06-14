@@ -1,13 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // Netlify's legacy v4 runtime has a broken image optimizer (it redirects
-    // /_next/image to a malformed /_ipx URL that 500s). Serving images
-    // unoptimized bypasses it entirely so images actually load. Product images
-    // are already compressed to WebP <=1600px at upload time, so the impact is
-    // minimal. To RE-ENABLE optimization: upgrade the site to the Next.js
-    // Runtime v5 in the Netlify UI, then remove this line.
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
