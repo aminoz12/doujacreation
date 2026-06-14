@@ -57,7 +57,7 @@ export default function CheckoutPage() {
             first_name: form.first_name,
             last_name: form.last_name,
             email: form.email,
-            phone: form.phone || undefined
+            phone: form.phone
           },
           shipping: {
             address: form.address,
@@ -151,10 +151,11 @@ export default function CheckoutPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-luxury-black/80 mb-1">
-                  {t.checkout?.phone}
+                  {t.checkout?.phone} *
                 </label>
                 <input
                   type="tel"
+                  required
                   className="w-full px-4 py-2 border border-luxury-black/20 rounded focus:border-gold-imperial focus:outline-none"
                   value={form.phone}
                   onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}

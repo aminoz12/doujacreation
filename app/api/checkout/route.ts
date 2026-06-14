@@ -49,16 +49,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!customer?.email || !customer?.first_name || !customer?.last_name) {
+    if (!customer?.email || !customer?.first_name || !customer?.last_name || !customer?.phone) {
       return NextResponse.json(
-        { success: false, error: 'Informations client manquantes' },
+        { success: false, error: 'Informations client manquantes (nom, email et téléphone requis)' },
         { status: 400 }
       )
     }
 
     if (!shipping?.address || !shipping?.city || !shipping?.country) {
       return NextResponse.json(
-        { success: false, error: 'Adresse de livraison manquante' },
+        { success: false, error: 'Adresse de livraison requise' },
         { status: 400 }
       )
     }
