@@ -20,6 +20,10 @@
   NODE_VERSION = "20"
   # Ensure devDependencies (TypeScript, types) are available at build time.
   NPM_FLAGS = "--include=dev"
+  # NEXT_PUBLIC_* vars are PUBLIC by design (embedded in the client bundle), so
+  # Netlify's secret scanner correctly finds them in the build output. Exempt
+  # ONLY these public keys — real secrets (service role, Stripe) stay scanned.
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_SITE_URL"
 
 # ---------------------------------------------------------------------------
 # Redirects
