@@ -2,11 +2,12 @@ import Stripe from 'stripe'
 
 const secretKey = process.env.STRIPE_SECRET_KEY?.trim()
 
-// A valid Stripe secret key is a single line like sk_test_xxx / sk_live_xxx,
-// ASCII only. Guard against malformed values (wrong characters, line breaks,
-// copy-paste corruption) so we fail with a clear message instead of a cryptic
-// "connection to Stripe" / ERR_INVALID_CHAR error when the request is sent.
-const keyValid = !!secretKey && /^sk_(test|live)_[A-Za-z0-9]+$/.test(secretKey)
+// A valid Stripe secret key is a single line like sk_test_xxx / sk_live_xxx.
+// We only reject values that would break the HTTP Authorization header (the
+// cause of ERR_INVALID_CHAR): anything with non-ASCII, spaces, or line breaks.
+// We accept any printable-ASCII token after the prefix so we never wrongly
+// reject a real key.
+const keyValid = !!secretKey && /^sk_(test|live)_[\x21-\x7E]+$/.test(secretKey)
 
 if (!secretKey) {
   // Don't throw at import time — the storefront must still render without

@@ -189,19 +189,21 @@ export async function POST(request: NextRequest) {
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-    // If Stripe is not configured, return the created order without a payment
-    // link (useful for local testing without keys).
+    // Payment is required: if Stripe isn't configured (missing/invalid key),
+    // roll back the order and fail clearly rather than creating a phantom
+    // "pending" order with no way to pay.
     if (!stripe) {
-      console.warn('STRIPE_SECRET_KEY not configured — returning order without payment link')
-      return NextResponse.json({
-        success: true,
-        order: {
-          id: order.id,
-          order_number: order.order_number,
-          total_amount: order.total_amount,
+      console.error('Checkout failed: STRIPE_SECRET_KEY is missing or invalid — see lib/stripe.ts warning above')
+      await supabaseAdmin.from('order_items').delete().eq('order_id', order.id)
+      await supabaseAdmin.from('orders').delete().eq('id', order.id)
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Le paiement est momentanément indisponible.',
+          details: 'STRIPE_SECRET_KEY manquante ou invalide sur le serveur.',
         },
-        message: 'Commande créée (paiement non configuré)',
-      })
+        { status: 503 }
+      )
     }
 
     // Create Stripe Checkout Session
