@@ -25,6 +25,9 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react'],
+    // Keep sharp's native binary external so it loads correctly inside the
+    // Netlify/serverless function (webpack bundling breaks native .node modules).
+    serverComponentsExternalPackages: ['sharp'],
   },
   poweredByHeader: false,
   compress: true,

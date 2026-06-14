@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import sharp from 'sharp'
 import { supabaseAdmin } from '@/lib/supabase'
 import { requireAdmin } from '@/lib/api-auth'
 
@@ -58,6 +57,9 @@ export async function POST(request: NextRequest) {
 
     if (!isGif) {
       try {
+        // Load sharp dynamically so that if the native binary can't load in the
+        // serverless function, we degrade gracefully instead of crashing (500).
+        const sharp = (await import('sharp')).default
         outputBuffer = await sharp(inputBuffer)
           .rotate() // respect EXIF orientation (phone photos)
           .resize({
@@ -71,8 +73,8 @@ export async function POST(request: NextRequest) {
         contentType = 'image/webp'
         extension = 'webp'
       } catch (err) {
-        // Corrupt/unsupported input — fall back to uploading the original.
-        console.error('Image processing failed, uploading original:', err)
+        // sharp unavailable or corrupt input — upload the original unchanged.
+        console.error('Image processing skipped, uploading original:', err)
         outputBuffer = inputBuffer
         contentType = file.type
       }
