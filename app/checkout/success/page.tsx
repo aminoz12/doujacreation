@@ -8,6 +8,7 @@ import { CheckCircle } from 'lucide-react'
 import Button from '@/components/Button'
 import { pageTransition } from '@/lib/motion-variants'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { useCart } from '@/contexts/CartContext'
 
 interface OrderInfo {
   id: string
@@ -19,11 +20,20 @@ interface OrderInfo {
 
 function CheckoutSuccessContent() {
   const { t } = useLanguage()
+  const { clearCart } = useCart()
   const searchParams = useSearchParams()
   const orderId = searchParams.get('order')
   const [order, setOrder] = useState<OrderInfo | null>(null)
   const [loading, setLoading] = useState(!!orderId)
   const [error, setError] = useState<string | null>(null)
+
+  // Reaching the success page means the customer came back from Stripe —
+  // empty the cart now (we don't clear it before redirecting, so a cancelled
+  // payment keeps the cart intact).
+  useEffect(() => {
+    clearCart()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (!orderId) {

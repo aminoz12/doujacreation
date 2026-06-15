@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import type Stripe from 'stripe'
 import { supabaseAdmin } from '@/lib/supabase'
 import { stripe } from '@/lib/stripe'
 
@@ -49,19 +50,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!customer?.email || !customer?.first_name || !customer?.last_name || !customer?.phone) {
-      return NextResponse.json(
-        { success: false, error: 'Informations client manquantes (nom, email et téléphone requis)' },
-        { status: 400 }
-      )
-    }
-
-    if (!shipping?.address || !shipping?.city || !shipping?.country) {
-      return NextResponse.json(
-        { success: false, error: 'Adresse de livraison requise' },
-        { status: 400 }
-      )
-    }
+    // Customer & delivery details are collected on the Stripe Checkout page
+    // (shipping_address_collection / phone_number_collection below, all
+    // required) and backfilled onto the order after payment. They are optional
+    // in this request — the cart sends only items.
 
     // ---------------------------------------------------------------------
     // SERVER-SIDE PRICING — never trust prices from the client.
@@ -131,14 +123,14 @@ export async function POST(request: NextRequest) {
     const { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
       .insert({
-        customer_first_name: customer.first_name,
-        customer_last_name: customer.last_name,
-        customer_email: customer.email,
-        customer_phone: customer.phone || null,
-        shipping_address: shipping.address,
-        shipping_city: shipping.city,
-        shipping_postal_code: shipping.postal_code || null,
-        shipping_country: shipping.country,
+        customer_first_name: customer?.first_name || '',
+        customer_last_name: customer?.last_name || '',
+        customer_email: customer?.email || '',
+        customer_phone: customer?.phone || null,
+        shipping_address: shipping?.address || '',
+        shipping_city: shipping?.city || '',
+        shipping_postal_code: shipping?.postal_code || null,
+        shipping_country: shipping?.country || '',
         subtotal,
         shipping_cost,
         total_amount,
@@ -206,12 +198,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // When the cart didn't already provide an address (the "PAYER" flow),
+    // make Stripe Checkout collect the delivery address, name and phone — all
+    // required — and we backfill them onto the order after payment.
+    const collectAtStripe = !shipping?.address
+    const allowedCountries = [
+      'FR', 'MA', 'BE', 'LU', 'CH', 'ES', 'DE', 'NL', 'IT', 'PT', 'GB', 'US', 'CA',
+    ] as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection['allowed_countries']
+
     // Create Stripe Checkout Session
     let session
     try {
       session = await stripe.checkout.sessions.create({
         mode: 'payment',
-        customer_email: customer.email,
+        ...(customer?.email ? { customer_email: customer.email } : {}),
         client_reference_id: String(order.order_number),
         line_items: pricedItems.map((item) => ({
           quantity: item.quantity,
@@ -226,6 +226,13 @@ export async function POST(request: NextRequest) {
             },
           },
         })),
+        ...(collectAtStripe
+          ? {
+              shipping_address_collection: { allowed_countries: allowedCountries },
+              phone_number_collection: { enabled: true },
+              billing_address_collection: 'required' as const,
+            }
+          : {}),
         metadata: {
           order_id: order.id,
           order_number: String(order.order_number),

@@ -1,8 +1,8 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
 import { ShoppingBag, X } from 'lucide-react'
 import Button from '@/components/Button'
 import { pageTransition } from '@/lib/motion-variants'
@@ -12,6 +12,32 @@ import { useCart } from '@/contexts/CartContext'
 export default function CartPage() {
   const { t } = useLanguage()
   const { items, removeItem, updateQuantity, subtotal } = useCart()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  // "PAYER" goes straight to Stripe Checkout. Stripe collects the (required)
+  // delivery address, name and phone; the order is backfilled after payment.
+  const handleCheckout = async () => {
+    setError(null)
+    setLoading(true)
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.checkout_url) {
+        setError(data.details ? `${data.error}: ${data.details}` : (data.error || 'Erreur de paiement'))
+        setLoading(false)
+        return
+      }
+      window.location.href = data.checkout_url
+    } catch {
+      setError('Erreur réseau, réessayez.')
+      setLoading(false)
+    }
+  }
 
   return (
     <motion.div
@@ -128,11 +154,17 @@ export default function CartPage() {
                     {subtotal.toFixed(2)} €
                   </span>
                 </div>
-                <Link href="/checkout">
-                  <Button variant="primary" className="w-full">
-                    {t.cart.checkout}
-                  </Button>
-                </Link>
+                <Button
+                  variant="primary"
+                  className="w-full"
+                  onClick={handleCheckout}
+                  disabled={loading}
+                >
+                  {loading ? '…' : 'PAYER'}
+                </Button>
+                {error && (
+                  <p className="mt-3 text-sm text-red-600 text-center">{error}</p>
+                )}
               </div>
             </div>
           )}
