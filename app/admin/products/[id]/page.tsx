@@ -17,6 +17,10 @@ interface ProductFormData {
   name_fr: string
   description_en: string
   description_fr: string
+  size_guide_en: string
+  size_guide_fr: string
+  fabric_care_en: string
+  fabric_care_fr: string
   price_eur: number
   original_price_eur: number | null
   is_promotion: boolean
@@ -68,6 +72,10 @@ const initialFormData: ProductFormData = {
   name_fr: '',
   description_en: '',
   description_fr: '',
+  size_guide_en: '',
+  size_guide_fr: '',
+  fabric_care_en: '',
+  fabric_care_fr: '',
   price_eur: 0,
   original_price_eur: null,
   is_promotion: false,
@@ -147,6 +155,10 @@ export default function ProductEditPage() {
           name_fr: p.name_fr || '',
           description_en: p.description_en || '',
           description_fr: p.description_fr || '',
+          size_guide_en: p.size_guide_en || '',
+          size_guide_fr: p.size_guide_fr || '',
+          fabric_care_en: p.fabric_care_en || '',
+          fabric_care_fr: p.fabric_care_fr || '',
           price_eur: p.price_eur || 0,
           original_price_eur: p.original_price_eur,
           is_promotion: p.is_promotion || false,
@@ -526,6 +538,72 @@ export default function ProductEditPage() {
                     value={formData.description_fr}
                     onChange={handleChange}
                     rows={4}
+                    className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50 resize-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Guide des tailles & tissus (affiché sur la page produit) */}
+            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+              <h2 className="text-lg font-semibold text-white mb-1">Guide des tailles &amp; tissus</h2>
+              <p className="text-sm text-slate-400 mb-4">
+                Affiché sur la page du produit. Laissez vide pour utiliser le guide standard.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Guide des tailles (Français)
+                  </label>
+                  <textarea
+                    name="size_guide_fr"
+                    value={formData.size_guide_fr}
+                    onChange={handleChange}
+                    rows={5}
+                    placeholder={'ex:\nS — Poitrine 86 cm, Taille 68 cm\nM — Poitrine 90 cm, Taille 72 cm\nCoupe ample, prenez votre taille habituelle.'}
+                    className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50 resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Guide des tailles (Anglais)
+                  </label>
+                  <textarea
+                    name="size_guide_en"
+                    value={formData.size_guide_en}
+                    onChange={handleChange}
+                    rows={5}
+                    placeholder={'e.g.\nS — Bust 86 cm, Waist 68 cm\nM — Bust 90 cm, Waist 72 cm\nRelaxed fit, take your usual size.'}
+                    className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50 resize-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Tissus &amp; entretien (Français)
+                  </label>
+                  <textarea
+                    name="fabric_care_fr"
+                    value={formData.fabric_care_fr}
+                    onChange={handleChange}
+                    rows={5}
+                    placeholder={'ex:\nSatin duchesse brodé au fil d’or.\nNettoyage à sec uniquement. Repassage doux sur l’envers.'}
+                    className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50 resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Tissus &amp; entretien (Anglais)
+                  </label>
+                  <textarea
+                    name="fabric_care_en"
+                    value={formData.fabric_care_en}
+                    onChange={handleChange}
+                    rows={5}
+                    placeholder={'e.g.\nDuchess satin embroidered with gold thread.\nDry clean only. Iron gently inside-out.'}
                     className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500/50 resize-none"
                   />
                 </div>

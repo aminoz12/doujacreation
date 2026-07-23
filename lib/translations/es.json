@@ -34,18 +34,6 @@
       "title": "Lookbook Editorial",
       "viewFull": "Ver Lookbook Completo"
     },
-    "testimonials": {
-      "title": "Testimonios",
-      "quote1": "La artesanía es extraordinaria. Cada pieza se siente como una obra de arte, llevando la esencia del patrimonio marroquí.",
-      "quote2": "Zina Chic ha redefinido el lujo para mí. La atención al detalle y la calidad no tienen igual.",
-      "quote3": "Usar su caftán me hizo sentir como la realeza. La elegancia y sofisticación son verdaderamente notables.",
-      "author1": "Sophie Laurent",
-      "author2": "Amina Al-Rashid",
-      "author3": "Isabella Martinez",
-      "location1": "París, Francia",
-      "location2": "Dubái, Emiratos Árabes Unidos",
-      "location3": "Nueva York, EE. UU."
-    },
     "newsletter": {
       "title": "Únete a Nuestra Maison Privada",
       "description": "Recibe acceso exclusivo a nuevas colecciones, eventos privados y ofertas especiales reservadas para nuestros miembros.",
@@ -75,6 +63,10 @@
     "addToCart": "Añadir al Carrito",
     "careInstructions": "Instrucciones de Cuidado",
     "careText": "Solo limpieza en seco. Almacenar en un lugar fresco y seco. Evitar la luz solar directa. Manejar con cuidado para preservar el bordado intrincado.",
+    "sizeGuide": "Guía de tallas",
+    "sizeCols": ["Talla", "FR/EU", "Pecho (cm)", "Cintura (cm)", "Caderas (cm)"],
+    "sizeNote": "Entre dos tallas, elija la más grande. Para un ajuste perfecto, opte por la confección a medida.",
+    "fabricCare": "Tejidos y cuidados",
     "shipping": "Envío y Devoluciones",
     "shippingText": "Envío gratuito mundial en pedidos superiores a $500. Devoluciones aceptadas dentro de los 14 días posteriores a la entrega. Los artículos deben estar sin usar y en condición original.",
     "backToCollections": "Volver a Colecciones"

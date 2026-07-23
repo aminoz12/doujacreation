@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import { Scissors, Check } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
+import SectionHeading from '@/components/SectionHeading'
 
 const COPY = {
   fr: {
@@ -90,20 +90,21 @@ export default function MadeToMeasure() {
     <section className="section-padding bg-luxury-black text-luxury-white overflow-hidden">
       <div className="container-luxury">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Left: pitch + image */}
+          {/* Left: pitch */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <div className="flex items-center gap-3 mb-4">
-              <Scissors className="w-5 h-5 text-gold-imperial" />
-              <span className="font-sans text-sm tracking-[0.2em] uppercase text-gold-imperial">
-                {c.eyebrow}
-              </span>
-            </div>
-            <h2 className="font-serif text-4xl md:text-5xl mb-6">{c.title}</h2>
+            <SectionHeading
+              eyebrow={c.eyebrow}
+              eyebrowIcon={<Scissors className="w-4 h-4" />}
+              title={c.title}
+              align="left"
+              tone="dark"
+              className="mb-6"
+            />
             <p className="font-sans text-luxury-white/70 leading-relaxed mb-8 max-w-lg">
               {c.description}
             </p>
@@ -115,16 +116,6 @@ export default function MadeToMeasure() {
                 </li>
               ))}
             </ul>
-            <div className="relative aspect-[16/10] hidden lg:block overflow-hidden">
-              <Image
-                src="/elegance-section.png"
-                alt={c.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 0vw, 40vw"
-              />
-              <div className="absolute inset-0 border border-gold-imperial/30" />
-            </div>
           </motion.div>
 
           {/* Right: lead form */}

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { staggerContainer, staggerItem } from '@/lib/motion-variants'
+import SectionHeading from '@/components/SectionHeading'
 
 export default function FAQSection() {
   const { t } = useLanguage()
@@ -15,21 +16,14 @@ export default function FAQSection() {
   if (faqItems.length === 0) return null
 
   return (
-    <section className="section-padding bg-luxury-ivory gold-texture">
+    <section className="section-padding bg-luxury-white gold-texture">
       <div className="container-luxury">
         {/* Title */}
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="font-serif text-2xl md:text-3xl mb-4 text-luxury-black uppercase tracking-wide">
-            {t.home.faq?.title ?? 'FAQ'}
-          </h2>
-          <div className="w-24 h-0.5 bg-gold-imperial mx-auto" />
-        </motion.div>
+        <SectionHeading
+          eyebrow="FAQ"
+          title={t.home.faq?.title ?? 'FAQ'}
+          className="mb-16"
+        />
 
         {/* Accordion */}
         <motion.div

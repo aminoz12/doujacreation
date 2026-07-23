@@ -5,8 +5,8 @@
 :root {
   --gold-imperial: #C7A14A;
   --gold-champagne: #E8D8A8;
-  --luxury-white: #FFFFFF;
-  --luxury-ivory: #FAF8F4;
+  --luxury-white: #FFFDF9;
+  --luxury-ivory: #F6F0E4;
   --luxury-black: #0E0E0E;
 }
 
@@ -28,6 +28,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  background-color: var(--luxury-ivory);
+  color: var(--luxury-black);
 }
 
 /* Luxury Typography */

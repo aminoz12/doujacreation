@@ -6,6 +6,7 @@ import ProductCard from '@/components/ProductCard'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
+import SectionHeading from '@/components/SectionHeading'
 
 interface ApiProduct {
   id: string
@@ -39,29 +40,29 @@ export default function SignatureCollection() {
   }, [])
 
   return (
-    <section className="section-padding bg-luxury-white overflow-hidden">
+    <section className="section-padding bg-luxury-ivory overflow-hidden">
       <div className="container-luxury">
-        <motion.div
-          className="flex justify-between items-end mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <div>
-            <h2 className="font-serif text-2xl md:text-3xl mb-4 text-luxury-black uppercase tracking-wide">
-              {t.home.signature.title}
-            </h2>
-            <div className="w-24 h-0.5 bg-gold-imperial" />
-          </div>
-          <Link
-            href="/collections"
-            className="hidden md:flex items-center gap-2 text-gold-imperial hover:gap-4 transition-all duration-300 font-sans text-sm tracking-wide uppercase"
+        <div className="flex justify-between items-end mb-12">
+          <SectionHeading
+            title={t.home.signature.title}
+            align="left"
+            className="mb-0"
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
           >
-            {t.home.signature.viewAll}
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </motion.div>
+            <Link
+              href="/collections"
+              className="hidden md:flex items-center gap-2 text-gold-imperial hover:gap-4 transition-all duration-300 font-sans text-sm tracking-wide uppercase"
+            >
+              {t.home.signature.viewAll}
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+        </div>
 
         <div
           ref={scrollRef}
@@ -73,7 +74,7 @@ export default function SignatureCollection() {
         >
           {loading ? (
             [...Array(4)].map((_, i) => (
-              <div key={i} className="flex-shrink-0 w-80 md:w-96 aspect-[3/4] bg-luxury-ivory animate-pulse rounded" />
+              <div key={i} className="flex-shrink-0 w-80 md:w-96 aspect-[3/4] bg-luxury-white/70 animate-pulse rounded" />
             ))
           ) : products.length > 0 ? (
             products.map((product, index) => (

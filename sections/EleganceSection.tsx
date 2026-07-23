@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import SectionHeading from '@/components/SectionHeading'
 
 export default function EleganceSection() {
   return (
@@ -34,9 +35,12 @@ export default function EleganceSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.15 }}
           >
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-gold-imperial uppercase tracking-wide -mt-32 mb-8 font-semibold">
-              Tu es l&apos;élégance
-            </h2>
+            <SectionHeading
+              eyebrow="La Maison"
+              title="Tu es l'élégance"
+              align="left"
+              className="mb-8"
+            />
             <div className="space-y-6">
               <p className="font-sans text-base md:text-lg text-luxury-black/80 leading-relaxed">
                 À travers les villes et les cultures, les femmes qui choisissent Kaftan Elegance ne se contentent pas de s&apos;habiller : elles expriment leur identité, leur beauté et leur force.

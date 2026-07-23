@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { staggerContainer, staggerItem } from '@/lib/motion-variants'
 import { useLanguage } from '@/contexts/LanguageContext'
+import SectionHeading from '@/components/SectionHeading'
 
 interface Occasion {
   tag: string
@@ -53,17 +54,7 @@ export default function ShopTheOccasion() {
   return (
     <section className="section-padding bg-luxury-white">
       <div className="container-luxury">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="font-serif text-4xl md:text-6xl mb-4 text-luxury-black">{c.title}</h2>
-          <div className="w-24 h-0.5 bg-gold-imperial mx-auto mb-6" />
-          <p className="font-sans text-lg text-luxury-black/70 max-w-2xl mx-auto">{c.subtitle}</p>
-        </motion.div>
+        <SectionHeading title={c.title} subtitle={c.subtitle} className="mb-16" />
 
         <motion.div
           className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"

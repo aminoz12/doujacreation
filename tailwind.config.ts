@@ -15,8 +15,8 @@ const config: Config = {
           champagne: '#E8D8A8',
         },
         luxury: {
-          white: '#FFFFFF',
-          ivory: '#FAF8F4',
+          white: '#FFFDF9',
+          ivory: '#F6F0E4',
           black: '#0E0E0E',
         },
       },

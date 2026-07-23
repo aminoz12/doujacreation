@@ -34,18 +34,6 @@
       "title": "Editorial Lookbook",
       "viewFull": "View Full Lookbook"
     },
-    "testimonials": {
-      "title": "Testimonials",
-      "quote1": "The craftsmanship is extraordinary. Each piece feels like a work of art, carrying the essence of Moroccan heritage.",
-      "quote2": "Zina Chic has redefined luxury for me. The attention to detail and quality is unmatched.",
-      "quote3": "Wearing their caftan made me feel like royalty. The elegance and sophistication are truly remarkable.",
-      "author1": "Sophie Laurent",
-      "author2": "Amina Al-Rashid",
-      "author3": "Isabella Martinez",
-      "location1": "Paris, France",
-      "location2": "Dubai, UAE",
-      "location3": "New York, USA"
-    },
     "newsletter": {
       "title": "Join Our Private Maison",
       "description": "Receive exclusive access to new collections, private events, and special offers reserved for our members.",
@@ -75,6 +63,10 @@
     "addToCart": "Add to Cart",
     "careInstructions": "Care Instructions",
     "careText": "Dry clean only. Store in a cool, dry place. Avoid direct sunlight. Handle with care to preserve the intricate embroidery.",
+    "sizeGuide": "Size Guide",
+    "sizeCols": ["Size", "FR/EU", "Bust (cm)", "Waist (cm)", "Hips (cm)"],
+    "sizeNote": "Between two sizes, choose the larger. For a perfect fit, choose made-to-measure.",
+    "fabricCare": "Fabric & Care",
     "shipping": "Shipping & Returns",
     "shippingText": "Free worldwide shipping on orders over $500. Returns accepted within 14 days of delivery. Items must be unworn and in original condition.",
     "backToCollections": "Back to Collections"

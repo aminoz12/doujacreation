@@ -58,15 +58,17 @@ export default function CollectionsCarousel() {
 
   return (
     <>
-      <section className="py-12 md:py-16 -mb-24 bg-luxury-ivory">
+      <section className="pt-12 md:pt-16 pb-6 md:pb-8 bg-luxury-ivory">
         <div className="container-luxury">
           {/* Heading */}
-          <div className="flex items-center justify-center mb-10">
-            <div className="hidden md:block h-px w-16 bg-gold-imperial mr-4" />
+          <div className="flex items-center justify-center gap-3 md:gap-4 mb-10">
+            <span className="hidden md:block h-px w-16 bg-gradient-to-r from-transparent to-gold-imperial" />
+            <span className="w-1.5 h-1.5 rotate-45 border border-gold-imperial flex-shrink-0" />
             <h2 className="font-sans text-xs md:text-sm tracking-[0.3em] uppercase text-luxury-black">
               ACHETER PAR COLLECTIONS
             </h2>
-            <div className="hidden md:block h-px w-16 bg-gold-imperial ml-4" />
+            <span className="w-1.5 h-1.5 rotate-45 border border-gold-imperial flex-shrink-0" />
+            <span className="hidden md:block h-px w-16 bg-gradient-to-l from-transparent to-gold-imperial" />
           </div>
 
           {/* Scrolling row of categories */}

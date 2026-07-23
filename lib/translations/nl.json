@@ -34,18 +34,6 @@
       "title": "Editoriaal Lookbook",
       "viewFull": "Volledig Lookbook Bekijken"
     },
-    "testimonials": {
-      "title": "Getuigenissen",
-      "quote1": "Het vakmanschap is buitengewoon. Elk stuk voelt aan als een kunstwerk, met de essentie van Marokkaans erfgoed.",
-      "quote2": "Zina Chic heeft luxe voor mij opnieuw gedefinieerd. De aandacht voor detail en kwaliteit is ongeëvenaard.",
-      "quote3": "Het dragen van hun kaftan liet me me voelen als royalty. De elegantie en verfijning zijn werkelijk opmerkelijk.",
-      "author1": "Sophie Laurent",
-      "author2": "Amina Al-Rashid",
-      "author3": "Isabella Martinez",
-      "location1": "Parijs, Frankrijk",
-      "location2": "Dubai, VAE",
-      "location3": "New York, VS"
-    },
     "newsletter": {
       "title": "Word Lid van Onze Privé Maison",
       "description": "Ontvang exclusieve toegang tot nieuwe collecties, privé-evenementen en speciale aanbiedingen gereserveerd voor onze leden.",
@@ -75,6 +63,10 @@
     "addToCart": "Toevoegen aan Winkelwagen",
     "careInstructions": "Verzorgingsinstructies",
     "careText": "Alleen chemisch reinigen. Bewaren op een koele, droge plaats. Vermijd direct zonlicht. Voorzichtig hanteren om het ingewikkelde borduurwerk te behouden.",
+    "sizeGuide": "Maattabel",
+    "sizeCols": ["Maat", "FR/EU", "Borst (cm)", "Taille (cm)", "Heupen (cm)"],
+    "sizeNote": "Twijfelt u tussen twee maten, kies dan de grootste. Voor een perfecte pasvorm kiest u maatwerk.",
+    "fabricCare": "Stoffen & verzorging",
     "shipping": "Verzending en Retourneren",
     "shippingText": "Gratis wereldwijde verzending bij bestellingen boven €500. Retourneren geaccepteerd binnen 14 dagen na levering. Items moeten ongedragen en in originele staat zijn.",
     "backToCollections": "Terug naar Collecties"

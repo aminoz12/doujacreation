@@ -72,6 +72,10 @@ CREATE TABLE IF NOT EXISTS products (
   name_fr VARCHAR(255) NOT NULL,
   description_en TEXT,
   description_fr TEXT,
+  size_guide_en TEXT,
+  size_guide_fr TEXT,
+  fabric_care_en TEXT,
+  fabric_care_fr TEXT,
   price_eur DECIMAL(10,2) NOT NULL,
   original_price_eur DECIMAL(10,2),
   is_promotion BOOLEAN DEFAULT false,
@@ -92,6 +96,13 @@ CREATE TABLE IF NOT EXISTS products (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Upgrade path: databases created before per-product size/fabric guides existed.
+-- (CREATE TABLE IF NOT EXISTS does not add columns to an existing table.)
+ALTER TABLE products ADD COLUMN IF NOT EXISTS size_guide_en TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS size_guide_fr TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS fabric_care_en TEXT;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS fabric_care_fr TEXT;
 
 -- Product sizes
 CREATE TABLE IF NOT EXISTS product_sizes (
