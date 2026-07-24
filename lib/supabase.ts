@@ -1,8 +1,23 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// Fall back to harmless placeholders so this module never throws at import time.
+// `createClient` throws "supabaseUrl is required" on an empty string, which kills
+// `next build` during its "collect page data" step whenever the env vars aren't
+// present in the build environment (e.g. on Netlify before they're configured).
+// Real values always take precedence; the placeholders only keep the build alive.
+const PLACEHOLDER_URL = 'https://placeholder.supabase.co'
+const PLACEHOLDER_KEY = 'placeholder-anon-key'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || PLACEHOLDER_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || PLACEHOLDER_KEY
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  console.warn(
+    'NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY are not set — ' +
+      'Supabase requests will fail until these environment variables are configured.'
+  )
+}
 
 // Client for public operations (storefront, anon key, RLS-restricted)
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
