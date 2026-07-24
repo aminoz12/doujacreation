@@ -48,7 +48,7 @@ const COPY = {
 
 export default function ShopTheOccasion() {
   const { language } = useLanguage()
-  const c = language === 'en' || language === 'nl' || language === 'es' ? COPY.en : COPY.fr
+  const c = language === 'en' ? COPY.en : COPY.fr
   const lang = language === 'fr' ? 'fr' : 'en'
 
   return (

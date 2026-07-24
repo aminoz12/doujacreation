@@ -22,7 +22,7 @@ interface ApiProduct {
 }
 
 export default function SignatureCollection() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const scrollRef = useRef<HTMLDivElement>(null)
   const [products, setProducts] = useState<ApiProduct[]>([])
   const [loading, setLoading] = useState(true)
@@ -83,7 +83,10 @@ export default function SignatureCollection() {
                   product={{
                     id: product.id,
                     slug: product.slug,
-                    name: product.name_fr || product.name_en || product.name,
+                    name:
+                      language === 'en'
+                        ? product.name_en || product.name_fr || product.name
+                        : product.name_fr || product.name_en || product.name,
                     price: product.price,
                     originalPrice: product.originalPrice ?? undefined,
                     images: product.images || [],
@@ -94,7 +97,7 @@ export default function SignatureCollection() {
               </div>
             ))
           ) : (
-            <p className="text-luxury-black/60 font-sans text-sm py-8">Aucun produit pour le moment.</p>
+            <p className="text-luxury-black/60 font-sans text-sm py-8">{t.common.noProductsYet}</p>
           )}
         </div>
       </div>

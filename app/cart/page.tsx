@@ -28,13 +28,13 @@ export default function CartPage() {
       })
       const data = await res.json()
       if (!res.ok || !data.checkout_url) {
-        setError(data.details ? `${data.error}: ${data.details}` : (data.error || 'Erreur de paiement'))
+        setError(data.details ? `${data.error}: ${data.details}` : (data.error || t.cart.paymentError))
         setLoading(false)
         return
       }
       window.location.href = data.checkout_url
     } catch {
-      setError('Erreur réseau, réessayez.')
+      setError(t.cart.networkError)
       setLoading(false)
     }
   }
@@ -114,7 +114,7 @@ export default function CartPage() {
                             )
                           }
                           className="w-8 h-8 flex items-center justify-center border border-luxury-black/20 rounded hover:bg-luxury-ivory"
-                          aria-label="Decrease"
+                          aria-label={t.cart.decrease}
                         >
                           −
                         </button>
@@ -130,7 +130,7 @@ export default function CartPage() {
                             )
                           }
                           className="w-8 h-8 flex items-center justify-center border border-luxury-black/20 rounded hover:bg-luxury-ivory"
-                          aria-label="Increase"
+                          aria-label={t.cart.increase}
                         >
                           +
                         </button>
@@ -140,7 +140,7 @@ export default function CartPage() {
                       type="button"
                       onClick={() => removeItem(item.product_id, item.size, item.color)}
                       className="p-2 text-luxury-black/50 hover:text-luxury-black self-start"
-                      aria-label="Remove"
+                      aria-label={t.cart.remove}
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -160,7 +160,7 @@ export default function CartPage() {
                   onClick={handleCheckout}
                   disabled={loading}
                 >
-                  {loading ? '…' : 'PAYER'}
+                  {loading ? '…' : t.cart.pay}
                 </Button>
                 {error && (
                   <p className="mt-3 text-sm text-red-600 text-center">{error}</p>

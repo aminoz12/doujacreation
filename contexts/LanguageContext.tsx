@@ -18,7 +18,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // Load language from localStorage or use default
     if (typeof window !== 'undefined') {
       const savedLanguage = localStorage.getItem('language') as Language
-      if (savedLanguage && ['fr', 'en', 'nl', 'es'].includes(savedLanguage)) {
+      if (savedLanguage && ['fr', 'en'].includes(savedLanguage)) {
         setLanguageState(savedLanguage)
       }
     }

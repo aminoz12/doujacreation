@@ -47,7 +47,7 @@ export default function Navigation() {
   const navLinks = [
     { href: '/', label: t.nav.home },
     { href: '/collections', label: t.nav.collections },
-    { href: '/produits', label: 'PRODUITS' },
+    { href: '/produits', label: t.nav.products },
     { href: '/contact', label: t.nav.contact },
   ]
 

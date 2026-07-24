@@ -251,7 +251,7 @@ export default function ProductPage() {
                           (prev) => (prev - 1 + imageList.length) % imageList.length
                         )}
                       className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-luxury-white/80 hover:bg-luxury-white p-2 transition-colors"
-                      aria-label="Previous image"
+                      aria-label={t.product.prevImage}
                     >
                       <ChevronLeft className="w-6 h-6" />
                     </button>
@@ -260,7 +260,7 @@ export default function ProductPage() {
                         setSelectedImageIndex((prev) => (prev + 1) % imageList.length)
                       }
                       className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-luxury-white/80 hover:bg-luxury-white p-2 transition-colors"
-                      aria-label="Next image"
+                      aria-label={t.product.nextImage}
                     >
                       <ChevronRight className="w-6 h-6" />
                     </button>
@@ -281,7 +281,7 @@ export default function ProductPage() {
                     >
                       <Image
                         src={img}
-                        alt={`${product.name} view ${index + 1}`}
+                        alt={`${product.name} ${t.product.imageView} ${index + 1}`}
                         fill
                         className="object-cover"
                         sizes="80px"
@@ -323,7 +323,7 @@ export default function ProductPage() {
                     <button
                       onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
                       className="p-2 hover:bg-luxury-ivory transition-colors"
-                      aria-label="Decrease quantity"
+                      aria-label={t.product.decreaseQty}
                     >
                       <Minus className="w-4 h-4" />
                     </button>
@@ -333,7 +333,7 @@ export default function ProductPage() {
                     <button
                       onClick={() => setQuantity((prev) => prev + 1)}
                       className="p-2 hover:bg-luxury-ivory transition-colors"
-                      aria-label="Increase quantity"
+                      aria-label={t.product.increaseQty}
                     >
                       <Plus className="w-4 h-4" />
                     </button>

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ChevronDown } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface FilterPopupProps {
   isOpen: boolean
@@ -19,17 +20,72 @@ export interface FilterState {
 }
 
 const categories = [
-  'All', 'Dresses', 'Abayas', 'Blazers', 'Outerwear', 'Jackets', 
+  'All', 'Dresses', 'Abayas', 'Blazers', 'Outerwear', 'Jackets',
   'Sweaters', 'Tops', 'Blouses', 'Shirts', 'Pants', 'Skirts', 'Leggings'
 ]
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 const colors = [
-  'Black', 'White', 'Red', 'Blue', 'Green', 'Pink', 'Yellow', 
+  'Black', 'White', 'Red', 'Blue', 'Green', 'Pink', 'Yellow',
   'Purple', 'Orange', 'Brown', 'Gray', 'Navy', 'Beige', 'Cream', 'Gold', 'Silver'
 ]
 
+type FilterCopy = {
+  filters: string
+  category: string
+  size: string
+  price: string
+  color: string
+  reset: string
+  apply: string
+  categories: Record<string, string>
+  colors: Record<string, string>
+}
+
+const COPY: { fr: FilterCopy; en: FilterCopy } = {
+  fr: {
+    filters: 'Filtres',
+    category: 'Catégorie',
+    size: 'Taille',
+    price: 'Prix',
+    color: 'Couleur',
+    reset: 'Réinitialiser',
+    apply: 'Appliquer les filtres',
+    categories: {
+      All: 'Tous', Dresses: 'Robes', Abayas: 'Abayas', Blazers: 'Blazers', Outerwear: 'Manteaux',
+      Jackets: 'Vestes', Sweaters: 'Pulls', Tops: 'Hauts', Blouses: 'Blouses', Shirts: 'Chemises',
+      Pants: 'Pantalons', Skirts: 'Jupes', Leggings: 'Leggings',
+    },
+    colors: {
+      Black: 'Noir', White: 'Blanc', Red: 'Rouge', Blue: 'Bleu', Green: 'Vert', Pink: 'Rose',
+      Yellow: 'Jaune', Purple: 'Violet', Orange: 'Orange', Brown: 'Marron', Gray: 'Gris',
+      Navy: 'Marine', Beige: 'Beige', Cream: 'Crème', Gold: 'Or', Silver: 'Argent',
+    },
+  },
+  en: {
+    filters: 'Filters',
+    category: 'Category',
+    size: 'Size',
+    price: 'Price',
+    color: 'Color',
+    reset: 'Reset',
+    apply: 'Apply Filters',
+    categories: {
+      All: 'All', Dresses: 'Dresses', Abayas: 'Abayas', Blazers: 'Blazers', Outerwear: 'Outerwear',
+      Jackets: 'Jackets', Sweaters: 'Sweaters', Tops: 'Tops', Blouses: 'Blouses', Shirts: 'Shirts',
+      Pants: 'Pants', Skirts: 'Skirts', Leggings: 'Leggings',
+    },
+    colors: {
+      Black: 'Black', White: 'White', Red: 'Red', Blue: 'Blue', Green: 'Green', Pink: 'Pink',
+      Yellow: 'Yellow', Purple: 'Purple', Orange: 'Orange', Brown: 'Brown', Gray: 'Gray',
+      Navy: 'Navy', Beige: 'Beige', Cream: 'Cream', Gold: 'Gold', Silver: 'Silver',
+    },
+  },
+}
+
 export default function FilterPopup({ isOpen, onClose, onFilterChange, filters }: FilterPopupProps) {
+  const { language } = useLanguage()
+  const c = language === 'en' ? COPY.en : COPY.fr
   const [localFilters, setLocalFilters] = useState<FilterState>(filters)
   const [expandedSections, setExpandedSections] = useState<string[]>(['category', 'size', 'price', 'color'])
 
@@ -79,7 +135,7 @@ export default function FilterPopup({ isOpen, onClose, onFilterChange, filters }
             className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 overflow-y-auto"
           >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-              <h2 className="font-serif text-2xl text-luxury-black">Filters</h2>
+              <h2 className="font-serif text-2xl text-luxury-black">{c.filters}</h2>
               <button
                 onClick={onClose}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -95,7 +151,7 @@ export default function FilterPopup({ isOpen, onClose, onFilterChange, filters }
                   onClick={() => toggleSection('category')}
                   className="w-full flex items-center justify-between py-2"
                 >
-                  <h3 className="font-sans text-lg font-medium text-luxury-black">Category</h3>
+                  <h3 className="font-sans text-lg font-medium text-luxury-black">{c.category}</h3>
                   <ChevronDown 
                     className={`w-5 h-5 transition-transform ${
                       expandedSections.includes('category') ? 'rotate-180' : ''
@@ -115,7 +171,7 @@ export default function FilterPopup({ isOpen, onClose, onFilterChange, filters }
                             : 'bg-white text-gray-700 border-gray-300 hover:border-gold-imperial'
                         }`}
                       >
-                        {category}
+                        {c.categories[category] ?? category}
                       </button>
                     ))}
                   </div>
@@ -128,7 +184,7 @@ export default function FilterPopup({ isOpen, onClose, onFilterChange, filters }
                   onClick={() => toggleSection('size')}
                   className="w-full flex items-center justify-between py-2"
                 >
-                  <h3 className="font-sans text-lg font-medium text-luxury-black">Size</h3>
+                  <h3 className="font-sans text-lg font-medium text-luxury-black">{c.size}</h3>
                   <ChevronDown 
                     className={`w-5 h-5 transition-transform ${
                       expandedSections.includes('size') ? 'rotate-180' : ''
@@ -164,7 +220,7 @@ export default function FilterPopup({ isOpen, onClose, onFilterChange, filters }
                   onClick={() => toggleSection('price')}
                   className="w-full flex items-center justify-between py-2"
                 >
-                  <h3 className="font-sans text-lg font-medium text-luxury-black">Price</h3>
+                  <h3 className="font-sans text-lg font-medium text-luxury-black">{c.price}</h3>
                   <ChevronDown 
                     className={`w-5 h-5 transition-transform ${
                       expandedSections.includes('price') ? 'rotate-180' : ''
@@ -214,7 +270,7 @@ export default function FilterPopup({ isOpen, onClose, onFilterChange, filters }
                   onClick={() => toggleSection('color')}
                   className="w-full flex items-center justify-between py-2"
                 >
-                  <h3 className="font-sans text-lg font-medium text-luxury-black">Color</h3>
+                  <h3 className="font-sans text-lg font-medium text-luxury-black">{c.color}</h3>
                   <ChevronDown 
                     className={`w-5 h-5 transition-transform ${
                       expandedSections.includes('color') ? 'rotate-180' : ''
@@ -237,7 +293,7 @@ export default function FilterPopup({ isOpen, onClose, onFilterChange, filters }
                             : 'bg-white text-gray-700 border-gray-300 hover:border-gold-imperial'
                         }`}
                       >
-                        {color}
+                        {c.colors[color] ?? color}
                       </button>
                     ))}
                   </div>
@@ -251,13 +307,13 @@ export default function FilterPopup({ isOpen, onClose, onFilterChange, filters }
                 onClick={resetFilters}
                 className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                Reset
+                {c.reset}
               </button>
               <button
                 onClick={applyFilters}
                 className="flex-1 px-4 py-3 bg-gold-imperial text-white rounded-lg hover:bg-gold-champagne transition-colors"
               >
-                Apply Filters
+                {c.apply}
               </button>
             </div>
           </motion.div>

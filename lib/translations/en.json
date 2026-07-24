@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "collections": "Collections",
+    "products": "Products",
     "lookbook": "Lookbook",
     "maison": "Maison",
     "contact": "Contact"
@@ -11,7 +12,8 @@
       "title": "Zina Chic",
       "subtitle": "Timeless elegance meets heritage craftsmanship. Discover the finest Moroccan caftans, jellabas, and takchitas.",
       "explore": "Explore Collections",
-      "lookbook": "View Lookbook"
+      "lookbook": "View Lookbook",
+      "imageAlt": "Luxury Moroccan Caftan"
     },
     "brand": {
       "title": "Heritage Crafted,",
@@ -24,11 +26,6 @@
     "signature": {
       "title": "Signature Collection",
       "viewAll": "View All"
-    },
-    "craftsmanship": {
-      "title": "Artisan Craftsmanship",
-      "description1": "Our artisans dedicate hundreds of hours to each piece, employing techniques passed down through generations. Every stitch tells a story, every thread a connection to Morocco's rich cultural heritage.",
-      "description2": "From the selection of premium silks to the intricate hand-embroidery with gold and silver threads, we ensure that each creation is a masterpiece worthy of the most discerning clientele."
     },
     "lookbook": {
       "title": "Editorial Lookbook",
@@ -69,7 +66,12 @@
     "fabricCare": "Fabric & Care",
     "shipping": "Shipping & Returns",
     "shippingText": "Free worldwide shipping on orders over $500. Returns accepted within 14 days of delivery. Items must be unworn and in original condition.",
-    "backToCollections": "Back to Collections"
+    "backToCollections": "Back to Collections",
+    "prevImage": "Previous image",
+    "nextImage": "Next image",
+    "decreaseQty": "Decrease quantity",
+    "increaseQty": "Increase quantity",
+    "imageView": "view"
   },
   "lookbook": {
     "title": "Lookbook",
@@ -103,7 +105,13 @@
     "empty": "Your cart is empty",
     "continue": "Continue Shopping",
     "total": "Total",
-    "checkout": "Proceed to Checkout"
+    "checkout": "Proceed to Checkout",
+    "pay": "PAY",
+    "paymentError": "Payment error",
+    "networkError": "Network error, please try again.",
+    "decrease": "Decrease",
+    "increase": "Increase",
+    "remove": "Remove"
   },
   "checkout": {
     "title": "Checkout",
@@ -123,7 +131,14 @@
     "country": "Country",
     "notes": "Order notes (optional)",
     "payWithCard": "Pay with card, Apple Pay or Google Pay",
-    "creatingOrder": "Creating order..."
+    "creatingOrder": "Creating order...",
+    "orderSummary": "Order summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "orderLabel": "Order",
+    "orderNotFound": "Order not found",
+    "missingRef": "Missing order reference."
   },
   "footer": {
     "description": "Timeless elegance meets heritage craftsmanship. Discover the finest Moroccan caftans, jellabas, and takchitas, each piece a testament to centuries of tradition and luxury.",
@@ -133,7 +148,8 @@
   },
   "common": {
     "loading": "Loading...",
-    "notFound": "Product Not Found"
+    "notFound": "Product Not Found",
+    "noProductsYet": "No products yet."
   }
 }
 

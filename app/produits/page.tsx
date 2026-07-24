@@ -6,6 +6,32 @@ import { Filter, RefreshCw } from 'lucide-react'
 import ProductCard from '@/components/ProductCard'
 import FilterPopup, { FilterState } from '@/components/FilterPopup'
 import { pageTransition, staggerContainer } from '@/lib/motion-variants'
+import { useLanguage } from '@/contexts/LanguageContext'
+
+const COPY = {
+  fr: {
+    title: 'PRODUITS',
+    subtitle: 'Découvrez notre collection exclusive de créations marocaines artisanales',
+    all: 'Tous',
+    removeFilter: 'Retirer ce filtre',
+    refreshTitle: 'Rafraîchir la liste',
+    refresh: 'Rafraîchir',
+    filter: 'Filtrer',
+    noneFound: 'Aucun produit trouvé.',
+    clearFilters: 'Effacer les filtres',
+  },
+  en: {
+    title: 'PRODUCTS',
+    subtitle: 'Discover our exclusive collection of handcrafted Moroccan creations',
+    all: 'All',
+    removeFilter: 'Remove this filter',
+    refreshTitle: 'Refresh the list',
+    refresh: 'Refresh',
+    filter: 'Filter',
+    noneFound: 'No products found.',
+    clearFilters: 'Clear filters',
+  },
+}
 
 interface Product {
   id: string
@@ -26,6 +52,8 @@ interface Product {
 }
 
 export default function ProduitsPage() {
+  const { language } = useLanguage()
+  const c = language === 'en' ? COPY.en : COPY.fr
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [collections, setCollections] = useState<{ slug: string; name_fr: string }[]>([])
@@ -142,11 +170,11 @@ export default function ProduitsPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="font-serif text-5xl md:text-7xl mb-4 text-luxury-black">
-              PRODUITS
+              {c.title}
             </h1>
             <div className="w-24 h-0.5 bg-gold-imperial mx-auto mb-8" />
             <p className="font-sans text-lg text-luxury-black/70 max-w-2xl mx-auto">
-              Découvrez notre collection exclusive de créations marocaines artisanales
+              {c.subtitle}
             </p>
           </motion.div>
 
@@ -165,7 +193,7 @@ export default function ProduitsPage() {
                   : 'bg-white text-luxury-black border border-gray-300 hover:border-gold-imperial'
               }`}
             >
-              Tous
+              {c.all}
             </button>
             {collections.map(collection => (
               <button
@@ -188,7 +216,7 @@ export default function ProduitsPage() {
               <button
                 onClick={() => setSelectedTag(null)}
                 className="inline-flex items-center gap-2 px-5 py-2 bg-gold-imperial text-white font-sans text-sm tracking-wide uppercase rounded-full hover:bg-gold-champagne transition-colors"
-                title="Retirer ce filtre"
+                title={c.removeFilter}
               >
                 {selectedTag}
                 <span className="text-white/90">×</span>
@@ -206,17 +234,17 @@ export default function ProduitsPage() {
             <button
               onClick={() => { setLoading(true); fetchProducts() }}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:border-gold-imperial transition-colors duration-300"
-              title="Rafraîchir la liste"
+              title={c.refreshTitle}
             >
               <RefreshCw className="w-4 h-4" />
-              <span className="font-sans text-sm">Rafraîchir</span>
+              <span className="font-sans text-sm">{c.refresh}</span>
             </button>
             <button
               onClick={() => setIsFilterOpen(true)}
               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:border-gold-imperial transition-colors duration-300"
             >
               <Filter className="w-4 h-4" />
-              <span className="font-sans text-sm">Filtrer</span>
+              <span className="font-sans text-sm">{c.filter}</span>
             </button>
           </motion.div>
 
@@ -234,7 +262,10 @@ export default function ProduitsPage() {
                   product={{
                     id: product.id,
                     slug: product.slug,
-                    name: product.name_fr || product.name,
+                    name:
+                      language === 'en'
+                        ? product.name_en || product.name_fr || product.name
+                        : product.name_fr || product.name_en || product.name,
                     price: product.price || 0,
                     originalPrice: product.originalPrice,
                     image: product.images?.[0] || '/images/placeholder.jpg',
@@ -254,7 +285,7 @@ export default function ProduitsPage() {
               animate={{ opacity: 1 }}
             >
               <p className="font-sans text-lg text-gray-600">
-                Aucun produit trouvé.
+                {c.noneFound}
               </p>
               <button
                 onClick={() => {
@@ -269,7 +300,7 @@ export default function ProduitsPage() {
                 }}
                 className="mt-4 px-6 py-2 bg-gold-imperial text-white rounded-lg hover:bg-gold-champagne transition-colors"
               >
-                Effacer les filtres
+                {c.clearFilters}
               </button>
             </motion.div>
           )}

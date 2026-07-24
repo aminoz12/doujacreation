@@ -4,11 +4,15 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { categories } from '@/data/products'
+import { useLanguage } from '@/contexts/LanguageContext'
 import ProductGrid from './ProductGrid'
 
 const AUTO_SCROLL_INTERVAL = 3000 // 3 seconds per step
 
+const HEADING = { fr: 'ACHETER PAR COLLECTIONS', en: 'SHOP BY COLLECTIONS' }
+
 export default function CollectionsCarousel() {
+  const { language } = useLanguage()
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const firstCardRef = useRef<HTMLDivElement | null>(null)
 
@@ -65,7 +69,7 @@ export default function CollectionsCarousel() {
             <span className="hidden md:block h-px w-16 bg-gradient-to-r from-transparent to-gold-imperial" />
             <span className="w-1.5 h-1.5 rotate-45 border border-gold-imperial flex-shrink-0" />
             <h2 className="font-sans text-xs md:text-sm tracking-[0.3em] uppercase text-luxury-black">
-              ACHETER PAR COLLECTIONS
+              {language === 'en' ? HEADING.en : HEADING.fr}
             </h2>
             <span className="w-1.5 h-1.5 rotate-45 border border-gold-imperial flex-shrink-0" />
             <span className="hidden md:block h-px w-16 bg-gradient-to-l from-transparent to-gold-imperial" />

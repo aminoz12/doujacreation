@@ -43,7 +43,7 @@ function CheckoutSuccessContent() {
     fetch(`/api/checkout/order?order=${orderId}`)
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error('Not found'))))
       .then((data) => setOrder(data.order))
-      .catch(() => setError('Order not found'))
+      .catch(() => setError(t.checkout.orderNotFound))
       .finally(() => setLoading(false))
   }, [orderId])
 
@@ -70,7 +70,7 @@ function CheckoutSuccessContent() {
       >
         <div className="container-luxury text-center">
           <p className="text-luxury-black/70 mb-6">
-            {error || 'Missing order reference.'}
+            {error || t.checkout.missingRef}
           </p>
           <Button href="/collections">{t.cart.continue}</Button>
         </div>
@@ -113,10 +113,10 @@ function CheckoutSuccessContent() {
             {order && (
               <div className="bg-luxury-ivory/50 rounded-lg p-6 mb-8 text-left">
                 <p className="font-sans text-sm text-luxury-black/80">
-                  <span className="font-medium">Order</span> {order.order_number}
+                  <span className="font-medium">{t.checkout.orderLabel}</span> {order.order_number}
                 </p>
                 <p className="font-sans text-sm text-luxury-black/80 mt-1">
-                  <span className="font-medium">Total</span>{' '}
+                  <span className="font-medium">{t.checkout.total}</span>{' '}
                   {order.total_amount.toFixed(2)} {order.currency}
                 </p>
               </div>
@@ -132,11 +132,12 @@ function CheckoutSuccessContent() {
 }
 
 export default function CheckoutSuccessPage() {
+  const { t } = useLanguage()
   return (
     <Suspense
       fallback={
         <div className="pt-24 md:pt-32 section-padding min-h-screen flex items-center justify-center">
-          <p className="text-luxury-black/70">Loading...</p>
+          <p className="text-luxury-black/70">{t.common.loading}</p>
         </div>
       }
     >

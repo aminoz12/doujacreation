@@ -35,12 +35,12 @@ export default function Footer() {
               className="mb-6"
             >
               <Link href="/">
-                <Image 
-                  src="/logo.png" 
-                  alt="Zina Chic" 
-                  width={200} 
-                  height={80} 
-                  className="h-16 md:h-20 w-auto object-contain"
+                <Image
+                  src="/logo.png"
+                  alt="Zina Chic"
+                  width={200}
+                  height={80}
+                  className="h-16 md:h-20 w-auto object-contain [filter:drop-shadow(0_0_10px_rgba(199,161,74,0.9))_drop-shadow(0_0_3px_rgba(199,161,74,1))]"
                 />
               </Link>
             </motion.div>

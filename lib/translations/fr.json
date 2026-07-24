@@ -2,6 +2,7 @@
   "nav": {
     "home": "Accueil",
     "collections": "Collections",
+    "products": "Produits",
     "lookbook": "Lookbook",
     "maison": "Maison",
     "contact": "Contact"
@@ -11,7 +12,8 @@
       "title": "Zina Chic",
       "subtitle": "L'élégance intemporelle rencontre l'artisanat du patrimoine. Découvrez les plus beaux caftans, jellabas et takchitas marocains.",
       "explore": "Explorer les Collections",
-      "lookbook": "Voir le Lookbook"
+      "lookbook": "Voir le Lookbook",
+      "imageAlt": "Caftan marocain de luxe"
     },
     "brand": {
       "title": "Patrimoine Artisanal,",
@@ -64,7 +66,12 @@
     "fabricCare": "Tissus & entretien",
     "shipping": "Livraison et Retours",
     "shippingText": "Livraison gratuite dans le monde entier pour les commandes supérieures à 500 $. Retours acceptés dans les 14 jours suivant la livraison. Les articles doivent être non portés et en état d'origine.",
-    "backToCollections": "Retour aux Collections"
+    "backToCollections": "Retour aux Collections",
+    "prevImage": "Image précédente",
+    "nextImage": "Image suivante",
+    "decreaseQty": "Diminuer la quantité",
+    "increaseQty": "Augmenter la quantité",
+    "imageView": "vue"
   },
   "lookbook": {
     "title": "Lookbook",
@@ -98,7 +105,13 @@
     "empty": "Votre panier est vide",
     "continue": "Continuer les Achats",
     "total": "Total",
-    "checkout": "Passer à la Caisse"
+    "checkout": "Passer à la Caisse",
+    "pay": "PAYER",
+    "paymentError": "Erreur de paiement",
+    "networkError": "Erreur réseau, réessayez.",
+    "decrease": "Diminuer",
+    "increase": "Augmenter",
+    "remove": "Retirer"
   },
   "checkout": {
     "title": "Paiement",
@@ -118,7 +131,14 @@
     "country": "Pays",
     "notes": "Notes (optionnel)",
     "payWithCard": "Payer par carte, Apple Pay ou Google Pay",
-    "creatingOrder": "Création de la commande..."
+    "creatingOrder": "Création de la commande...",
+    "orderSummary": "Récapitulatif de la commande",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "total": "Total",
+    "orderLabel": "Commande",
+    "orderNotFound": "Commande introuvable",
+    "missingRef": "Référence de commande manquante."
   },
   "footer": {
     "description": "L'élégance intemporelle rencontre l'artisanat du patrimoine. Découvrez les plus beaux caftans, jellabas et takchitas marocains, chaque pièce témoignant de siècles de tradition et de luxe.",
@@ -128,7 +148,8 @@
   },
   "common": {
     "loading": "Chargement...",
-    "notFound": "Produit Introuvable"
+    "notFound": "Produit Introuvable",
+    "noProductsYet": "Aucun produit pour le moment."
   }
 }
 

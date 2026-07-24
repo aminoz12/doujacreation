@@ -20,7 +20,7 @@ export default function HeroSection() {
       >
         <Image
           src="/hero.jpg"
-          alt="Luxury Moroccan Caftan"
+          alt={t.home.hero.imageAlt}
           fill
           priority
           className="object-cover"

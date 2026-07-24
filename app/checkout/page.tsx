@@ -229,7 +229,7 @@ export default function CheckoutPage() {
 
             <div>
               <div className="bg-luxury-ivory/50 rounded-lg p-6 sticky top-28">
-                <h2 className="font-serif text-xl text-luxury-black mb-4">Order summary</h2>
+                <h2 className="font-serif text-xl text-luxury-black mb-4">{t.checkout.orderSummary}</h2>
                 <ul className="space-y-3 mb-6 max-h-60 overflow-y-auto">
                   {items.map((item) => (
                     <li key={`${item.product_id}-${item.size ?? ''}-${item.color ?? ''}`} className="flex gap-3">
@@ -257,15 +257,15 @@ export default function CheckoutPage() {
                 </ul>
                 <div className="border-t border-luxury-black/10 pt-4 space-y-1">
                   <div className="flex justify-between text-sm">
-                    <span className="text-luxury-black/80">Subtotal</span>
+                    <span className="text-luxury-black/80">{t.checkout.subtotal}</span>
                     <span>{subtotal.toFixed(2)} €</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-luxury-black/80">Shipping</span>
+                    <span className="text-luxury-black/80">{t.checkout.shipping}</span>
                     <span>{shippingCost.toFixed(2)} €</span>
                   </div>
                   <div className="flex justify-between font-serif text-lg pt-2">
-                    <span>Total</span>
+                    <span>{t.checkout.total}</span>
                     <span className="text-gold-imperial">{total.toFixed(2)} €</span>
                   </div>
                 </div>
